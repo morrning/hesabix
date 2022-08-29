@@ -1,0 +1,113 @@
+{% extends 'stack/base.html.twig' %}
+
+{% block title %}{{ stack.title }}{% endblock %}
+{% block javascripts %}
+    <script>
+        $(document).ready(function() {
+           $('.txtReplay').prop('value','');
+        });
+
+        function addLike(id){
+            $.ajax({
+                type: "POST",
+                url: Routing.generate('stackAddLike',{'id':id}),
+                contentType: "application/json; charset=utf-8",
+                dataType: "html",
+                success: function (data) {
+                    $('.replay_like_' + id).html(parseInt($('.replay_like_' + id).html()) + 1);
+                    $('.replay_like_icon_' + id).addClass('d-none');
+                    toastShow('ثبت شد.');
+                },
+                failure: function(errMsg) {
+                    alert(errMsg);
+                }
+            })
+        }
+    </script>
+{% endblock %}
+{% block AppBody %}
+    <div class="row">
+        <div class="col-12">
+            <div class="card mb-2 mx-0">
+                <div class="card-header bg-light">
+                    <a class="link-primary" href="{{ path('stackView',{'url': stack.url}) }}">
+                        <i class="bi bi-paragraph"></i>
+                        <b>{{ stack.title }}</b>
+                    </a>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-10">
+                            <p class="text-justify">{{ stack.body | raw }}</p>
+                        </div>
+                        <div class="col-sm-12 col-md-2">
+                            <div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
+                                <a class="btn btn-info text-white">
+                                    {{ stack.view }}
+                                    بازدید
+                                </a>
+                                <a class="btn btn-success text-white">
+                                    {{ EntityMGR.findBy('App:stackContent',{'upperID':stack.url}) | length}}
+                                    پاسخ
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer bg-white">
+                    <img style="max-height: 25px;" class="rounded" src="{{ asset('https://www.gravatar.com/avatar/' ~ twigFunctions.gravatarHash(stack.submitter.email)) }}" alt="">
+                    {{ stack.submitter.name }}
+                    <i class="bi bi-calendar"></i>
+                    <a class="" href="#">{{ Jdate.jdate('Y/n/d H:i',stack.dateSubmit) }}</a>
+                    <i class="bi bi-tree-fill"></i>
+                    {{ stack.cat.name }}
+                </div>
+            </div>
+        </div>
+        <div class="col-12">
+            <h3>پاسخ ها</h3>
+            {% for replay in replays %}
+                <div class="card mt-2">
+                    <div class="card-header">
+                        <span class="thumb"><img style="max-height: 25px;" class="rounded" src="{{ asset('https://www.gravatar.com/avatar/' ~ twigFunctions.gravatarHash(replay.submitter.email)) }}" alt=""></span>  {{ replay.submitter.name }}:
+                        <small class="float-end">
+                            <i class="bi bi-calendar"></i>
+                            <a class="" href="#">{{ Jdate.jdate('Y/n/d H:i',replay.dateSubmit) }}</a>
+                        </small>
+                    </div>
+                    <div class="card-body">
+                        <p>{{ replay.body | raw }}</p>
+                    </div>
+                    <div class="card-footer">
+                        <div class="float-end text-secondary">
+                            <i onclick="addLike({{ replay.id }})" class="text-success bi bi-hand-thumbs-up-fill mx-2 replay_like_icon_{{ replay.id }}"></i><span>(<span class="text-primary replay_like_{{ replay.id }}">{{ replay.likes | length }}</span>) موافق </span>
+                        </div>
+
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="col-12 mt-2">
+            <h3>ارسال پاسخ:</h3>
+            {% if app.user %}
+                {{ form_start(form,{'attr':{'class':'ajax-off'}}) }}
+                <div class="row">
+                    <div class="col-sm-12 col-md-12 mt-2">
+                        {{ form_label(form.body) }}
+                        {{ form_widget(form.body) }}
+                    </div>
+                </div>
+                <br>
+                {{ form_widget(form.submit) }}
+                {{ form_end(form) }}
+            {% else %}
+                <div class="alert alert-warning">
+                    برای ارسال پاسخ به حساب خود وارد شوید.
+                    <a class="" href="{{ path('login') }}"> ورود </a>
+                    |
+                    <a class="" href="{{ path('app_register') }}"> عضویت </a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

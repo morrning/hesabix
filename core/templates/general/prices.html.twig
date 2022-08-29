@@ -1,0 +1,153 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{% trans %}app.pricing{% endtrans %}{% endblock %}
+
+{% block body %}
+    <div class="container py-5">
+        <div class="pricing-header p-3 pb-md-4 mx-auto text-center">
+            <h1 class="display-4 fw-normal">لیســـــت قیمت خدمات حسابیکس</h1>
+            <p class="fs-5 text-muted">به پرداخت های شش ماهه ۱۰ درصد و سالانه ۵۰درصد تخفیف تعلق می‌گیرد.</p>
+        </div>
+        <main>
+            <div class="row row-cols-1 row-cols-md-3 mb-3 text-center">
+                <div class="col">
+                    <div class="card mb-4 rounded-3 shadow-sm">
+                        <div class="card-header py-3">
+                            <h4 class="my-0 fw-normal">رایگان</h4>
+                        </div>
+                        <div class="card-body">
+                            <h1 class="card-title pricing-card-title">۰ تومان در ماهانه</h1>
+                            <ul class="list-unstyled mt-3 mb-4">
+                                <li>۱ کسب و کار</li>
+                                <li>۱ کاربر</li>
+                                <li>پشتیبانی ایمیل</li>
+                                <li>بینهایت سند حسابداری</li>
+                            </ul>
+                            <button type="button" class="w-100 btn btn-lg btn-outline-primary">عضویت رایگان</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card mb-4 rounded-3 shadow-sm border-primary">
+                        <div class="card-header py-3 text-white bg-primary border-primary">
+                            <h4 class="my-0 fw-normal">استاندارد</h4>
+                        </div>
+                        <div class="card-body">
+                            <h1 class="card-title pricing-card-title">۳۰ هزار تومان/ماهانه</h1>
+                            <ul class="list-unstyled mt-3 mb-4">
+                                <ul class="list-unstyled mt-3 mb-4">
+                                    <li>۵ کسب و کار</li>
+                                    <li>۵ کاربر</li>
+                                    <li>پشتیبانی ایمیل / تیکت</li>
+                                    <li>بینهایت سند حسابداری</li>
+                                </ul>
+                            </ul>
+                            <button type="button" class="w-100 btn btn-lg btn-primary">هم‌اکنون سفارش دهید</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card mb-4 rounded-3 shadow-sm">
+                        <div class="card-header py-3">
+                            <h4 class="my-0 fw-normal">سازمانی</h4>
+                        </div>
+                        <div class="card-body">
+                            <h1 class="card-title pricing-card-title">۵۵۰ هزار تومان/ماهانه</h1>
+                            <ul class="list-unstyled mt-3 mb-4">
+                                <li>بینهایت کسب و کار</li>
+                                <li>بینهایت کاربر</li>
+                                <li>ابر خصوصی</li>
+                                <li>پشتیبانی ایمیل / تلفن / تیکت</li>
+                            </ul>
+                            <button type="button" class="w-100 btn btn-lg btn-primary">تماس با بخش فروش</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h2 class="display-6 text-center mb-4">مقایسه پلن‌ها</h2>
+
+            <div class="table-responsive">
+                <table class="table text-center">
+                    <thead>
+                    <tr>
+                        <th style="width: 34%;"></th>
+                        <th style="width: 22%;">رایگان</th>
+                        <th style="width: 22%;">استاندارد</th>
+                        <th style="width: 22%;">سازمانی</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <th scope="row" class="text-start">ابر خصوصی</th>
+                        <td><i class="bi bi-x text-danger"></i></td>
+                        <td><i class="bi bi-x text-danger"></i></td>
+                        <td><i class="bi bi-check text-success"></i></td>
+                    </tr>
+                    </tbody>
+                    <tbody>
+                    <tr>
+                        <th scope="row" class="text-start">تعداد کسب و کار</th>
+                        <td>۱</td>
+                        <td>۵</td>
+                        <td>بینهایت</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div id="plans-notes" class="text-right card" style="margin-top: 35px;">
+                <div class="card-header text-white bg-success"><i class="bi bi-question-circle-fill"></i> <strong>سوالات متداول</strong></div>
+                <div class="card-body">
+                    <div class="text-09">
+                        <div class="text-bold text-primary">
+                            آیا حسابیکس آنلاین است یا نیاز به دانلود و نصب نرم افزار است؟
+                        </div>
+                        <div class="prices-faq-answer text-secondary">
+                            شما نیاز به دانلود و نصب هیچ نرم افزاری ندارید. حسابیکس کاملاً آنلاین است
+                            و شما پس از ثبت نام می توانید وارد حساب کاربری خود شده و حسابداری خود را شروع کنید.
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="text-09">
+                        <div class="text-bold text-primary">
+                            آیا می توانم اکانت خود را به طرح های بالاتر ارتقا دهم؟
+                        </div>
+                        <div class="prices-faq-answer text-secondary">
+                            بله، شما می توانید هر زمان که مایل بودید طرح خود را ارتقا دهید.
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="text-09">
+                        <div class="text-bold text-primary">
+                            آیا برای اپ موبایل هزینه جداگانه ای باید بپردازم؟
+                        </div>
+                        <div class="prices-faq-answer text-secondary">
+                            خیر، اپ موبایل حسابیکس رایگان بوده و شما با همان اکانت خود
+                            که در وب سایت وارد می شوید می توانید وارد اپ موبایل هم شوید
+                            و نیازی به پرداخت هزینه جداگانه نیست.
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="text-09">
+                        <div class="text-bold text-primary">
+                            آیا برای کار با حسابیکس نیاز به دانش حسابداری است؟
+                        </div>
+                        <div class="prices-faq-answer text-secondary">
+                            خیر، حسابیکس بگونه ای طراحی شده که تقریبا همه کارهای لازم بصورت اتوماتیک انجام می شوند.
+                            به عنوان مثال با ثبت فاکتور فروش، سند حسابداری مربوطه بصورت اتوماتیک ثبت می شود، همینطور در مورد
+                            سایر عملیات های حسابداری مثل دریافت، پرداخت، ضایعات و ...
+                            <br>
+                            اگر چه حسابداران و افرادی که دانش حسابداری دارند نیز می توانند بخوبی با حسابیکس کار کنند
+                            و از مزایای دانش خود بهره ببرند.
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+{% endblock %}
+
+{% block stylesheets %}
+
+{% endblock %}

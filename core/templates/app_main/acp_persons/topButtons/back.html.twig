@@ -1,0 +1,5 @@
+{% if permission.PermissionInCurrentBusiness('personEdit',app.session.get('bid'),app.user) or permission.PermissionInCurrentBusiness('personDelete',app.session.get('bid'),app.user) %}
+    <a title="لیست اشخاص" class="bi bi-list-check mx-1" href="javascript:loadComponent('{{ path('app_person_transactions',{'type':'all'}) }}');"></a>
+{% endif %}
+
+

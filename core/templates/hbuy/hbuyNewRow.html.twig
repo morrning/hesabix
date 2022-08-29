@@ -1,0 +1,14 @@
+
+<tr id="table-row-{{ id }}" class="">
+    {{ form_start(form) }}
+    <th scope="row" class="index"></th>
+    <td class="commodity">{{ form_widget(form.commodity) }}</td>
+    <td class="des">{{ form_widget(form.des) }}</td>
+    <td class="unit"></td>
+    <td class="num"></td>
+    <td class="price"></td>
+    <td class="off"></td>
+    <td class="price-total"></td>
+    <td><button class="btn btn-xs btn-danger text-light" onclick="removeRow('{{ id }}');">حذف</button></td>
+    {{ form_end(form) }}
+</tr>

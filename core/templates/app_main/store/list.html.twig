@@ -1,0 +1,32 @@
+<div class="table">
+    <table id="dataTable" class="table text-center">
+        <thead>
+        <tr>
+            <th>ردیف</th>
+            <th>نام انبار</th>
+            <th>آدرس</th>
+            <th>تلفن</th>
+            <th>انباردار</th>
+            <th>بیشتر</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for data in datas %}
+            <tr class="{{ data.id }}">
+                <td>{{ loop.index }}</td>
+                <td>{{ data.name }}</td>
+                <td>{{ data.adr }}</td>
+                <td>{{ data.tel }}</td>
+                <td>{{ data.boos }}</td>
+                <td>
+                    {% if permission.PermissionInCurrentBusiness('storeEdit',app.session.get('bid'),app.user) %}
+                        <button class="btn btn-sm btn-info text-light" onclick="loadComponent(Routing.generate('app_store_edit',{'id':{{ data.id }}}))">
+                            <i class="bi bi-pen"></i>
+                        </button>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>

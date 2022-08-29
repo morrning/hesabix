@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>{% trans %}hesabix{% endtrans %} - {% block title %}{% endblock %}</title>
+        <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+        <link rel="icon" href="/favicon.ico" type="image/x-icon">
+        {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
+        {% block stylesheets %}
+        {% endblock %}
+        <!-- Option 1: Bootstrap Bundle with Popper -->
+        <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
+        <script src="{{ asset('js/jquery-3.6.0.min.js') }}"></script>
+        {% block javascripts %}
+        {% endblock %}
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="{{ asset('css/bootstrap.rtl.min.css') }}">
+        <link href="{{ asset('css/bootstrap-icons.css') }}" rel="stylesheet">
+        <link rel="stylesheet" href="{{ asset('app/assets/vendors/sweetalert2/sweetalert2.min.css') }}">
+        <script src="{{ asset('app/assets/vendors/sweetalert2/sweetalert2.min.js') }}"></script>
+        <link rel="stylesheet" href="{{ asset('css/main.css') }}">
+        <script src="https://widget.arcaptcha.ir/1/api.js" async defer></script>
+
+        <script src="{{ asset('bundles/fosjsrouting/js/router.min.js') }}"></script>
+        <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
+        <script type="text/javascript">
+            (function(){
+                var now = new Date();
+                var head = document.getElementsByTagName('head')[0];
+                var script = document.createElement('script');
+                script.async = true;
+                var script_address = 'https://cdn.yektanet.com/js/hesabix.ir/native-hesabix.ir-24606.js';
+                script.src = script_address + '?v=' + now.getFullYear().toString() + '0' + now.getMonth() + '0' + now.getDate() + '0' + now.getHours();
+                head.appendChild(script);
+            })();
+        </script>
+    </head>
+    <body>
+        <header style="margin-bottom: 4.5rem;">
+            <nav class="navbar navbar-light navbar-expand-md bg-light text-secondary fixed-top" style="border-bottom: 1px solid #FF7E00;">
+                <div class="container-fluid">
+                    <a href="{{ path('home') }}" class="navbar-brand">
+                        <img src="{{ asset('img/logo-blue.png') }}" class="img-fluid" style="max-height: 35px;">
+                    </a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarCollapse">
+                        <ul class="navbar-nav me-auto mb-2 mb-md-0">
+                            <li class="nav-item"><a href="{{ path('home') }}" class="nav-link px-2">{% trans %}app.home{% endtrans %}</a></li>
+                            <li class="nav-item"><a href="{{ path('homeFaq') }}" class="nav-link px-2">{% trans %}app.faq{% endtrans %}</a></li>
+                            <li class="nav-item"><a href="{{ path('app_help',{'id':'home'})}}" class="nav-link px-2">راهنما و خود آموزها</a></li>
+                            <li class="nav-item"><a href="{{ path('stack') }}" class="nav-link px-2">پرسش‌و‌پاسخ</a></li>
+                            <li class="nav-item"><a href="{{ path('homeAbout')}}" class="nav-link px-2">{% trans %}app.about{% endtrans %}</a></li>
+                            <li class="nav-item"><a href="http://blog.hesabix.ir" class="nav-link px-2">وبلاگ آموزشی</a></li>
+                            <li class="nav-item"><a href="{{ path('homeContactus')}}" class="nav-link px-2">{% trans %}app.contactus{% endtrans %}</a></li>
+                        </ul>
+                        <div class="text-end px-md-5">
+                            {% if app.user %}
+                                <div class="dropdown">
+                                    <button class="btn btn-outline-warning c-border-warrning dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <img class="rounded" style="height: 24px;" src="{{ asset('https://www.gravatar.com/avatar/' ~ twigFunctions.gravatarHash(app.user.email)) }}" alt="">
+                                        {{ app.user.name }}
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                        <li>
+                                            <a class="dropdown-item" href="{{ path('app_user_profile') }}">
+                                                <i class="bi bi-person"></i>
+                                                پروفایل کاربری
+                                            </a>
+                                            <a class="dropdown-item" href="{{ path('app_main') }}">
+                                                <i class="bi bi-list-task"></i>
+                                                کسب و کارها
+                                            </a>
+                                            <a class="dropdown-item" href="{{ path('app_logout') }}">
+                                                <i class="bi bi-door-open"></i>
+                                                خروج از حسابیکس
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            {% else %}
+                                <a href="{{ path('login') }}" class="btn btn-sm  btn-outline-secondary me-2 rounded-5">
+                                    <i class="bi bi-door-open"></i>
+                                    ورود
+                                </a>
+                                <a href="{{ path('app_register') }}" class="btn btn-sm btn-warning rounded-5">
+                                    <i class="bi bi-plus-circle"></i>
+                                    عضویت
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        </header>
+
+        <div class="mb-5">
+            {% block body %}{% endblock %}
+        </div>
+        <footer class="d-flex flex-wrap justify-content-between align-items-center bg-white py-2 border-top fixed-bottom">
+            <div class="col-md-4 d-flex align-items-center ms-3">
+                <a href="/" class="mb-3 me-2 mb-md-0 text-muted text-decoration-none lh-1">
+                    <img src="/img/logo-blue.png" class="" style="max-height: 24px;">
+                </a>
+                <span class="mb-3 mb-md-0 text-muted">تمام حقوق برای حسابیکس محفوظ است</span>
+            </div>
+
+            <ul class="nav col-md-4 justify-content-end list-unstyled d-flex me-3">
+                <li class="ms-3"><a class="text-muted" href="#"><i class="bi bi-twitter"></i></a></li>
+                <li class="ms-3"><a class="text-muted" target="_blank" href="https://instagram.com/hesabix.acc"><i class="bi bi-instagram"></i></a></li>
+                <li class="ms-3"><a class="text-muted" target="_blank" href="https://youtube.com/channel/UCWtEK8NAMnB7q98PdoT7YTg"><i class="bi bi-youtube"></i></a></li>
+            </ul>
+        </footer>
+        <script src="{{ asset('app/corejs/script.js') }}"></script>
+    </body>
+</html>

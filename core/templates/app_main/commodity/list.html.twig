@@ -1,0 +1,68 @@
+<script>
+    function deletecommodity(id){
+        Swal.fire({
+            title: 'حذف',
+            text: "آیا برای حذف مطمئن هستید؟",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    type: "POST",
+                    url: Routing.generate('app_commodity_delete',{'id':id}),
+                    success: function(data)
+                    {
+                        if(data.result == 1){
+                            Swal.fire(
+                                'حذف',
+                                'با موفقیت حذف شد.',
+                                'success'
+                            )
+                            $('tr.' + id).remove();
+                        }
+                        else{
+                            Swal.fire(
+                                'حذف',
+                                'شخص به دلیل داشتن تراکنش قابل حذف نیست.',
+                                'error'
+                            )
+                        }
+                    }
+                });
+            }
+        })
+    }
+</script>
+<div class="table">
+    <table id="dataTable" class="table dtd text-center">
+        <thead>
+        <tr>
+            <th># کد</th>
+            <th>نام کالا</th>
+            <th>توضیحات</th>
+            <th>واحد شمارش</th>
+            <th>بیشتر</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for comm in comms %}
+            <tr class="{{ comm.id }}">
+                <td>{{ comm.code }}</td>
+                <td>{{ comm.name }}</td>
+                <td>{{ comm.des }}</td>
+                <td>{{ comm.unit.name }}</td>
+                <td>
+                    {% if permission.PermissionInCurrentBusiness('commodityEdit',app.session.get('bid'),app.user) %}
+                        <button class="btn btn-sm btn-info text-light" onclick="loadComponent(Routing.generate('app_commodity_edit',{'id':{{ comm.id }}}))">ویرایش</button>
+                    {% endif %}
+                    {% if permission.PermissionInCurrentBusiness('commodityDelete',app.session.get('bid'),app.user) %}
+                        <button class="btn btn-sm btn-danger text-light" onclick="deletecommodity({{ comm.id }})">حذف</button>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>

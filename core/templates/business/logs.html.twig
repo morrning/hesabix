@@ -1,0 +1,26 @@
+<div class="table-responsive">
+    <table class="table table-hover mb-0">
+        <thead>
+        <tr>
+            <th class="pt-0">ردیف</th>
+            <th class="pt-0">نام کاربر</th>
+            <th class="pt-0">شرح</th>
+            <th class="pt-0">دستگاه</th>
+            <th class="pt-0">زیرسیستم</th>
+            <th class="pt-0">زمان</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for log in logs %}
+            <tr class="{{ log.id }}">
+                <td>{{ loop.index }}</td>
+                <td>{{ log.user.name }}</td>
+                <td>{{ log.des }}</td>
+                <td>{{ log.device }}</td>
+                <td>{{ log.part }}</td>
+                <td>{{Jdate.jdate('Y/m/d H:i',log.dateSubmit)}}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>

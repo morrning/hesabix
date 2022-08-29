@@ -1,0 +1,28 @@
+@font-face {
+    font-family: 'Vazir FD';
+    src: url('../fonts/vazir/Farsi-Digits/Vazir-Light-FD.eot');
+    src: local('Shabnam FD'), url('../fonts/vazir/Farsi-Digits/Vazir-Light-FD.woff') format('woff'), url('../fonts/vazir/Farsi-Digits/Vazir-Light-FD.ttf') format('truetype');
+    font-weight: normal;
+    font-style:normal;
+
+}
+body{
+    font-family: 'Vazir FD',Tahoma;!important;
+    background-color: rgb(255, 255, 255);
+}
+label.required:before {
+    content: "* ";
+    color:Red;
+}
+.dataTables_filter{
+    float:left;
+}
+
+.c-border-warrning{
+    border: 1px solid #FF7E00;
+}
+
+td{
+    color: red;
+    background-color: red;
+}

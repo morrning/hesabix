@@ -1,0 +1,56 @@
+{% extends 'stack/base.html.twig' %}
+
+{% block title %}پرسش و پاسخ{% endblock %}
+
+{% block AppBody %}
+    <div class="row">
+        <div class="col">
+            {% for stack in stacks %}
+                <div class="card mb-2" onclick="window.location = Routing.generate('stackView',{'url':'{{ stack.url }}'});" onmouseover="$(this).addClass('border-warning');" onmouseout="$(this).removeClass('border-warning')">
+                    <div class="card-header bg-white">
+                        <i class="bi bi-paragraph"></i>
+                        <b>{{ stack.title }}</b>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-12 col-md-10">
+                                <p class="text-justify">{{ stack.body | raw }}</p>
+                            </div>
+                            <div class="col-sm-12 col-md-2">
+                                <div class="btn-group btn-group-sm" role="group" aria-label="">
+                                    <a class="btn btn-info text-white">
+                                        {{ stack.view }}
+                                        بازدید
+                                    </a>
+                                    <a class="btn btn-success text-white">
+                                        {{ EntityMGR.findBy('App:stackContent',{'upperID':stack.url}) | length}}
+                                        پاسخ
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer bg-white">
+                        <img style="max-height: 25px;" class="rounded" src="{{ asset('https://www.gravatar.com/avatar/' ~ twigFunctions.gravatarHash(stack.submitter.email)) }}" alt="">
+                        {{ stack.submitter.name }}
+                        <i class="bi bi-calendar"></i>
+                        <a class="" href="#">{{ twigFunctions.pastTime(stack.dateSubmit) }}</a>
+                        <i class="bi bi-tree-fill"></i>
+                        {{ stack.cat.name }}
+                        <span class="float-end">
+                            <a class="text-primary" href="{{ path('stackView',{'url':stack.url}) }}">
+                                <i class="bi bi-eye"></i>
+                                مشاهده سوال
+                            </a>
+                        </span>
+                    </div>
+                </div>
+            {% endfor %}
+            <br>
+            <a class="btn btn-sm btn-secondary" href="{{ path('stack',{'page': page + 1} ) }}">صفحه بعدی</a>
+            {% if page != 1 %}
+                <a class="btn btn-sm btn-secondary" href="{{ path('stack',{'page': page - 1} ) }}">صفحه قبلی</a>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}پنهان کردن تبلیغات{% endblock %}
+
+{% block body %}
+    <div class="container col-xxl-8 px-4 py-5">
+        <div class="row flex-lg-row-reverse align-items-center g-5 py-5">
+            <div class="col-10 col-sm-8 col-lg-6 justify-content-center">
+                <img src="{{ asset('/img/ads.jpg') }}" class="border rounded d-block mx-lg-auto img-fluid" alt="Bootstrap Themes" loading="lazy" width="700" height="500">
+            </div>
+            <div class="col-lg-6">
+                <h1 class="display-5 fw-bold lh-1 mb-3">پنهان کردن تبلیغات</h1>
+                <p class="lead">با پرداخت هزینه‌ای اندک به مدت یک سال نمایش تبلیغات را در حسابیکس برای حساب کاربری خود غیر فعال کنید.این پرداخت شامل تمام کسب و کارهایی که در آن عضو هستید نیز می باشد. با خیال راحت و بدون تبلیغات کسب‌و‌کار خود را مدیریت کنید.</p>
+                <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+                    <a href="{{ path('app_pay') }}" class="btn btn-primary btn-lg px-4 me-md-2">پرداخت مبلغ ۲۵ هزار تومان</a>
+                    <a href="{{ path('app_user_profile') }}" class="btn btn-outline-secondary btn-lg px-4">بازگشت</a>
+                </div>
+            </div>
+            {% if app.user.adsBan == false %}
+                <div id="pos-article-display-69295"></div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

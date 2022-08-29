@@ -1,0 +1,74 @@
+<script>
+    $(function() {
+        'use strict';
+
+        if($('.tarikh').length) {
+            // tarikh
+            $(".tarikh").persianDatepicker({
+                format: "YYYY/MM/DD",
+                autoclose: true
+            });
+        }
+    });
+    $(document).ready(function(){
+        if($('.person').children('option').length == 0){
+            Swal.fire(
+                'خطا',
+                'تاکنون هیچ شخصی افزوده نشده است.ابتدا یک نفر را اضافه کنید.',
+                'error'
+            ).then((result) => {
+                if (result.isConfirmed) {
+                    loadComponent(Routing.generate('acpPersonNew'));
+                }});
+        }
+        if($('.otherData').children('option').length == 0){
+            Swal.fire(
+                'خطا',
+                'تاکنون هیچ بانکی افزوده نشده است.ابتدا یک بانک را اضافه کنید.',
+                'error'
+            ).then((result) => {
+                if (result.isConfirmed) {
+                    loadComponent(Routing.generate('acpPersonNew'));
+                }});
+        }
+    });
+    function save(){
+        alert()
+    }
+</script>
+{{ form_start(form) }}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12 col-md-12">
+
+            {{ form_row(form.RS,{'label':'دریافت | پرداخت'}) }}
+        </div>
+        <div class="col-sm-12 col-md-3 mt-2">
+            {{ form_row(form.dateSave,{'label':'تاریخ'}) }}
+        </div>
+        <div class="col-sm-12 col-md-9 mt-2">
+            {{ form_row(form.des,{'label':'شرح'}) }}
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-sm-12 col-md-6">
+            {{ form_row(form.person) }}
+        </div>
+        <div class="col-sm-12 col-md-6">
+            {{ form_row(form.amount) }}
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-sm-12 col-md-6">
+            {{ form_row(form.type) }}
+        </div>
+        <div class="col-sm-12 col-md-6">
+            {{ form_row(form.data) }}
+        </div>
+    </div>
+    <br>
+    {{ form_widget(form.submit) }}
+    {{ form_end(form) }}
+</div>

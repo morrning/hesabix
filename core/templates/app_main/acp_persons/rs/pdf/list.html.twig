@@ -1,0 +1,29 @@
+{% extends "app_main/pdf/base.html.twig" %}
+{% block body %}
+    <table style="border-color: black; float: right;" border="1"><caption>&nbsp;</caption>
+        <tbody>
+        <tr style="text-align: center; background-color: grey; color: white">
+            <td style="width: 35px;">ردیف</td>
+            <td>تاریخ</td>
+            <td>نوع</td>
+            <td>نام و نام خانوادگی</td>
+            <td>حساب بانکی</td>
+            <td>مبلغ</td>
+            <td>توضیحات</td>
+        </tr>
+        {% for data in datas %}
+            <tr style="text-align: center">
+                <td>{{ loop.index }}</td>
+                <td>{{ data.datesave }}</td>
+                <td>
+                    {% if data.rs %}دریافت{% else %}پرداخت{% endif %}
+                </td>
+                <td>{{ data.personRSPeople[0].person.nikename }}</td>
+                <td>{{ data.personRSOthers[0].bank.name }}</td>
+                <td>{{ data.personRSOthers[0].amount | number_format(0) }}</td>
+                <td>{{ data.des }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

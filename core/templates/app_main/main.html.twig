@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}کسب و کار ها{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <div class="card">
+                    <div class="card-header bg-secondary text-light">
+                        <i class="bi bi-list-task"></i>
+                        <span class="app-title">{{ block('title') }}</span>
+                        <span class="text-start justify-content-start float-end">
+                        <div class="btn btn-sm btn-light" onclick="loadComponent(Routing.generate('app_business_new'))">
+                            <i class="bi bi-plus-square"></i>
+                            راه اندازی کسب‌و‌کار جدید
+                        </div>
+                    </span>
+                    </div>
+                    <div class="card-body app-body">
+                        {% if busis | length != 0 %}
+                            <div class="list-group">
+                                {% for busi in busis %}
+                                    <a href="{{ path('app_business',{'id':busi.id}) }}" class="list-group-item list-group-item-action d-flex gap-3 py-3" aria-current="true">
+                                        <img src="{{ asset('img/icons/business.png') }}" alt="twbs" class="rounded-circle flex-shrink-0" width="50" height="50">
+                                        <div class="d-flex gap-2 w-100 justify-content-between">
+                                            <div>
+                                                <h6 class="mb-0">{{ busi.name }}</h6>
+                                                <p class="mb-0 opacity-75">{{ busi.name }} توسط {{ busi.owner.name }}</p>
+                                            </div>
+                                            <small class="opacity-50 text-nowrap">رایگان</small>
+                                        </div>
+                                    </a>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <div class="alert alert-primary" role="alert">
+                                <i class="bi bi-info-circle"></i>
+                                هنوز هیچ کسب و کاری ایجاد نشده است.
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block appShortcut %}
+
+{% endblock %}
+

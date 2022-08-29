@@ -1,0 +1,11 @@
+<div>
+    {% if permission.PermissionInCurrentBusiness('personAdd',app.session.get('bid'),app.user) %}
+        <a title="شخص جدید" class="bi bi-person-plus-fill mx-1 bi-top text-light" href="javascript:loadComponent('{{ path('acpPersonNew') }}',true);"></a>
+    {% endif %}
+    {% if permission.PermissionInCurrentBusiness('personPrint',app.session.get('bid'),app.user) %}
+        <a title="چاپ لیست" target="_blank" href="{{ path('app_person_list_print') }}" class="bi bi-printer-fill mx-1 bi-top text-light"></a>
+    {% endif %}
+    {% if permission.hasPermissionInCurrentBusiness('personPrint',app.session.get('bid'),app.user) %}
+        <a title="لیست تراکنش‌ها" class="bi bi-list-check mx-1 bi-top text-light" href="javascript:loadComponent('{{ path('app_person_transactions',{'type':'all'}) }}');"></a>
+    {% endif %}
+</div>

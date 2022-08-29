@@ -1,0 +1,11 @@
+{% if permission.PermissionInCurrentBusiness('personRSAdd',app.session.get('bid'),app.user) %}
+<button type="button" class="btn btn-sm btn-success" onclick="loadComponent('{{ path('acpPersonReciveSendNew') }}');">دریافت و پرداخت جدید</button>
+{% endif %}
+{% if permission.PermissionInCurrentBusiness('personRSDelete',app.session.get('bid'),app.user) %}
+<button type="button" class="btn btn-sm btn-primary" onclick="loadComponent('{{ path('acp_rs_list') }}');">لیست دریافت‌ها و پرداخت‌ها</button>
+{% endif %}
+{% if permission.PermissionInCurrentBusiness('personRSPrint',app.session.get('bid'),app.user) %}
+    <a target="_blank" href="{{ path('app_person_rs_list_print') }}" class="btn btn-sm btn-info">
+        چاپ
+    </a>
+{% endif %}

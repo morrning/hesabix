@@ -1,0 +1,19 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12 col-md-4">
+            <img src="{{ asset('img/bank.png') }}" class=" img-thumbnail border">
+        </div>
+        <div class="col-sm-12 col-md-8">
+            {{ form_start(form) }}
+            {{ form_row(form.name,{'label':'نام بانک'}) }}
+            {{ form_row(form.shomarehesab,{'label':'شماره حساب'}) }}
+            {{ form_row(form.shomarecart,{'label':'شماره کارت'}) }}
+            {{ form_row(form.shaba,{'label':'شماره شبا'}) }}
+            {{ form_row(form.shobe,{'label':'شعبه'}) }}
+            {{ form_row(form.des,{'label':'توضیحات'}) }}
+            {{ form_row(form.submit) }}
+            {{ form_end(form) }}
+        </div>
+    </div>
+</div>
+

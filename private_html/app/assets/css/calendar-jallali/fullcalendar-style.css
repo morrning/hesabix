@@ -1,0 +1,135 @@
+.fc-event {
+	border-radius: .2rem;
+	border: none;
+	cursor: move;
+	font-size: .9rem;
+	margin: .5rem .5rem;
+	padding: .3rem;
+	text-align: center;
+}
+
+.fc .fc-view-container .fc-view table .fc-body .fc-widget-content .fc-day-grid-container .fc-day-grid .fc-row .fc-content-skeleton table .fc-event-container .fc-day-grid-event.fc-event {
+	line-height: 1.3;
+	color: #000;
+	background-color: rgba(101, 113, 255, .2);
+	border-radius: 0;
+	border-left: 3px solid #6571ff;
+	background-color: #ffe6ec;
+	padding: 3px 0 3px 5px;
+	direction: rtl;
+	text-align: left;
+}
+
+.rtl .fc .fc-view-container .fc-view table .fc-body .fc-widget-content .fc-day-grid-container .fc-day-grid .fc-row .fc-content-skeleton table .fc-event-container .fc-day-grid-event.fc-event {
+	text-align: right;
+	padding: 3px 5px 3px 0;
+	border-right: 3px solid #6571ff;
+	border-left: unset;
+}
+
+.fc-event-container .fc-day-grid-event {
+	line-height: 1.3;
+	color: #000;
+	background-color: rgba(101, 113, 255, .2);
+	border-radius: 0;
+	border-left: 3px solid #6571ff;
+	background-color: #ffe6ec;
+	padding: 3px 0 3px 5px;
+	direction: rtl;
+	text-align: left;
+}
+
+.rtl .fc-event-container .fc-day-grid-event {
+	text-align: right;
+	padding: 3px 5px 3px 0;
+	border-right: 3px solid #6571ff;
+	border-left: unset;
+}
+
+.fc-event-container .fc-time-grid-event {
+	line-height: 1.3;
+	color: #000;
+	background-color: rgba(101, 113, 255, .2);
+	border-radius: 0;
+	border-left: 3px solid #6571ff;
+	background-color: #ffe6ec;
+	padding: 3px 0 3px 5px;
+	direction: rtl;
+	text-align: left;
+}
+
+.rtl .fc-event-container .fc-time-grid-event {
+	text-align: right;
+	padding: 3px 5px 3px 0;
+	border-right: 3px solid #6571ff;
+	border-left: unset;
+}
+
+.fc-event.ui-draggable.ui-draggable-handle {
+	margin-right: 0;
+	border-radius: 0;
+	text-align: left;
+	padding: .5rem;
+}
+
+.rtl .fc-event.ui-draggable.ui-draggable-handle {
+	text-align: right;
+}
+
+.btn,
+.fc .fc-button,
+.swal2-modal .swal2-actions button,
+.wizard>.actions a {
+	color: #727cf5;
+	background-color: unset;
+	border: 1px solid #727cf5;
+	transform: none !important;
+	transition: none !important;
+}
+
+.fc-state-default:hover {
+	color: #fff !important;
+	background-color: #727cf5;
+	border-color: #727cf5;
+	background-image: none !important;
+	transform: none !important;
+	transition: none !important;
+}
+
+.fc-toolbar .fc-state-active,
+.fc-toolbar .ui-state-active {
+	color: #fff !important;
+	border-color: #727cf5;
+	background-color: #727cf5;
+}
+
+.fc-toolbar .fc-state-active:hover,
+.fc-toolbar .ui-state-active:hover {
+	color: #fff !important;
+	background-color: #4e5bf2;
+	border-color: #4250f2;
+}
+
+.fc-agendaDay-button {
+	border-top-left-radius: 0 !important;
+	border-bottom-left-radius: 0 !important;
+}
+
+.fc-agendaWeek-button {
+	border-radius: 0 !important;
+}
+
+.fc-month-button {
+	border-top-right-radius: 0 !important;
+	border-bottom-right-radius: 0 !important;
+}
+
+.fc-prev-button {
+	border-top-right-radius: 0 !important;
+	border-bottom-right-radius: 0 !important;
+}
+
+.fc-next-button {
+	border-top-left-radius: 0 !important;
+	border-bottom-left-radius: 0 !important;
+}

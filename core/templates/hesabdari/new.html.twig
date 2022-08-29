@@ -1,0 +1,155 @@
+<script>
+    function reloadData(){
+        $('.tbody > tr').each(function (index) {
+            $(this).find('th.index').html(index + 1);
+        });
+        //calculate balance
+        var bd = 0;
+        var bs = 0;
+        $('.tbody > tr').each(function (index) {
+          bs +=  parseInt($(this).find('td.bs input').val());
+          bd +=  parseInt($(this).find('td.bd input').val());
+        });
+        $('.bs-label').html(bs);
+        $('.bd-label').html(bd);
+        $('.bt-label').html(bd - bs);
+    }
+    function addRow(){
+        $.ajax({
+            type: "POST",
+            url: Routing.generate('app_hesabdari_get_item_template'),
+            success: function(data)
+            {
+                $('.tbody').append(data.view.content);
+                reloadData();
+            }
+        });
+    }
+    function removeRow(id){
+        $('#table-row-' + id).remove();
+        reloadData();
+    }
+
+    function insertDocument(){
+        var count = $('.tbody tr').length;
+        if(count == 0){
+            swal.fire('سند فاقد ردیف است.لطفا قبل از ثبت نسبت به افزودن ردیف‌ها اقدام نمایید.');vdk
+            return false;
+        }
+        var documentRowsjson = {};
+        $('.tbody > tr').each(function (index,element) {
+            let rowData = {};
+            rowData['code'] = $(element).find(" td.code select :selected").val();
+            let tempTagType = $(element).find(" td.type :first-child")[0].tagName;
+            if(tempTagType == 'INPUT'){
+                rowData['type'] = $(element).find(" td.type :first-child").val();
+            }
+            else if (tempTagType == 'SELECT'){
+                rowData['type'] = $(element).find(" td.type :first-child :selected").val();
+            }
+            rowData['des'] = $(element).find(" td.des :first-child").val();
+            rowData['bs'] = $(element).find(" td.bs :first-child").val();
+            rowData['bd'] = $(element).find(" td.bd :first-child").val();
+            documentRowsjson[index] = rowData;
+        });
+        $.ajax({
+            type: "POST",
+            url: Routing.generate('app_hesabdari_document_insert',{'data':JSON.stringify(documentRowsjson)}),
+            success: function (data) {
+               alert(data.view);
+            }
+        });
+    }
+    $(function() {
+        'use strict';
+
+        if($('#date').length) {
+            // tarikh
+            $("#date").persianDatepicker({
+                format: "YYYY/MM/DD",
+                autoclose: true
+            });
+        }
+    });
+</script>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col">
+            <form id="hesabixForm">
+                <div class="row">
+                    <div class="col-sm-12 col-md-3">
+                        <div class="form-floating mb-3">
+                            <input class="form-control tarikh" id="date" type="text" placeholder="تاریخ" data-sb-validations="required" />
+                            <label for="تاریخ">تاریخ</label>
+                            <div class="invalid-feedback" data-sb-feedback="تاریخ:required">تاریخ is required.</div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-9">
+                        <div class="form-floating mb-3">
+                            <input class="form-control" id="شرح" type="text" placeholder="شرح" required="required" />
+                            <label for="شرح">شرح</label>
+                            <div class="invalid-feedback" data-sb-feedback="شرح:required">شرح is required.</div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            <div class="py-2">
+                <div class="row rounded border border-primary py-2">
+                    <div class="col">
+                        <div>
+                            <button onclick="addRow();" class="btn btn-primary btn-xs" id="submitButton" type="button">
+                                افزودن ردیف
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col border-start">
+                        بستانکار
+                        <span class="text-success bs-label">0</span>
+                        {{ bussiness.arzMain.shortLabel }}
+                    </div>
+                    <div class="col border-start">
+                        <div>
+                            بدهکار:
+                            <span class="text-danger bd-label">0</span>
+                            {{ bussiness.arzMain.shortLabel }}
+                        </div>
+                    </div>
+                    <div class="col border-start">
+                        <div>
+                            تراز:
+                            <span class="text-info bt-label">0</span>
+                            {{ bussiness.arzMain.shortLabel }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="rounded border border-primary mt-2">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th scope="col">ردیف</th>
+                            <th scope="col">حساب</th>
+                            <th scope="col">تفضیل</th>
+                            <th scope="col">شرح</th>
+                            <th scope="col">بستانکار</th>
+                            <th scope="col">بدهکار</th>
+                            <th scope="col"></th>
+                        </tr>
+                        </thead>
+                        <tbody class="tbody">
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+    <div class="row mt-2">
+        <div class="col">
+            <button class="btn btn-success" type="button" onclick="insertDocument()">ذخیره سند</button>
+        </div>
+    </div>
+</div>

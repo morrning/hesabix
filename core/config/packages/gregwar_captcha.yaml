@@ -1,0 +1,4 @@
+gregwar_captcha:
+  width: 160
+  height: 50
+  invalid_message: Code does not match

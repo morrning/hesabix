@@ -1,0 +1,162 @@
+<div class="container-fluid mb-5">
+    <div class="row">
+        <div class="col-sm-12 col-md-12">
+            {{ form_start(form) }}
+            <div class="card mb-2">
+                <div class="card-header text-primary">
+                    دسترسی‌های اصلی
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-auto">
+                            {{ form_row(form.admin) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card mb-2">
+                <div class="card-header text-primary">اشخاص</div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-auto">
+                            {{ form_row(form.personAdd) }}
+                        </div>
+                        <div class="col-auto">
+                            {{ form_row(form.personEdit) }}
+                        </div>
+                        <div class="col-auto">
+                            {{ form_row(form.personDelete) }}
+                        </div>
+                        <div class="col-auto">
+                            {{ form_row(form.personPrint) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card mb-2">
+                <div class="card-header text-primary">
+                    دریافت و پرداخت
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-auto">
+                            {{ form_row(form.personRSAdd) }}
+                        </div>
+                        <div class="col-auto">
+                            {{ form_row(form.personRSDelete) }}
+                        </div>
+                        <div class="col-auto">
+                            {{ form_row(form.personRSPrint) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card mb-2">
+                <div class="card-header text-primary">
+                    کالا و خدمات
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-auto">
+                            {{ form_row(form.commodityAdd) }}
+                        </div>
+                        <div class="col-auto">
+                            {{ form_row(form.commodityEdit) }}
+                        </div>
+                        <div class="col-auto">
+                            {{ form_row(form.commodityDelete) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card mb-2">
+                <div class="card-header text-primary">
+                    بانکداری
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-auto">
+                            {{ form_row(form.bankAdd) }}
+                        </div>
+                        <div class="col-auto">
+                            {{ form_row(form.bankEdit) }}
+                        </div>
+                        <div class="col-auto">
+                            {{ form_row(form.bankDelete) }}
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-auto">
+                            {{ form_row(form.bankTransferAdd) }}
+                        </div>
+                        <div class="col-auto">
+                            {{ form_row(form.bankTransferEdit) }}
+                        </div>
+                        <div class="col-auto">
+                            {{ form_row(form.bankTransferDelete) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card mb-2">
+                <div class="card-header text-primary">
+                    انبارداری
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-auto">
+                            {{ form_row(form.storeAdd) }}
+                        </div>
+                        <div class="col-auto">
+                            {{ form_row(form.storeEdit) }}
+                        </div>
+                        <div class="col-auto">
+                            {{ form_row(form.storeDelete) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card mb-2">
+                <div class="card-header text-primary">فروش و درآمد</div>
+                <div class="card-body">
+                    <h3 class="mb-3">درآمد</h3>
+                    <div class="row">
+                        <div class="col-auto">
+                            {{ form_row(form.incomeAdd) }}
+                        </div>
+                        <div class="col-auto">
+                            {{ form_row(form.incomeEdit) }}
+                        </div>
+                        <div class="col-auto">
+                            {{ form_row(form.incomeDelete) }}
+                        </div>
+                        <div class="col-auto">
+                            {{ form_row(form.incomePrint) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card mb-2">
+                <div class="card-header text-primary">خرید و هزینه</div>
+                <div class="card-body">
+                    <h3 class="mb-3">هزینه</h3>
+                    <div class="row">
+                        <div class="col-auto">
+                            {{ form_row(form.castAdd) }}
+                        </div>
+                        <div class="col-auto">
+                            {{ form_row(form.castEdit) }}
+                        </div>
+                        <div class="col-auto">
+                            {{ form_row(form.castDelete) }}
+                        </div>
+                        <div class="col-auto">
+                            {{ form_row(form.castPrint) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+</div>

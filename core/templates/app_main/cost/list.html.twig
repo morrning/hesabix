@@ -1,0 +1,72 @@
+<script>
+    function deleteBank(id){
+        Swal.fire({
+            title: 'حذف',
+            text: "آیا برای حذف مطمئن هستید؟",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    type: "POST",
+                    url: Routing.generate('app_cost_delete',{'id':id}),
+                    success: function(data)
+                    {
+                        if(data.result == 1){
+                            Swal.fire(
+                                'حذف',
+                                'با موفقیت حذف شد.',
+                                'success'
+                            )
+                            $('tr.' + id).remove();
+                        }
+                        else{
+                            Swal.fire(
+                                'حذف',
+                                'بانک به دلیل داشتن تراکنش قابل حذف نیست.',
+                                'error'
+                            )
+                        }
+                    }
+                });
+            }
+        })
+    }
+</script>
+<div class="table">
+    <table id="dataTable" class="table dtd text-center">
+        <thead>
+        <tr>
+            <th>ردیف</th>
+            <th>نوع هزینه</th>
+            <th>بانک</th>
+            <th>مبلغ</th>
+            <th>تاریخ</th>
+            <th>شرح</th>
+            <th>بیشتر</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for data in datas %}
+            <tr class="{{ data.id }}">
+                <td>{{ loop.index }}</td>
+                <td>{{ data.HesabdariTable.name }}</td>
+                <td>{{ data.bank.name }}</td>
+                <td>{{ data.amount | number_format }}</td>
+                <td>{{ data.dateSave }}</td>
+                <td>{{ data.des }}</td>
+                <td>
+                    {% if permission.PermissionInCurrentBusiness('castEdit',app.session.get('bid'),app.user) %}
+                        <button class="btn btn-sm btn-info text-light" onclick="loadComponent(Routing.generate('app_cost_edit',{'id':{{ data.id }}}))">ویرایش</button>
+                    {% endif %}
+                    {% if permission.PermissionInCurrentBusiness('castDelete',app.session.get('bid'),app.user) %}
+                        <button class="btn btn-sm btn-danger text-light" onclick="deleteBank({{ data.id }})">حذف</button>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>

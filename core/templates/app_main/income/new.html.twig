@@ -1,0 +1,26 @@
+<script>
+    $(function() {
+        'use strict';
+
+        if($('.tarikh').length) {
+            // tarikh
+            $(".tarikh").persianDatepicker({
+                format: "YYYY/MM/DD",
+                autoclose: true
+            });
+        }
+    });
+</script>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12 col-md-4">
+            <img src="{{ asset('img/income.png') }}" class=" img-thumbnail border">
+        </div>
+        <div class="col-sm-12 col-md-8">
+            {{ form_start(form) }}
+
+            {{ form_end(form) }}
+        </div>
+    </div>
+</div>
+

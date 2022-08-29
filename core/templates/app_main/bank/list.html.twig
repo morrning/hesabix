@@ -1,0 +1,78 @@
+<script>
+    function deleteBank(id){
+        Swal.fire({
+            title: 'حذف',
+            text: "با حذف حساب بانکی تمامی تراکنش های مرتبط با آن و اسناد صادر شده حذف می شوند.آیا برای حذف مطمئن هستید؟",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    type: "POST",
+                    url: Routing.generate('app_bank_delete',{'id':id}),
+                    success: function(data)
+                    {
+                        if(data.result == 1){
+                            Swal.fire(
+                                'حذف',
+                                'با موفقیت حذف شد.',
+                                'success'
+                            )
+                            $('tr.' + id).remove();
+                        }
+                        else{
+                            Swal.fire(
+                                'حذف',
+                                'بانک به دلیل داشتن تراکنش قابل حذف نیست.',
+                                'error'
+                            )
+                        }
+                    }
+                });
+            }
+        })
+    }
+</script>
+<div class="table-responsive p-5">
+    <table id="dataTable" class="dtd table text-center">
+        <thead>
+        <tr>
+            <th>ردیف</th>
+            <th>نام بانک</th>
+            <th>موجودی</th>
+            <th>شماره حساب</th>
+            <th>توضیحات</th>
+            <th>بیشتر</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for bank in banks %}
+            {% set balance = (hesabdari.getBalance('bank:' ~ bid ~ ':' ~ bank.id)) * -1 %}
+            <tr class="{{ bank.id }}">
+                <td>{{ loop.index }}</td>
+                <td>{{ bank.name }}</td>
+                <td style="direction: ltr" class="{% if balance > 0 %}text-success{% else %}text-danger{%endif%}">{{ balance | number_format}}</td>
+                <td>{{ bank.shomarehesab }}</td>
+                <td>{{ bank.des }}</td>
+                <td>
+                    {% if permission.PermissionInCurrentBusiness('bankPrint',app.session.get('bid'),app.user) %}
+                        <button class="btn btn-sm btn-success" onclick="loadComponent(Routing.generate('app_bank_transactions_list',{'id':{{ bank.id }}}))">
+                            <i class="bi bi-list"></i>
+                        </button>
+                    {% endif %}
+                    {% if permission.PermissionInCurrentBusiness('bankEdit',app.session.get('bid'),app.user) %}
+                        <button class="btn btn-sm btn-info text-light" onclick="loadComponent(Routing.generate('app_bank_edit',{'id':{{ bank.id }}}))">
+                            <i class="bi bi-pen"></i>
+                        </button>
+                    {% endif %}
+                    {% if permission.PermissionInCurrentBusiness('bankdelete',app.session.get('bid'),app.user) %}
+
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>

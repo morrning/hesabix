@@ -1,0 +1,20 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12 col-md-4">
+            <img src="{{ asset('img/box.jpg') }}" class=" img-thumbnail border">
+        </div>
+        <div class="col-sm-12 col-md-8">
+            {{ form_start(form) }}
+            {{ form_row(form.name,{'label':'نام کالا'}) }}
+            {{ form_row(form.des,{'label':'توضیحات'}) }}
+            <div class="row">
+                <div class="col">
+                    {{ form_row(form.unit,{'label':'واحد شمارش'}) }}
+                </div>
+            </div>
+            {{ form_row(form.submit) }}
+            {{ form_end(form) }}
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,265 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}نرم افزار حسابداری آنلاین{% endblock %}
+
+{% block body %}
+    <main>
+        <div class="px-4 pt-5 mt-5 text-center">
+            <img class="d-block mx-auto mb-4" src="{{ asset('img/logo-blue.png') }}" alt="" width="72" height="72">
+            <h1 class="display-5 fw-bold">نرم‌افزار حسابداری آنلاین حسابیکس</h1>
+            <div class="col-lg-6 mx-auto">
+                <p class="lead mb-4">
+                    برای کار با حسابیکس فقط به یک دستگاه متصل به اینترنت نیاز دارید، فرقی نمی‌کند که این دستگاه تبلت یا موبایل باشد یا اینکه رایانه و لپ تاپ.
+                    نیاز نیست که هیچگونه نرم افزاری را نصب کنید. کافیست در سایت ثبت نام کرده و بلافاصله کسب و کار خود را مدیریت کنید.
+                </p>
+                <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+                    {% if app.user %}
+                        <a href="{{ path('app_main') }}" class="btn btn-primary btn-lg px-4 gap-3">
+                            <i class="bi bi-list-task"></i>
+                            ورود به کسب‌وکار
+                        </a>
+                    {% else %}
+                        <a href="{{ path('app_register') }}" class="btn btn-primary btn-lg px-4 gap-3">عضویت رایگان</a>
+                        <a href="{{ path('login') }}" class="btn btn-outline-secondary btn-lg px-4">ورود به حسابیکس</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <!-- Marketing messaging and featurettes
+        ================================================== -->
+        <!-- Wrap the rest of the page in another container to center all the content. -->
+        <div class="main-content mb-3">
+            <div class="header bg-gradient-primary pb-8 pt-5 pt-md-8">
+                <div class="container-fluid">
+                    <div class="header-body">
+                        <div class="row mx-md-5">
+                            <div class="col-xl-3 col-lg-6">
+                                <div class="card card-stats mb-4 mb-xl-0">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col">
+                                                <h5 class="card-title text-uppercase text-muted mb-0">کاربران</h5>
+                                                <span class="h2 font-weight-bold mb-0">120{{ stat.users}}</span>
+                                            </div>
+                                            <div class="col-auto">
+                                                <div class="icon icon-shape bg-success text-white rounded-circle shadow">
+                                                    <i class="bi bi-person"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-lg-6">
+                                <div class="card card-stats mb-4 mb-xl-0">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col">
+                                                <h5 class="card-title text-uppercase text-muted mb-0">کسب‌و‌کارها</h5>
+                                                <span class="h2 font-weight-bold mb-0">90{{ stat.bid}}</span>
+                                            </div>
+                                            <div class="col-auto">
+                                                <div class="icon icon-shape bg-danger text-white rounded-circle shadow">
+                                                    <i class="bi bi-person-workspace"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-lg-6">
+                                <div class="card card-stats mb-4 mb-xl-0">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col">
+                                                <h5 class="card-title text-uppercase text-muted mb-0">سند‌ها</h5>
+                                                <span class="h2 font-weight-bold mb-0">9087{{ stat.doc}}</span>
+                                            </div>
+                                            <div class="col-auto">
+                                                <div class="icon icon-shape bg-warning text-white rounded-circle shadow">
+                                                    <i class="bi bi-book-half"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-lg-6">
+                                <div class="card card-stats mb-4 mb-xl-0">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col">
+                                                <h5 class="card-title text-uppercase text-muted mb-0">کالاها و خدمات</h5>
+                                                <span class="h2 font-weight-bold mb-0">789{{ stat.com}}</span>
+                                            </div>
+                                            <div class="col-auto">
+                                                <div class="icon icon-shape bg-info text-white rounded-circle shadow">
+                                                    <i class="bi bi-box"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="vw-100">
+                                <div class="alert alert-success mt-3 mx-md-5" role="alert">
+                                    <i class="bi bi-info-circle-fill me-3"></i>
+                                    به جدیدترین عضو حسابیکس
+                                    <b>{{ stat.lastbid.owner.name }}</b>
+                                    که کسب و کار خود را با نام
+                                    <b>{{ stat.lastbid.name }}</b>
+                                    شروع کردند خوش آمد میگوییم.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Page content -->
+        </div>
+        <div class="container marketing">
+            <!-- Three columns of text below the carousel -->
+            <div class="row">
+                <div class="col-lg-4">
+                    <img class="img-fluid mb-4" src="{{ asset('img/splash/users.png') }}" style="max-height: 150px;">
+                    <h2>مدیریت پیشرفته کاربران</h2>
+                    <p>در حسابیکس امکانات متنوعی برای مدیریت،اعمال محدودیت و کنترل دسترسی کاربران وجود دارد.همچنین در یک کسب‌و‌کار افراد مختلف قادر خواهند بود به صورت همزمان بر روی اسناد تغییرات دلخواه خود را اعمال نمایند.</p>
+                </div><!-- /.col-lg-4 -->
+                <div class="col-lg-4">
+                    <img class="img-fluid mb-4" src="{{ asset('img/splash/opensource.png') }}" style="max-height: 150px;">
+                    <h2>متن‌باز و رایگان</h2>
+                    <p>حسابیکس متن‌باز و رایگان است.شما می‌توانید با مراجعه به مخزن کدهای حسابیکس منبع سورس را دریافت کنید و در توسعه و گسترش آن مشارکت نمایید.</p>
+                </div><!-- /.col-lg-4 -->
+                <div class="col-lg-4">
+                    <img class="img-fluid mb-4" src="{{ asset('img/splash/repair.png') }}" style="max-height: 150px;">
+                    <h2> نصب، نگهداری و پشتیبانی </h2>
+                    <p>حسابیکس به گونه ای طراحی و توسعه داده می شود که برای کاربر نهایی نیازی به نصب و نگهداری و پشتیبان‌گیری ندارد.همه چیز در یک مرورگر خلاصه می شود.</p>
+                </div><!-- /.col-lg-4 -->
+            </div><!-- /.row -->
+            <style>
+                .icon {
+                    width: 3rem;
+                    height: 3rem;
+                }
+
+                .icon i {
+                    font-size: 2.25rem;
+                }
+
+                .icon-shape {
+                    display: inline-flex;
+                    padding: 12px;
+                    text-align: center;
+                    border-radius: 50%;
+                    align-items: center;
+                    justify-content: center;
+                }
+
+                .icon-shape i {
+                    font-size: 1.25rem;
+                }
+            </style>
+            <!-- /END THE FEATURETTES -->
+        </div><!-- /.container -->
+
+    </main>
+{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        /* GLOBAL STYLES
+-------------------------------------------------- */
+        /* Padding below the footer and lighter body text */
+
+        body {
+            padding-top: 0rem;
+            padding-bottom: 3rem;
+            color: #5a5a5a;
+        }
+
+
+        /* CUSTOMIZE THE CAROUSEL
+        -------------------------------------------------- */
+
+        /* Carousel base class */
+        .carousel {
+            margin-bottom: 4rem;
+        }
+        /* Since positioning the image, we need to help out the caption */
+        .carousel-caption {
+            bottom: 3rem;
+            z-index: 10;
+        }
+
+        /* Declare heights because of positioning of img element */
+        .carousel-item {
+            height: 32rem;
+        }
+        .carousel-item > img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            min-width: 100%;
+            height: 32rem;
+        }
+
+
+        /* MARKETING CONTENT
+        -------------------------------------------------- */
+
+        /* Center align the text within the three columns below the carousel */
+        .marketing .col-lg-4 {
+            margin-bottom: 0.5rem;
+            text-align: center;
+        }
+        .marketing h2 {
+            font-weight: 400;
+        }
+        /* rtl:begin:ignore */
+        .marketing .col-lg-4 p {
+            margin-right: .75rem;
+            margin-left: .75rem;
+        }
+        /* rtl:end:ignore */
+
+
+        /* Featurettes
+        ------------------------- */
+
+        .featurette-divider {
+            margin: 5rem 0; /* Space out the Bootstrap <hr> more */
+        }
+
+        /* Thin out the marketing headings */
+        .featurette-heading {
+            font-weight: 300;
+            line-height: 1;
+            /* rtl:remove */
+            letter-spacing: -.05rem;
+        }
+
+
+        /* RESPONSIVE CSS
+        -------------------------------------------------- */
+
+        @media (min-width: 40em) {
+            /* Bump up size of carousel content */
+            .carousel-caption p {
+                margin-bottom: 1.25rem;
+                font-size: 1.25rem;
+                line-height: 1.4;
+            }
+
+            .featurette-heading {
+                font-size: 50px;
+            }
+        }
+
+        @media (min-width: 62em) {
+            .featurette-heading {
+                margin-top: 7rem;
+            }
+        }
+
+    </style>
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends 'stack/base.html.twig' %}
+
+{% block title %}ایجاد پرسش جدید{% endblock %}
+
+{% block AppBody %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col">
+                {{ form_start(form,{'attr':{'class':'ajax-off'}}) }}
+                <div class="row">
+                    <div class="col-sm-12 col-md-12">
+                        {{ form_label(form.title) }}
+                        {{ form_widget(form.title) }}
+                    </div>
+                    <div class="col-sm-12 col-md-6 mt-2">
+                        {{ form_label(form.cat) }}
+                        {{ form_widget(form.cat) }}
+                    </div>
+                    <div class="col-sm-12 col-md-12 mt-2">
+                        {{ form_label(form.body) }}
+                        {{ form_widget(form.body) }}
+                    </div>
+                </div>
+
+                <br>
+                {{ form_widget(form.submit) }}
+                <a class="btn btn-secondary" href="{{ path('stack') }}">بازگشت</a>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

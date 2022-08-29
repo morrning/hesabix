@@ -1,0 +1,70 @@
+<script>
+    function deletePerson(id){
+        Swal.fire({
+            title: 'حذف',
+            text: "آیا برای حذف مطمئن هستید؟",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    type: "POST",
+                    url: Routing.generate('acpPersonDelete',{'id':id}),
+                    success: function(data)
+                    {
+                        if(data.result == 1){
+                            Swal.fire(
+                                'حذف',
+                                'با موفقیت حذف شد.',
+                                'success'
+                            )
+                            $('tr.' + id).remove();
+                        }
+                        else{
+                            Swal.fire(
+                                'حذف',
+                                'شخص به دلیل داشتن تراکنش قابل حذف نیست.',
+                                'error'
+                            )
+                        }
+                    }
+                });
+            }
+        })
+    }
+</script>
+<div class="table-responsive">
+    <table id="dataTable" class="table dtd table-bordered text-center">
+        <thead class="bg-light">
+        <tr class="text-center">
+            <th># کد</th>
+            <th>نام مستعار</th>
+            <th>نام / نام‌خانوادگی</th>
+            <th>تلفن</th>
+            <th>موبایل</th>
+            <th>بیشتر</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for person in persons %}
+        <tr class="{{ person.id }}">
+            <td>{{ person.num }}</td>
+            <td>{{ person.nikename }}</td>
+            <td>{{ person.nameandfamily }}</td>
+            <td>{{ person.tel }}</td>
+            <td>{{ person.mobile }}</td>
+            <td>
+                {% if permission.PermissionInCurrentBusiness('personEdit',app.session.get('bid'),app.user) %}
+                <a class="text-info" onclick="loadComponent(Routing.generate('acpPersonEdit',{'id':{{ person.id }}}))"><i class="bi bi-pen"></i></a>
+                {% endif %}
+                {% if permission.hasPermissionInCurrentBusiness('personDelete',app.session.get('bid'),app.user) %}
+                    <a class="text-danger" onclick="deletePerson({{ person.id }})"><i class="bi bi-trash"></i></a>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>

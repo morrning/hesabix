@@ -1,0 +1,26 @@
+{% extends "app_main/pdf/base.html.twig" %}
+{% block body %}
+    <table style="border-color: black; float: right;" border="1"><caption>&nbsp;</caption>
+        <tbody>
+        <tr style="text-align: center; background-color: grey; color: white">
+            <td style="width: 35px;">ردیف</td>
+            <td>تاریخ</td>
+            <td>نوع درآمد</td>
+            <td>بانک</td>
+            <td>مبلغ</td>
+            <td>شرح</td>
+        </tr>
+        {% for data in datas %}
+            <tr style="text-align: center">
+                <td>{{ loop.index }}</td>
+                <td>{{ data.dateSave }}</td>
+                <td>{{ data.incomeTable.name }}</td>
+                <td>{{ data.bank.name }}</td>
+                <td>{{ data.amount | number_format}}</td>
+                <td>{{ data.des }}</td>
+
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

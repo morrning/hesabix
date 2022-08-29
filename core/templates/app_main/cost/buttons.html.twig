@@ -1,0 +1,11 @@
+{% if permission.PermissionInCurrentBusiness('castAdd',app.session.get('bid'),app.user) %}
+    <button type="button" class="btn btn-sm btn-success" onclick="loadComponent('{{ path('app_cost_new') }}');">هزینه جدید</button>
+{% endif %}
+{% if permission.PermissionInCurrentBusiness('castEdit',app.session.get('bid'),app.user) or permission.PermissionInCurrentBusiness('castDelete',app.session.get('bid'),app.user) %}
+    <button type="button" class="btn btn-sm btn-primary" onclick="loadComponent('{{ path('app_cost_list') }}');">لیست هزینه‌ها</button>
+{% endif %}
+{% if permission.PermissionInCurrentBusiness('castPrint',app.session.get('bid'),app.user) %}
+    <a target="_blank" href="{{ path('app_cost_list_print') }}" class="btn btn-sm btn-info">
+        چاپ لیست هزینه‌ها
+    </a>
+{% endif %}

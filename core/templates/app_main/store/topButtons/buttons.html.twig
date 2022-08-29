@@ -1,0 +1,6 @@
+{% if permission.PermissionInCurrentBusiness('storeAdd',app.session.get('bid'),app.user) %}
+<button type="button" class="btn btn-sm btn-success" onclick="loadComponent('{{ path('app_store_new') }}');">انبار جدید</button>
+{% endif %}
+{% if permission.PermissionInCurrentBusiness('storeEdit',app.session.get('bid'),app.user) or permission.PermissionInCurrentBusiness('storeDelete',app.session.get('bid'),app.user) %}
+<button type="button" class="btn btn-sm btn-primary" onclick="loadComponent('{{ path('app_store_list') }}');">لیست انبارها</button>
+{% endif %}

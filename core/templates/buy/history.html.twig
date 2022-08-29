@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}سوابق خرید{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 col-md-12">
+                <div class="card">
+                    <div class="card-header bg-light">سوابق خرید شما</div>
+                    <div class="card-body">
+                        {% if items | length == 0  %}
+                            <h2 class="text-info py-5">
+                                <i class="bi bi-info"></i>
+                                تاکنون خریدی انجام نداده اید!
+                            </h2>
+                        {% else %}
+                            <table class="table text-center">
+                                <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">نام</th>
+                                    <th scope="col">قیمت</th>
+                                    <th scope="col">وضعیت خرید</th>
+                                    <th scope="col">تاریخ خرید</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for item in items %}
+                                    <tr class="{% if item.status == 100 %}bg-success{% endif %}">
+                                        <th scope="row">{{ loop.index }}</th>
+                                        <td>حذف تبلیغات به مدت یک سال</td>
+                                        <td>{{ item.amount | number_format}} ریال </td>
+                                        <td>{% if item.status == 100 %}موفق{% else %}ناموفق{% endif %}</td>
+                                        <td>{{ Jdate.jdate('Y/n/d G:i:s' , item.dateSubmit) }}</td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        {% endif %}
+                        <a class="btn btn-success" href="{{ path('app_user_profile') }}">بازگشت به پروفایل کاربری</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

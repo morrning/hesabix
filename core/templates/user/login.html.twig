@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ورود کاربران{% endblock %}
+
+{% block body %}
+    <div class="container px-md-5">
+        <div class="container px-md-5 my-3 bg-white">
+            <div class="row align-items-center rounded-5 border shadow-lg">
+
+                <div class="col-lg-4 col-sm-12 p-0 m-0 d-none d-sm-block">
+                    <img class="img-fluid d-flex mx-0 px-0 rounded-end rounded-5" src="{{ asset('/img/login.jpg') }}" style="min-height: 18rem;">
+                </div>
+
+                <div class="col-lg-8 col-sm-12 py-3">
+
+                    <p class="display-6 mb-4">
+                        <i class="bi bi-door-open me-2"></i>
+                    ورود به حسابیکس
+                    </p>
+                    {% if msg == 'success' %}
+                        <div class="alert alert-success alert-dismissible fade show">
+                            <strong>تبریک! </strong>  عضویت شما تکمیل شد. می‌توانید با اطلاعات حساب کاربری خود وارد شوید.
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    {% endif %}
+                    {% if error %}
+                        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                    {% endif %}
+
+                    <form action="{{ path('login') }}" method="post" class="ajax-off">
+                        <div class="form-floating my-2">
+                            <input type="email" class="form-control" id="username" name="_username" value="{{ last_username }}" placeholder="name@example.com">
+                            <label for="floatingInput">پست الکترونیکی</label>
+                        </div>
+                        <div class="form-floating my-2">
+                            <input type="password" class="form-control" id="password" name="_password" placeholder="Password">
+                            <label for="floatingPassword">کلمه عبور</label>
+                        </div>
+                        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-lg btn-primary" type="submit">
+                                <i class="bi bi-door-open"></i>
+                                ورود به حسابیکس
+                            </button>
+                        </div>
+                        <div class="mt-3 text-start">
+                            <span class="mt-3">حساب کاربری ندارید؟</span>
+                            <a href="{{ path('app_register') }}" class="btn btn-sm btn-success">
+                                {% trans %}Register{% endtrans %}
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,70 @@
+<script>
+    function deleteBankTransfer(id){
+        Swal.fire({
+            title: 'حذف',
+            text: "آیا برای حذف مطمئن هستید؟",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    type: "POST",
+                    url: Routing.generate('app_bank_transfer_delete',{'id':id}),
+                    success: function(data)
+                    {
+                        if(data.result == 1){
+                            Swal.fire(
+                                'حذف',
+                                'با موفقیت حذف شد.',
+                                'success'
+                            )
+                            $('tr.' + id).remove();
+                        }
+                        else{
+                            Swal.fire(
+                                'حذف',
+                                'تراکنش قابل حذف نیست.',
+                                'error'
+                            )
+                        }
+                    }
+                });
+            }
+        })
+    }
+</script>
+<div class="table">
+    <table id="dataTable" class="table dtd text-center">
+        <thead>
+        <tr>
+            <th>ردیف</th>
+            <th>بانک مبدا</th>
+            <th>بانک مقصد</th>
+            <th>مقدار</th>
+            <th>توضیحات</th>
+            <th>بیشتر</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for data in datas %}
+            <tr class="{{ data.id }}">
+                <td>{{ loop.index }}</td>
+                <td>{{ data.sideOne.name }}</td>
+                <td>{{ data.sideTwo.name }}</td>
+                <td>{{ data.amount | number_format()}}</td>
+                <td>{{ data.des }}</td>
+                <td>
+                    {% if permission.PermissionInCurrentBusiness('bankTransferEdit',app.session.get('bid'),app.user) %}
+                        <button class="btn btn-sm btn-info text-light" onclick="loadComponent(Routing.generate('app_bank_transfer_edit',{'id':{{ data.id }}}))">ویرایش</button>
+                    {% endif %}
+                    {% if permission.PermissionInCurrentBusiness('bankTransferDelete',app.session.get('bid'),app.user) %}
+                        <button class="btn btn-sm btn-danger text-light" onclick="deleteBankTransfer({{ data.id }})">حذف</button>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>

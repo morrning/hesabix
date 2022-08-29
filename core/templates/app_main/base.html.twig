@@ -1,0 +1,499 @@
+{% set bid = app.session.get('bid') %}
+{% set bidObject = EntityMGR.find('App:Business',bid) %}
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="description" content="حسابیکس نرم افزار آنلاین حسابداری و انبار داری">
+    <meta name="author" content="توسعه فناوری سرکش">
+    <meta name="keywords" content="hesabix,حسابیکس,حسابداری,آنلاین">
+    <title>{% trans %}hesabix{% endtrans %} - {% block title %}{% endblock %}</title>
+
+    <!-- core:css -->
+    <link rel="stylesheet" href="{{ asset('app/assets/vendors/core/core.css') }}">
+    <script src="{{ asset('app/assets/vendors/core/core.js') }}"></script>
+    <!-- endinject -->
+
+    <!-- Plugin css for this page -->
+    <!-- End plugin css for this page -->
+
+    <!-- inject:css -->
+    <link rel="stylesheet" href="{{ asset('css/bootstrap-icons.css') }}">
+    <link rel="stylesheet" href="{{ asset('app/assets/fonts/feather-font/css/iconfont.css') }}">
+    <link rel="stylesheet" href="{{ asset('app/assets/vendors/flag-icon-css/css/flag-icon.min.css') }}">
+    <!-- endinject -->
+
+    <!-- Layout styles -->
+    <link rel="stylesheet" href="{{ asset('app/assets/css/demo1/style-rtl.min.css') }}">
+    <!-- End layout styles -->
+
+    <link rel="shortcut icon" href="{{ asset('app/assets/images/favicon.png') }}" />
+    {% block stylesheets %}
+    {% endblock %}
+    <link rel="stylesheet" href="{{ asset('app/assets/css/persian-datepicker-0.4.5.min.css') }}">
+    <script src="{{ asset('app/assets/vendors/bootstrap-datepicker/bootstrap-datepicker.min.js') }}"></script>
+    <script src="{{ asset('app/assets/vendors/jquery-validation/jquery.validate.min.js') }}"></script>
+    <script src="{{ asset('app/assets/js/persian-date-0.1.8.min.j') }}s"></script>
+    <script src="{{ asset('app/assets/js/persian-datepicker-0.4.5.min.js') }}"></script>
+    <link rel="stylesheet" href="{{ asset('app/assets/vendors/sweetalert2/sweetalert2.min.css') }}">
+    <script src="{{ asset('app/assets/vendors/sweetalert2/sweetalert2.min.js') }}"></script>
+    <script src="{{ asset('app/assets/vendors/feather-icons/feather.min.js') }}"></script>
+    <script src="{{ asset('app/assets/js/template.js') }}"></script>
+    <script src="{{ asset('app/corejs/script.js') }}"></script>
+    <script src="{{ asset('app/assets/vendors/inputmask/jquery.inputmask.min.js') }}"></script>
+    <link rel="stylesheet" href="{{ asset('app/assets/vendors/jquery-steps/jquery.steps.css') }}">
+    <link rel="stylesheet" href="{{ asset('app/assets/vendors/select2/select2.min.css') }}">
+    <script src="{{ asset('app/assets/vendors/typeahead.js/typeahead.bundle.min.js') }}"></script>
+    <script src="{{ asset('app/assets/vendors/select2/select2.min.js') }}"></script>
+    {% block javascripts %}
+    {% endblock %}
+
+    <script src="{{ asset('bundles/fosjsrouting/js/router.min.js') }}"></script>
+    <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
+    <link rel="stylesheet" type="text/css" href="{{ asset('/app/assets/dt/bs5/datatables.min.css') }}"/>
+
+    <script type="text/javascript" src="{{ asset('/app/assets/dt/bs5/datatables.min.js') }}"></script>
+</head>
+<script>
+    $(document).ready(function() {
+        //load default component
+        loadComponent(Routing.generate('app_dashboard'));
+
+        $('#loading-image').bind('ajaxStart', function(){
+            $(this).show();
+        }).bind('ajaxStop', function(){
+            $(this).hide();
+        });
+    } );
+</script>
+
+<script type="text/javascript">
+    (function(){
+        var now = new Date();
+        var head = document.getElementsByTagName('head')[0];
+        var script = document.createElement('script');
+        script.async = true;
+        var script_address = 'https://cdn.yektanet.com/js/hesabix.ir/native-hesabix.ir-24606.js';
+        script.src = script_address + '?v=' + now.getFullYear().toString() + '0' + now.getMonth() + '0' + now.getDate() + '0' + now.getHours();
+        head.appendChild(script);
+    })();
+</script>
+<body class="sidebar-dark">
+<div class="main-wrapper">
+
+    <!-- partial:../../partials/_sidebar.html -->
+    <nav class="sidebar">
+        <div class="sidebar-header">
+            <a href="{{ path('home') }}" class="sidebar-brand">
+                Hesa<span>bix</span>
+            </a>
+            <div class="sidebar-toggler not-active">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+        <div class="sidebar-body">
+            <ul class="nav">
+                <li class="nav-item nav-category">اصلی</li>
+                <li class="nav-item">
+                    <a href="javascript:loadComponent(Routing.generate('app_dashboard'))" class="nav-link">
+                        <i class="link-icon" data-feather="box"></i>
+                        <span class="link-title">داشبورد</span>
+                    </a>
+                </li>
+                <li class="nav-item nav-category">پایه</li>
+                <li class="nav-item">
+                    <a class="nav-link" data-bs-toggle="collapse" href="#emails25" role="button" aria-expanded="false" aria-controls="emails">
+                        <i class="link-icon" data-feather="users"></i>
+                        <span class="link-title">اشخاص</span>
+                        <i class="link-arrow" data-feather="chevron-down"></i>
+                    </a>
+                    <div class="collapse" id="emails25">
+                        <ul class="nav sub-menu">
+                            {% if permission.permission('personAdd',bidObject,app.user) %}
+                            <li class="nav-item">
+                                <a href="javascript:loadComponent('{{ path('acpPersonNew') }}',true);" class="nav-link">شخص جدید</a>
+                            </li>
+                            {% endif %}
+                            {% if permission.permission('personEdit',bidObject,app.user) or permission.permission('personDelete',bidObject,app.user) %}
+                            <li class="nav-item">
+                                <a href="javascript:loadComponent(Routing.generate('acpPersons'))" class="nav-link">اشخاص</a>
+                            </li>
+                            {% endif %}
+                            {% if permission.permission('personRSAdd',bidObject,app.user) %}
+                            <li class="nav-item">
+                                <a href="javascript:loadComponent(Routing.generate('acpPersonReciveSendNew'))" class="nav-link">دریافت و پرداخت</a>
+                            </li>
+                            {% endif %}
+                            {% if permission.permission('personRSDelete',bidObject,app.user) %}
+                            <li class="nav-item">
+                                <a href="javascript:loadComponent(Routing.generate('acp_rs_list'))" class="nav-link">لیست دریافت و پرداخت</a>
+                            </li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-bs-toggle="collapse" href="#emails1" role="button" aria-expanded="false" aria-controls="emails">
+                        <i class="link-icon" data-feather="package"></i>
+                        <span class="link-title">کالا و خدمات</span>
+                        <i class="link-arrow" data-feather="chevron-down"></i>
+                    </a>
+                    <div class="collapse" id="emails1">
+                        <ul class="nav sub-menu">
+                            {% if permission.permission('commodityAdd',bidObject,app.user) %}
+                                <li class="nav-item">
+                                    <a href="javascript:loadComponent(Routing.generate('app_commodity_new'))" class="nav-link">کالا/خدمات جدید</a>
+                                </li>
+                            {% endif %}
+                            {% if permission.permission('commodityEdit',bidObject,app.user) or permission.permission('commodityDelete',bidObject,app.user) %}
+                                <li class="nav-item">
+                                    <a href="javascript:loadComponent(Routing.generate('app_commodity_list'))" class="nav-link"> کالاها و خدمات</a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </li>
+                <li class="nav-item nav-category">انبارداری</li>
+                <li class="nav-item">
+                    <a class="nav-link" data-bs-toggle="collapse" href="#emails244" role="button" aria-expanded="false" aria-controls="emails">
+                        <i class="link-icon" data-feather="archive"></i>
+                        <span class="link-title">انبار</span>
+                        <i class="link-arrow" data-feather="chevron-down"></i>
+                    </a>
+                    <div class="collapse" id="emails244">
+                        <ul class="nav sub-menu">
+                            {% if permission.permission('storeAdd',bidObject,app.user) %}
+                                <li class="nav-item">
+                                    <a href="javascript:loadComponent(Routing.generate('app_store_new'))" class="nav-link">انبار جدید</a>
+                                </li>
+                            {% endif %}
+                            {% if permission.permission('storeEdit',bidObject,app.user)  %}
+                                <li class="nav-item">
+                                    <a href="javascript:loadComponent(Routing.generate('app_store_list'))" class="nav-link">لیست انبارها</a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </li>
+                <li class="nav-item nav-category">حسابداری</li>
+                <li class="nav-item">
+                    <a class="nav-link" data-bs-toggle="collapse" href="#emails2" role="button" aria-expanded="false" aria-controls="emails">
+                        <i class="link-icon" data-feather="box"></i>
+                        <span class="link-title">بانکداری</span>
+                        <i class="link-arrow" data-feather="chevron-down"></i>
+                    </a>
+                    <div class="collapse" id="emails2">
+                        <ul class="nav sub-menu">
+                            {% if permission.permission('bankAdd',bidObject,app.user) %}
+                                <li class="nav-item">
+                                    <a href="javascript:loadComponent(Routing.generate('app_bank_new'))" class="nav-link">بانک جدید</a>
+                                </li>
+                            {% endif %}
+                            {% if permission.permission('bankEdit',bidObject,app.user) or permission.permission('bankDelete',bidObject,app.user) %}
+                                <li class="nav-item">
+                                    <a href="javascript:loadComponent(Routing.generate('app_bank_list'))" class="nav-link">لیست بانک‌ها</a>
+                                </li>
+                            {% endif %}
+                            {% if permission.permission('bankTransferAdd',bidObject,app.user) %}
+                                <li class="nav-item">
+                                    <a href="javascript:loadComponent(Routing.generate('app_bank_transfer_new'))" class="nav-link">انتقال جدید</a>
+                                </li>
+                            {% endif %}
+                            {% if permission.permission('bankTransferEdit',bidObject,app.user) or permission.permission('bankTransferDelete',bidObject,app.user) %}
+                                <li class="nav-item">
+                                    <a href="javascript:loadComponent(Routing.generate('app_bank_transfer_list'))" class="nav-link">لیست انتقال‌ها</a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-bs-toggle="collapse" href="#emails3" role="button" aria-expanded="false" aria-controls="emails">
+                        <i class="link-icon" data-feather="shopping-bag"></i>
+                        <span class="link-title">فروش و درآمد</span>
+                        <i class="link-arrow" data-feather="chevron-down"></i>
+                    </a>
+                    <div class="collapse" id="emails3">
+                        <ul class="nav sub-menu">
+                            <li class="nav-item">
+                                <a href="javascript:loadComponent(Routing.generate('acpPersonNew'))" class="nav-link">فروش جدید</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="javascript:loadComponent(Routing.generate('acpPersons'))" class="nav-link">فاکتور‌های فروش</a>
+                            </li>
+                            {% if permission.permission('incomeAdd',bidObject,app.user) %}
+                                <li class="nav-item">
+                                    <a href="javascript:loadComponent(Routing.generate('app_income_new'))" class="nav-link">درآمد جدید</a>
+                                </li>
+                            {% endif %}
+                            {% if permission.permission('incomeEdit',bidObject,app.user) or permission.permission('incomeDelete',bidObject,app.user) %}
+                                <li class="nav-item">
+                                    <a href="javascript:loadComponent(Routing.generate('app_income_list'))" class="nav-link">لیست درآمد</a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-bs-toggle="collapse" href="#emails4" role="button" aria-expanded="false" aria-controls="emails">
+                        <i class="link-icon" data-feather="shopping-cart"></i>
+                        <span class="link-title">خرید و هزینه</span>
+                        <i class="link-arrow" data-feather="chevron-down"></i>
+                    </a>
+                    <div class="collapse" id="emails4">
+                        <ul class="nav sub-menu">
+                            <li class="nav-item">
+                                <a href="javascript:loadComponent(Routing.generate('app_hbuy_new'))" class="nav-link">خرید جدید</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="javascript:loadComponent(Routing.generate('acpPersons'))" class="nav-link">فاکتور‌های خرید</a>
+                            </li>
+                            {% if permission.permission('castAdd',bidObject,app.user) %}
+                                <li class="nav-item">
+                                    <a href="javascript:loadComponent(Routing.generate('app_cost_new'))" class="nav-link">هزینه</a>
+                                </li>
+                            {% endif %}
+                            {% if permission.permission('castEdit',bidObject,app.user) or permission.permission('castDelete',bidObject,app.user) %}
+                                <li class="nav-item">
+                                    <a href="javascript:loadComponent(Routing.generate('app_cost_list'))" class="nav-link">لیست هزینه</a>
+                                </li>
+                            {% endif %}
+                            <li class="nav-item">
+                                <a href="javascript:loadComponent(Routing.generate('acpPersons'))" class="nav-link">ضایعات و مصرف</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="javascript:loadComponent(Routing.generate('acpPersons'))" class="nav-link">لیست ضایعات و مصرف</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-bs-toggle="collapse" href="#emails5" role="button" aria-expanded="false" aria-controls="emails">
+                        <i class="link-icon" data-feather="book-open"></i>
+                        <span class="link-title">حسابداری</span>
+                        <i class="link-arrow" data-feather="chevron-down"></i>
+                    </a>
+                    <div class="collapse" id="emails5">
+                        <ul class="nav sub-menu">
+                            <li class="nav-item">
+                                <a href="javascript:loadComponent(Routing.generate('app_hesabdari_new'))" class="nav-link">سند جدید</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="javascript:loadComponent(Routing.generate('acpPersons'))" class="nav-link">لیست اسناد</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="javascript:loadComponent(Routing.generate('acpPersonNew'))" class="nav-link">تراز افتتاحیه</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="javascript:loadComponent(Routing.generate('acpPersons'))" class="nav-link">بستن سال مالی</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="javascript:loadComponent(Routing.generate('acpPersons'))" class="nav-link">جدول حساب‌ها</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="javascript:loadComponent(Routing.generate('acpPersons'))" class="nav-link">لیست هزینه</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="javascript:loadComponent(Routing.generate('acpPersons'))" class="nav-link">ضایعات و مصرف</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="javascript:loadComponent(Routing.generate('acpPersons'))" class="nav-link">لیست ضایعات و مصرف</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="nav-item nav-category">سایر</li>
+                {% if permission.permission('admin',bidObject,app.user) %}
+                    <li class="nav-item">
+                        <a href="javascript:loadComponent(Routing.generate('app_report_list'));" class="nav-link">
+                            <i class="link-icon" data-feather="pie-chart"></i>
+                            <span class="link-title">گزارش‌ها</span>
+                        </a>
+                    </li>
+                {% endif %}
+                <li class="nav-item">
+                    <a class="nav-link" data-bs-toggle="collapse" href="#emails26" role="button" aria-expanded="false" aria-controls="emails">
+                        <i class="link-icon" data-feather="settings"></i>
+                        <span class="link-title">تنظیمات</span>
+                        <i class="link-arrow" data-feather="chevron-down"></i>
+                    </a>
+                    <div class="collapse" id="emails26">
+                        <ul class="nav sub-menu">
+                            {% if permission.permission('admin',bidObject,app.user) %}
+                                <li class="nav-item">
+                                    <a href="javascript:loadComponent(Routing.generate('app_business_edit'));" class="nav-link">اطلاعات کسب‌و‌کار</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="javascript:loadComponent(Routing.generate('app_permissions_list'));" class="nav-link">کاربران و دسترسی‌ها</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="javascript:loadComponent(Routing.generate('app_api_home'));" class="nav-link">رابط برنامه‌نویسی</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="javascript:loadComponent(Routing.generate('app_log_list'));" class="nav-link">تاریخچه</a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <!-- partial -->
+
+    <div class="page-wrapper">
+
+        <!-- partial:../../partials/_navbar.html -->
+        <nav class="navbar">
+            <a href="#" class="sidebar-toggler">
+                <i data-feather="menu"></i>
+            </a>
+            <div class="navbar-content">
+                <form class="search-form">
+                    <div class="input-group">
+                        <div class="input-group-text">
+                            <i data-feather="book"></i>
+                        </div>
+                        <span class="text-secondary ms-3">{{bidObject.name}}</span>
+                         |
+                        آخرین سال مالی:
+                        <span class="text-primary ms-1">{{ year.name }}</span>
+                         |
+                        سال مالی انتخابی:
+                        <span class="text-primary ms-1">{{ yearSelected.name }}</span>
+                    </div>
+                </form>
+                <ul class="navbar-nav">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="notificationDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i data-feather="settings"></i>
+                        </a>
+                        <div class="dropdown-menu p-0" aria-labelledby="notificationDropdown">
+                            <div class="px-3 py-2 d-flex align-items-center justify-content-between border-bottom">
+                                <p>تنظیمات سریع</p>
+                            </div>
+                            <div class="p-1">
+                                <a href="javascript:;" class="dropdown-item d-flex align-items-center py-2">
+                                    <div class="wd-30 ht-30 d-flex align-items-center justify-content-center bg-primary rounded-circle me-3">
+                                        <i class="icon-sm text-white" data-feather="image"></i>
+                                    </div>
+                                    <div class="flex-grow-1 me-2">
+                                        <div class="form-check form-check-inline">
+                                            <input type="radio" class="form-check-input" name="sidebarThemeSettings" id="sidebarLight" value="sidebar-light">
+                                            <label class="form-check-label" for="sidebarLight">
+                                                روشن
+                                            </label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input type="radio" class="form-check-input" name="sidebarThemeSettings" id="sidebarDark" value="sidebar-dark" checked>
+                                            <label class="form-check-label" for="sidebarDark">
+                                                تاریک
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <hr />
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <select class="form-select form-select-sm" aria-label=".form-select-sm" onchange="changeYear(this)">
+                                                {% for yr in yrs %}
+                                                    <option {% if yr.id == yearSelected.id %} selected {% endif%} value="{{ yr.id }}">{{ yr.name }}</option>
+                                                {% endfor %}
+
+                                            </select>
+
+                                            <script>
+                                                function changeYear(el){
+                                                    $.ajax({
+                                                        type: "POST",
+                                                        url: Routing.generate('app_change_year', {
+                                                            'id': {{ bid }},
+                                                            'year': el.value
+                                                        }),
+                                                        success: function (data) {
+                                                            if(data.hasOwnProperty('swal')){
+                                                                if(data.swal.hasOwnProperty('reload')){
+                                                                    swal.fire(data.swal).then((result) => {
+                                                                        if (result.isConfirmed) {
+                                                                            location.reload();
+                                                                        }
+                                                                    })
+                                                                }
+                                                                else{
+                                                                    swal.fire(data.swal)
+                                                                }
+                                                            }
+                                                        }
+                                                    });
+                                                }
+                                            </script>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <img class="wd-30 ht-30 rounded-circle" src="{{ asset('https://www.gravatar.com/avatar/' ~ twigFunctions.gravatarHash(app.user.email)) }}" alt="profile">
+                        </a>
+                        <div class="dropdown-menu p-0" aria-labelledby="profileDropdown">
+                            <div class="d-flex flex-column align-items-center border-bottom px-5 py-3">
+                                <div class="mb-3">
+                                    <img class="wd-80 ht-80 rounded-circle" src="{{ asset('https://www.gravatar.com/avatar/' ~ twigFunctions.gravatarHash(app.user.email)) }}" alt="">
+                                </div>
+                                <div class="text-center">
+                                    <p class="tx-16 fw-bolder">{{ app.user.name }}</p>
+                                    <p class="tx-12 text-muted">{{ app.user.email }}</p>
+                                </div>
+                            </div>
+                            <ul class="list-unstyled p-1">
+                                <li class="dropdown-item py-2">
+                                    <a href="{{ path('app_user_profile') }}" class="text-body ms-0">
+                                        <i class="me-2 icon-md" data-feather="user"></i>
+                                        <span>پروفایل کاربری</span>
+                                    </a>
+                                </li>
+                                <li class="dropdown-item py-2">
+                                    <a href="{{ path('app_main') }}" class="text-body ms-0">
+                                        <i class="me-2 icon-md" data-feather="repeat"></i>
+                                        <span>کسب و کارها</span>
+                                    </a>
+                                </li>
+                                <li class="dropdown-item py-2">
+                                    <a href="{{ path('app_logout') }}" class="text-body ms-0">
+                                        <i class="me-2 icon-md" data-feather="log-out"></i>
+                                        <span>خروج</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <!-- partial -->
+        <div class="mt-3 pt-5 container-fluid  mx-0 px-0">
+            <div class="progress c-loading d-none mb-1 rounded-0" style="height: 5px;">
+                <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+            <div class="row mx-md-1">
+                <div class="col-xl-12 main-content ps-xl-1 pe-xl-1">
+                    <div class="card">
+                        <h5 class="card-header d-flex justify-content-between align-items-center text-light" style="background-color: #027dc1">
+                            <div class="app-title" style=""></div>
+                            <div class="app-top"></div>
+                        </h5>
+                        <div class="card-body app-body">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

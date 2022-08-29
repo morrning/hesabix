@@ -1,0 +1,40 @@
+<div class="table">
+    <table id="dataTable" class="table dtd text-center">
+        <thead>
+        <tr>
+            <th>ردیف</th>
+            <th>تاریخ</th>
+            <th>شرح</th>
+            <th>بدهکار</th>
+            <th>بستانکار</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% set bd = 0 %}
+        {% set bs = 0 %}
+        {% for tr in trs %}
+            {% set bs = bs + tr.bs %}
+            {% set bd = bd + tr.bd %}
+            <tr class="{{ tr.id }}">
+                <td>{{ loop.index }}</td>
+                <td>{{tr.file.date}}</td>
+                <td>{{ tr.des }}</td>
+                <td>{{ tr.bd | number_format}}</td>
+                <td>{{ tr.bs | number_format }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+<hr>
+<p>
+    <span class="fs-3 me-4">جمع بستانکار:
+    <span class="text-success">{{ bs | number_format}}</span>
+    </span>
+    <span class="fs-3 me-4">جمع بدهکار:
+    <span class="text-danger">{{ bd | number_format}}</span>
+    </span>
+    <span class="fs-3">تراز:
+    <span class="text-info" style="direction: ltr;">{{ ( bd - bs ) | number_format}}</span>
+    </span>
+</p>

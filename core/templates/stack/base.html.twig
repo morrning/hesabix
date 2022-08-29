@@ -1,0 +1,65 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container-fluid m-0 p-1">
+        <div class="row">
+            <div class="col-sm-12 col-md-9">
+                <div class="container-fluid">
+                    <div class="card border-0">
+                        <div class="card-header">
+                            {{ block('title') }}
+                        </div>
+                        <div class="card-body m-0 p-1">
+                            {% block AppBody %}{% endblock %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-3 mt-2">
+                <div class="d-grid gap-2">
+                    <a href="{{ path('stackNew') }}" class="btn btn-success btn-lg ">+ پرسیدن سوال</a>
+                </div>
+                <div class="card mt-2">
+                    <div class="card-header justify-content-center text-light bg-primary">
+                        موضوعات
+                    </div>
+                    {% set cats = EntityMGR.findAll('App:StackCat') %}
+                    <ul class="list-group list-group-flush">
+                        {% for cat in cats %}
+                            <li class="list-group-item bg-light"><a class="text-bold" href="{{ path('stackByCat',{'cat':cat.code}) }}">{{ cat.name }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="card mt-2">
+                    <div class="card-header bg-primary text-light">
+                        آمار و اطلاعات
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item bg-light">
+                            پرسش ها:
+                            {{ EntityMGR.findBy('App:StackContent',{'upperID':none}) | length }}
+                        </li>
+                        <li class="list-group-item bg-light">
+                            پاسخ ها:
+                            {{ EntityMGR.findAll('App:StackContent') | length - EntityMGR.findBy('App:StackContent',{'upperID':none}) | length }}
+                        </li>
+                    </ul>
+                </div>
+                <div class="card mt-2">
+                    <div class="card-header bg-primary text-light">
+                        جدیدترین سوالات
+                    </div>
+                    <ul class="list-group list-group-flush">
+
+                        {% set lastContents = EntityMGR.findByPage('App:StackContent',1,5,'q.upperID is null') %}
+                        {% for lastContent in lastContents %}
+                            <li class="list-group-item bg-light">
+                                <a class="" href="{{ path('stackView',{'url': lastContent.url}) }}">{{ lastContent.title }}</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

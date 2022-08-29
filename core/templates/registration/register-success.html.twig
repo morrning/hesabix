@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}تکمیل عضویت{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-sm-12 col-md-8">
+                <div class="card my-sm-2 my-md-5">
+                    <div class="card-header text-white bg-success">
+                        <strong>عضویت شما تکمیل شد.</strong>
+                    </div>
+                    <div class="card-body p-2">
+                        <h4 class="mb-4">
+                            تبریک! شما به جمع کاربران حسابیکس پیوستید.
+                        </h4>
+                        <p>برای شروع ابتدا باید به حساب کاربری خود وارد شوید و یک کسب و کار ایجاد کنید و سپس کسب و کار خود را مدیریت کنید.فکر میکنیم منابع زیر بتواند برای شروع کسب و کار به شما کمک کند.در صورتی که به مشکل برخورد کردید می‌توانید با ارسال تیکت به بخش پشتیبانی از کارشناسان ما کمک بگیرید.</p>
+                        <ul>
+                            <li><a class="" href="{{path('app_main')}}">ایجاد کسب و کار جدید</a></li>
+                            <li><a class="" href="https://blog.hesabix.ir">وبلاگ آموزشی</a></li>
+                        </ul>
+                    </div>
+                    <div id="pos-article-display-69286"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

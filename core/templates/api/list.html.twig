@@ -1,0 +1,73 @@
+<script>
+    function addNewAPI(){
+        $.ajax({
+            type: "POST",
+            url: Routing.generate('app_api_new'),
+            success: function(data)
+            {
+                if(data.result == 1){
+                    Swal.fire(
+                        'ایجاد',
+                        'با موفقیت ایجاد شد.',
+                        'success'
+                    )
+                    loadComponent(Routing.generate('app_api_home'));
+                }
+            }
+        });
+    }
+    function removeAPI(id){
+        $.ajax({
+            type: "POST",
+            url: Routing.generate('app_api_remove',{'id':id}),
+            success: function(data)
+            {
+                if(data.result == 1){
+                    Swal.fire(
+                        'حذف',
+                        'با موفقیت حذف شد.',
+                        'success'
+                    )
+                    loadComponent(Routing.generate('app_api_home'));
+                }
+            }
+        });
+    }
+</script>
+<div class="example-wrapper">
+    برای اتصال سایر نرم‌افزارها به حسابیکس :
+    <ul>
+        <li>ابتدا یک کلید یکتا ایجاد کنید.برای ایجاد
+         <button class="btn btn-sm btn-primary" onclick="addNewAPI();"> اینجا کلیک کنید.</button> </li>
+        <li>نرم‌افزارخود را با استفاده از کلید یکتا به حسابیکس متصل کنید.</li>
+    </ul>
+</div>
+<div class="table">
+    <table id="dataTable" class="table text-center">
+        <thead>
+        <tr>
+            <th>ردیف</th>
+            <th>ایجاد کننده</th>
+            <th>کد یکتا</th>
+            <th>بیشتر</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for data in datas %}
+            <tr class="{{ data.id }}">
+                <td>{{ loop.index }}</td>
+                <td>{{ data.user.name }}</td>
+                <td>{{ data.code }}</td>
+                <td>
+                    {% if permission.PermissionInCurrentBusiness('admin',app.session.get('bid'),app.user) %}
+                        <button class="btn btn-sm btn-danger text-light" onclick="removeAPI( {{ data.id }} );">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+

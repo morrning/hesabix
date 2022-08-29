@@ -1,0 +1,92 @@
+<div class="container-fluid mx-0 px-0">
+    <div class="row">
+        <div class="col-sm-12 col-md-6">
+            <div class="card mb-2">
+                <div class="card-header bg-info">
+                    <i class="bi bi-person"></i>
+                    اشخاص</div>
+                <div class="card-body m-0 p-0">
+                    <ul class="list-group m-o p-0">
+                        {% if permission.PermissionInCurrentBusiness('personPrint',app.session.get('bid'),app.user) %}
+                        <li class="list-group-item">
+                            <a target="_blank" href="{{ path('app_person_list_print') }}">
+                                <i class="bi bi-table"></i>
+                                گزارش اشخاص و طرف‌های حساب
+                            </a>
+                        </li>
+                        {% endif %}
+                        {% if permission.PermissionInCurrentBusiness('personPrint',app.session.get('bid'),app.user) %}
+                            <li class="list-group-item">
+                                <a href="javascript:loadComponent(Routing.generate('app_person_transactions',{'type':'all'}));">
+                                    <i class="bi bi-table"></i>
+                                    کارت حساب اشخاص
+                                </a>
+                            </li>
+                        {% endif %}
+                        {% if permission.PermissionInCurrentBusiness('personRSPrint',app.session.get('bid'),app.user) %}
+                        <li class="list-group-item">
+                            <a target="_blank" href="{{ path('app_person_rs_list_print') }}">
+                                <i class="bi bi-table"></i>
+                                گزارش دریافت‌ها و پرداخت‌های اشخاص
+                            </a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header bg-info">
+                    <i class="bi bi-activity"></i>
+                    تنظیمات سراسری</div>
+                <div class="card-body m-0 p-0">
+                    <ul class="list-group m-o p-0">
+                        {% if permission.PermissionInCurrentBusiness('admin',app.session.get('bid'),app.user) %}
+                            <li class="list-group-item">
+                                <a href="javascript:loadComponent(Routing.generate('app_log_list'));">
+                                    <i class="bi bi-table"></i>
+                                    تاریخچه فعالیت‌ها
+                                </a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-6">
+            <div class="card">
+                <div class="card-header bg-info">
+                    <i class="bi bi-arrow-bar-down"></i>
+                    فروش و درآمدها</div>
+                <div class="card-body m-0 p-0">
+                    <ul class="list-group m-o p-0">
+                        {% if permission.PermissionInCurrentBusiness('incomePrint',app.session.get('bid'),app.user) %}
+                            <li class="list-group-item">
+                                <a target="_blank" href="{{ path('app_income_list_print') }}">
+                                    <i class="bi bi-table"></i>
+                                    گزارش درآمدها
+                                </a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+            <div class="card mt-2">
+                <div class="card-header bg-info">
+                    <i class="bi bi-arrow-bar-up"></i>
+                    خرید و هزینه</div>
+                <div class="card-body m-0 p-0">
+                    <ul class="list-group m-o p-0">
+                        {% if permission.PermissionInCurrentBusiness('castPrint',app.session.get('bid'),app.user) %}
+                            <li class="list-group-item">
+                                <a target="_blank" href="{{ path('app_cost_list_print') }}">
+                                    <i class="bi bi-table"></i>
+                                    گزارش هزینه‌ها
+                                </a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

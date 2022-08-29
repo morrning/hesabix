@@ -1,0 +1,21 @@
+<div class="container-fluid p-0">
+    <div class="row">
+        <div class="col-sm-12 col-md-12 m-0 p-0">
+            {{ form_start(form) }}
+            <div class="col">{{ form_row(form.nikeName,{'label':'نام مستعار'}) }}</div>
+            <div class="col">{{ form_row(form.nameandfamily,{'label':'نام و نام خانوادگی'}) }}</div>
+            {{ form_row(form.company,{'label':'نام شرکت'}) }}
+            <div class="row">
+                <div class="col">
+                    {{ form_row(form.tel,{'label':'تلفن'}) }}
+                </div>
+                <div class="col">
+                    {{ form_row(form.mobile,{'label':'موبایل'}) }}
+                </div>
+            </div>
+            {{ form_row(form.submit) }}
+            {{ form_end(form) }}
+        </div>
+    </div>
+</div>
+

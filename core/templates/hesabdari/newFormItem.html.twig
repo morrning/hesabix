@@ -1,0 +1,21 @@
+<tr id="table-row-{{ id }}" class="">
+    <th scope="row" class="index"></th>
+    <td class="code">{{ form_widget(formItem.code) }}</td>
+    <td class="type">{{ form_widget(formItem.type) }}</td>
+    <td class="des">{{ form_widget(formItem.des) }}</td>
+    <td id="bs-{{ id }}" class="bs">{{ form_widget(formItem.bs,{'attr':{'onChange':'$(\'#bd-' ~ id ~ ' input\').val(0);'}}) }}</td>
+    <td id="bd-{{ id }}"  class="bd">{{ form_widget(formItem.bd,{'attr':{'onChange':'$(\'#bs-' ~ id ~ ' input\').val(0);'}}) }}</td>
+    <td><button class="btn btn-xs btn-danger text-light" onclick="removeRow('{{ id }}');">حذف</button></td>
+</tr>
+<script>
+    $( "#table-row-{{ id }} td select" ).on( "change", function() {
+        $.ajax({
+            type: "POST",
+            url: Routing.generate('app_hesabdari_get_type',{'ref':$( "#table-row-{{ id }} td select" ).find(':selected').val()}),
+            success: function(data)
+            {
+                $( "#table-row-{{ id }} td.type" ).html(data.content.content);
+            }
+        });
+    });
+</script>

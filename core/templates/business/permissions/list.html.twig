@@ -1,0 +1,82 @@
+<script>
+    function deletePermission(id){
+        Swal.fire({
+            title: 'حذف',
+            text: "آیا برای حذف مطمئن هستید؟",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    type: "POST",
+                    url: Routing.generate('app_permissions_delete',{'id':id}),
+                    success: function(data)
+                    {
+                        if(data.result == 1){
+                            Swal.fire(
+                                'حذف',
+                                'با موفقیت حذف شد.',
+                                'success'
+                            )
+                            $('tr.' + id).remove();
+                        }
+                    }
+                });
+            }
+        })
+    }
+</script>
+<form class="frm_add_user" action="{{ path('app_permissions_add') }}">
+    <div class="input-group form mb-3">
+        <input name="email" type="email" required="required" class="form-control email" placeholder="پست الکترونیکی ..." aria-label="Recipient's username" aria-describedby="button-addon2">
+        <input class="btn btn-success" type="submit" id="button-addon2" value="افزودن کاربر">
+    </div>
+</form>
+<div class="table-responsive">
+    <table class="table table-hover mb-0">
+        <thead>
+        <tr>
+            <th class="pt-0">#</th>
+            <th class="pt-0">نام کاربر</th>
+            <th class="pt-0">پست الکترونیکی</th>
+            <th class="pt-0">دسترسی کاربر</th>
+            <th class="pt-0">بیشتر</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>1</td>
+            <td>
+                <img class="rounded" src="{{ asset('https://www.gravatar.com/avatar/' ~ twigFunctions.gravatarHash(owner.email)) }}" alt="">
+                {{ owner.name }}
+            </td>
+            <td>{{ owner.email }}</td>
+            <td><span class="badge bg-danger">مدیر</span></td>
+            <td><span class="badge bg-danger">ایجاد کننده (مدیر کل)</span></td>
+        </tr>
+        {% for perm in perms %}
+        <tr class="{{ perm.id }}">
+            <td>{{ loop.index + 1 }}</td>
+            <td>
+                <img class="rounded" src="{{ asset('https://www.gravatar.com/avatar/' ~ twigFunctions.gravatarHash(perm.user.email)) }}" alt="">
+                {{ perm.user.name }}
+            </td>
+            <td>{{ perm.user.email }}</td>
+            <td>
+                {% if perm.admin %}
+                    <span class="badge bg-danger">مدیر</span>
+                {% else %}
+                    <span class="badge bg-success">کاربر</span>
+                {% endif %}
+            </td>
+            <td>
+                <a class="btn btn-sm btn-warning" href="javascript:loadComponent(Routing.generate('app_permissions_edit',{'id':{{ perm.id }}}));">ویرایش</a>
+                <a class="btn btn-sm btn-danger" href="javascript:deletePermission({{ perm.id }})">حذف</a>
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>

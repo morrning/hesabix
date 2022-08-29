@@ -1,0 +1,6 @@
+{% if permission.PermissionInCurrentBusiness('bankAdd',app.session.get('bid'),app.user) %}
+<button type="button" class="btn btn-sm btn-success" onclick="loadComponent('{{ path('app_bank_new') }}');">بانک جدید</button>
+{% endif %}
+{% if permission.PermissionInCurrentBusiness('bankEdit',app.session.get('bid'),app.user) or permission.PermissionInCurrentBusiness('bankDelete',app.session.get('bid'),app.user) %}
+<button type="button" class="btn btn-sm btn-primary" onclick="loadComponent('{{ path('app_bank_list') }}');">لیست بانک‌ها</button>
+{% endif %}

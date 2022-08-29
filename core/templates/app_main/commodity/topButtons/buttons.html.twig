@@ -1,0 +1,6 @@
+{% if permission.PermissionInCurrentBusiness('commodityAdd',app.session.get('bid'),app.user) %}
+<button type="button" class="btn btn-sm btn-success" onclick="loadComponent('{{ path('app_commodity_new') }}');">کالا و خدمات جدید</button>
+{% endif %}
+{% if permission.PermissionInCurrentBusiness('commodityEdit',app.session.get('bid'),app.user) or permission.PermissionInCurrentBusiness('commodityDelete',app.session.get('bid'),app.user) %}
+<button type="button" class="btn btn-sm btn-primary" onclick="loadComponent('{{ path('app_commodity_list') }}');">لیست کالا‌ها و خدمات</button>
+{% endif %}

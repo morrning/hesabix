@@ -1,0 +1,11 @@
+{% if permission.PermissionInCurrentBusiness('incomeAdd',app.session.get('bid'),app.user) %}
+    <button type="button" class="btn btn-sm btn-success" onclick="loadComponent('{{ path('app_income_new') }}');">درآمد جدید</button>
+{% endif %}
+{% if permission.PermissionInCurrentBusiness('incomeEdit',app.session.get('bid'),app.user) or permission.PermissionInCurrentBusiness('incomeDelete',app.session.get('bid'),app.user) %}
+    <button type="button" class="btn btn-sm btn-primary" onclick="loadComponent('{{ path('app_income_list') }}');">لیست درآمدها</button>
+{% endif %}
+{% if permission.PermissionInCurrentBusiness('personPrint',app.session.get('bid'),app.user) %}
+    <a target="_blank" href="{{ path('app_income_list_print') }}" class="btn btn-sm btn-info">
+        چاپ لیست درآمد
+    </a>
+{% endif %}

@@ -1,0 +1,78 @@
+<script>
+    function deletePerson(id){
+        Swal.fire({
+            title: 'حذف',
+            text: "آیا برای حذف مطمئن هستید؟",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                coreLoading(true)
+                $.ajax({
+                    type: "POST",
+                    url: Routing.generate('acpPersonRessendDelete',{'id':id}),
+                    success: function(data)
+                    {
+                        if(data.result == 1){
+                            coreLoading(false)
+                            Swal.fire(
+                                'حذف',
+                                'با موفقیت حذف شد.',
+                                'success'
+                            )
+                            $('tr.' + id).remove();
+                        }
+                        else{
+                            Swal.fire(
+                                'حذف',
+                                'شخص به دلیل داشتن تراکنش قابل حذف نیست.',
+                                'error'
+                            )
+                        }
+                    }
+                });
+            }
+        })
+    }
+</script>
+<div class="table-responsive">
+    {% if files | length != 0 %}
+        <table id="dataTable" class="table table-smdtd text-center">
+            <caption>List of users</caption>
+            <thead>
+            <tr>
+                <th># کد</th>
+                <th>نوع</th>
+                <th>شخص</th>
+                <th>بانک</th>
+                <th>مبلغ</th>
+                <th>تاریخ</th>
+                <th>توضیحات</th>
+                <th>بیشتر</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for file in files %}
+                <tr class="{{ file.id }}">
+                    <td>{{ loop.index }}</td>
+                    <td>{% if file.RS %}دریافت از{% else %}پرداخت به{% endif %}</td>
+                    <td>{{ file.personRSPeople[0].person.nikename }}</td>
+                    <td>{{ file.personRSOthers[0].bank.name }}</td>
+                    <td>{{ file.personRSOthers[0].amount | number_format}}</td>
+                    <td>{{ file.dateSave }}</td>
+                    <td>{{ file.des }}</td>
+                    <td>
+                        <button class="btn btn-sm btn-danger text-light" onclick="deletePerson({{ file.id }})">حذف</button>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div class="alert alert-primary" role="alert">
+            تراکنشی وجود ندارد.
+        </div>
+    {% endif %}
+</div>

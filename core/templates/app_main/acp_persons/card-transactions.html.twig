@@ -1,0 +1,9 @@
+{% for data in datas %}
+    <tr class="{{ data.id }}">
+        <td>{{ loop.index }}</td>
+        <td>{{ data.file.date }}</td>
+        <td>{{ data.bd | number_format}}</td>
+        <td>{{ data.bs | number_format}}</td>
+        <td>{{ data.des }}</td>
+    </tr>
+{% endfor %}
