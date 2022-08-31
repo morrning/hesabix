@@ -169,7 +169,7 @@ class ACPPersonsController extends AbstractController
                     'form' => $form->createView(),
                 ]),
                 'topView' => $this->render('app_main/acp_persons/topButtons/back.html.twig'),
-                'title'=>'شخص جدید'
+                'title'=>'ویرایش شخص'
 
             ]
         );
@@ -381,7 +381,17 @@ class ACPPersonsController extends AbstractController
 
             }
             $persons = $entityManager->getRepository('App:Person')->getListAll($this->bidObject);
-
+            if(count($persons) == 0){
+                $response = [];
+                $response['result'] = 1;
+                $response['swal'] = [
+                    'text'=>'هنوز هیچ شخصی اضافه نشده است. لطفا ابتدا شخص جدیدی را ایجاد کنید.',
+                    'confirmButtonText'=>'قبول',
+                    'icon'=>'warning'
+                ];
+                $response['component'] = $this->generateUrl('acpPersons',['bid'=>$this->bid]);
+                return $this->json($response);
+            }
             if($type == 'all'){
                 return $this->json(
                     [

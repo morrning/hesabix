@@ -113,7 +113,7 @@ function loadComponent(component,modalShow=false){
                         '    <div class="modal-content">\n' +
                         '      <div class="modal-header bg-light">\n' +
                         '        <h5 class="modal-title" id="CoreModalLabel"><i class="bi bi-list me-2"></i> ' + data.title + '</h5>\n' +
-                        '        <button type="button" class="btn-close rounded-circle border" data-bs-dismiss="modal" aria-label="Close"></button>\n' +
+                        '        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>\n' +
                         '      </div>\n' +
                         '      <div class="modal-body m-md-2">\n' +
                         '        ' + data.view.content + '\n' +
