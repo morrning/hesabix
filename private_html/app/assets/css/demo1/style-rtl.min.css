@@ -5,6 +5,20 @@
   * Copyright 2011-2021 The Bootstrap Authors (https://github.com/twbs/bootstrap/graphs/contributors)
   * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
   */
+
+/*
+    style for datatables
+ */
+
+.dataTables_filter label{
+    float:left;
+}
+.dataTables_length label{
+    float:right;
+}
+thead tr th{
+    text-align: center !important;
+}
 .bi-top{
     font-size: 23px;
 }

@@ -13,7 +13,8 @@
                     {{ form_row(form.mobile,{'label':'موبایل'}) }}
                 </div>
             </div>
-            {{ form_row(form.submit) }}
+            {{ form_widget(form.submit) }}
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">انصراف</button>
             {{ form_end(form) }}
         </div>
     </div>
