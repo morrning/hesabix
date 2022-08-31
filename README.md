@@ -1,6 +1,9 @@
 # hesabix
 hesabix accounting software
 
-This software published under GNO GPL V3
+This software published under MIT License
+
+Full website view:
+https://hesabix.ir
 
 
