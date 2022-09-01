@@ -221,7 +221,30 @@ class ACPPersonsController extends AbstractController
                 return $kernel->msgNotActiveYear();
             }
         }
-
+        $anyBank = $entityManager->getRepository('App:BanksAccount')->findOneBy(['bussiness'=>$this->bid]);
+        if(!$anyBank){
+            $response = [];
+            $response['result'] = 1;
+            $response['swal'] = [
+                'text'=>'هنوز هیچ حساب بانکی اضافه نشده است. لطفا ابتدا یک مورد را ایجاد کنید.',
+                'confirmButtonText'=>'قبول',
+                'icon'=>'warning'
+            ];
+            $response['component'] = $this->generateUrl('app_bank_new');
+            return $this->json($response);
+        }
+        $persons = $entityManager->getRepository('App:Person')->getListAll($this->bidObject);
+        if(count($persons) == 0){
+            $response = [];
+            $response['result'] = 1;
+            $response['swal'] = [
+                'text'=>'هنوز هیچ شخصی اضافه نشده است. لطفا ابتدا شخص جدیدی را ایجاد کنید.',
+                'confirmButtonText'=>'قبول',
+                'icon'=>'warning'
+            ];
+            $response['component'] = $this->generateUrl('acpPersons',['bid'=>$this->bid]);
+            return $this->json($response);
+        }
         $rs = ['test'];
         $form = $this->createForm(PersonRSCompactType::class,$rs,[
             'action'=>$this->generateUrl('acpPersonReciveSendNew'),
