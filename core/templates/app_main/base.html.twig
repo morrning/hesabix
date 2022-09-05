@@ -47,6 +47,9 @@
     <link rel="stylesheet" href="{{ asset('app/assets/vendors/select2/select2.min.css') }}">
     <script src="{{ asset('app/assets/vendors/typeahead.js/typeahead.bundle.min.js') }}"></script>
     <script src="{{ asset('app/assets/vendors/select2/select2.min.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/shepherd.js@8.3.1/dist/js/shepherd.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/shepherd.js@8.3.1/dist/css/shepherd.css"/>
+
     {% block javascripts %}
     {% endblock %}
 
@@ -348,7 +351,7 @@
             <a href="#" class="sidebar-toggler">
                 <i data-feather="menu"></i>
             </a>
-            <div class="navbar-content">
+            <div class="navbar-content"  data-intro="Hello World! 👋">
                 <form class="search-form">
                     <div class="input-group">
                         <div class="input-group-text">
@@ -493,3 +496,80 @@
 </div>
 </body>
 </html>
+{% if app.user.guide is null %}
+    <script>
+        window.onload = function (){
+            const tour = new Shepherd.Tour({
+                useModalOverlay: true,
+                defaultStepOptions: {
+                    cancelIcon: {
+                        enabled: true
+                    },
+                    classes: 'class-1 class-2',
+                    scrollTo: { behavior: 'smooth', block: 'center' }
+                }
+            });
+
+            tour.addStep({
+                title: 'خوش آمدید',
+                text: 'به حسابداری تحت وب حسابیکس خوش آمدید.به وسیله این راهنما به شما کمک می‌کنیم با امکانات اصلی نرم‌افزار آشنا شوید.',
+                attachTo: {
+                    element: 'body',
+                    on: 'top'
+                },
+                buttons: [
+                    {
+                        action() {
+                            disable_guide();
+                            this.cancel();
+                        },
+                        classes: 'shepherd-button-secondary mx-2',
+                        text: 'دیگر نشان نده'
+                    },
+                    {
+                        action() {
+                            return this.next();
+                        },
+                        text: 'بعدی'
+                    }
+                ],
+                id: 'creating'
+            });
+
+            tour.addStep({
+                title: 'منو ابزارها',
+                text: 'تمامی قابلیت‌ها و امکانات حسابیکس از این بخش قابل دسترس است. در هر فهرست که مقابل آن ایکون + قرار دارد می‌توانید مستقیما آن قابلیت را اضافه نمایید.',
+                attachTo: {
+                    element: '.sidebar',
+                    on: 'left'
+                },
+                buttons: [
+                    {
+                        action() {
+                            return this.back();
+                        },
+                        classes: 'shepherd-button-secondary mx-2',
+                        text: 'قبلی'
+                    },
+                    {
+                        action() {
+                            return this.next();
+                        },
+                        text: 'بعدی'
+                    }
+                ],
+                id: 'creating'
+            });
+            function disable_guide(){
+                $.ajax({
+                    url: Routing.generate('app_api_disable_guide'),
+                })
+            }
+            ['close', 'cancel','complete'].forEach(event => tour.on(event, () => {
+                disable_guide();
+            }));
+            tour.start();
+        }
+    </script>
+{% endif %}
+

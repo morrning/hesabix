@@ -93,4 +93,20 @@ class APIController extends AbstractController
             ]
         );
     }
+
+    #[Route('/core/user/disable-guide', name: 'app_api_disable_guide', options: ["expose"=>true])]
+    public function app_api_disable_guide(permission $permission,EntityManagerInterface $entityManager): Response
+    {
+        if($this->getUser()){
+            $user = $this->getUser();
+            $user->setGuide(true);
+            $entityManager->persist($user);
+            $entityManager->flush();
+        }
+        return $this->json(
+            [
+                'data'=>true
+            ]
+        );
+    }
 }

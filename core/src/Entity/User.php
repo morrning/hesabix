@@ -84,6 +84,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'submitter', targetEntity: Hbuy::class, orphanRemoval: true)]
     private $hbuys;
 
+    #[ORM\Column(type: 'boolean', nullable: true)]
+    private $guide;
+
     public function __construct()
     {
         $this->businesses = new ArrayCollection();
@@ -605,6 +608,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $hbuy->setSubmitter(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getGuide(): ?bool
+    {
+        return $this->guide;
+    }
+
+    public function setGuide(?bool $guide): self
+    {
+        $this->guide = $guide;
 
         return $this;
     }
