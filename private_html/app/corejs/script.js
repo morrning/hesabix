@@ -68,7 +68,7 @@ $(document).on('submit', 'form', function(e){
 
 $(document).ajaxError(
     function (event, jqXHR, ajaxSettings, thrownError) {
-        if(thrownError == "Not Found"){
+        if(thrownError == "Not Found" || jqXHR.status == 404){
             window.location = Routing.generate('home');
         }
         else{

@@ -45,6 +45,10 @@ class HesabdariFile
     #[ORM\OneToOne(mappedBy: 'hesab', targetEntity: PersonRSFile::class, cascade: ['persist', 'remove'])]
     private $personRSFile;
 
+    #[ORM\ManyToOne(targetEntity: Year::class, inversedBy: 'hesabdariFiles')]
+    #[ORM\JoinColumn(nullable: false)]
+    private $year;
+
     public function __construct()
     {
         $this->hesabdariItems = new ArrayCollection();
@@ -187,6 +191,18 @@ class HesabdariFile
         }
 
         $this->personRSFile = $personRSFile;
+
+        return $this;
+    }
+
+    public function getYear(): ?Year
+    {
+        return $this->year;
+    }
+
+    public function setYear(?Year $year): self
+    {
+        $this->year = $year;
 
         return $this;
     }

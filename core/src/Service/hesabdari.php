@@ -8,10 +8,11 @@ use Doctrine\ORM\EntityManagerInterface;
 class hesabdari
 {
 private $em;
-
-    function __construct(EntityManagerInterface  $entityManager)
+private $kernel;
+    function __construct(EntityManagerInterface  $entityManager,kernel $kernel)
     {
         $this->em = $entityManager;
+        $this->kernel = $kernel;
     }
 
     public function insertNewDoc($submitter,$date,$des,$bid,$ref,$items){
@@ -21,6 +22,7 @@ private $em;
         $file->setDate($date);
         $file->setBid($bid);
         $file->setRef($ref);
+        $file->setYear($this->kernel->checkActiveYear());
         $file->setArzType($bid->getArzMain());
         $file->setNum($this->em->getRepository('App:Business')->getNewNumberHesabdari($bid->getId()));
         $this->em->persist($file);

@@ -6,7 +6,9 @@
 <body>
 <h1 style="text-align: center; margin-top: 0px; padding-top: 0px;">{{bid.name}}</h1>
 <p style="text-align: center;">{{ page_title }}</p>
-{% block body %}{% endblock %}
+<div style="width: 100%">
+    {% block body %}{% endblock %}
+</div>
 <p>
     <span>نشانی: {{ bid.address }}</span>
     <span>تلفن: {{ bid.tel }}</span>

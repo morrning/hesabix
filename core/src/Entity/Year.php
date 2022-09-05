@@ -37,10 +37,14 @@ class Year
     #[ORM\OneToMany(mappedBy: 'year', targetEntity: BanksTransfer::class)]
     private $banksTransfers;
 
+    #[ORM\OneToMany(mappedBy: 'year', targetEntity: HesabdariFile::class)]
+    private $hesabdariFiles;
+
     public function __construct()
     {
         $this->personRSFiles = new ArrayCollection();
         $this->banksTransfers = new ArrayCollection();
+        $this->hesabdariFiles = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -162,6 +166,36 @@ class Year
             // set the owning side to null (unless already changed)
             if ($banksTransfer->getYear() === $this) {
                 $banksTransfer->setYear(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, HesabdariFile>
+     */
+    public function getHesabdariFiles(): Collection
+    {
+        return $this->hesabdariFiles;
+    }
+
+    public function addHesabdariFile(HesabdariFile $hesabdariFile): self
+    {
+        if (!$this->hesabdariFiles->contains($hesabdariFile)) {
+            $this->hesabdariFiles[] = $hesabdariFile;
+            $hesabdariFile->setYear($this);
+        }
+
+        return $this;
+    }
+
+    public function removeHesabdariFile(HesabdariFile $hesabdariFile): self
+    {
+        if ($this->hesabdariFiles->removeElement($hesabdariFile)) {
+            // set the owning side to null (unless already changed)
+            if ($hesabdariFile->getYear() === $this) {
+                $hesabdariFile->setYear(null);
             }
         }
 

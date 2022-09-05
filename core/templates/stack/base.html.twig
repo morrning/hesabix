@@ -6,10 +6,8 @@
             <div class="col-sm-12 col-md-9">
                 <div class="container-fluid">
                     <div class="card border-0">
-                        <div class="card-header">
-                            {{ block('title') }}
-                        </div>
                         <div class="card-body m-0 p-1">
+                            <h6 class="display-6">{{ block('title') }}</h6>
                             {% block AppBody %}{% endblock %}
                         </div>
                     </div>

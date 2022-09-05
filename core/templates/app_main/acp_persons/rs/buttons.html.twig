@@ -1,11 +1,9 @@
 {% if permission.PermissionInCurrentBusiness('personRSAdd',app.session.get('bid'),app.user) %}
-<button type="button" class="btn btn-sm btn-success" onclick="loadComponent('{{ path('acpPersonReciveSendNew') }}');">دریافت و پرداخت جدید</button>
+    <a title="دریافت و پرداخت جدید" class="bi bi-plus-circle-fill mx-1 bi-top text-light" href="javascript:loadComponent('{{ path('acpPersonReciveSendNew') }}');"></a>
 {% endif %}
 {% if permission.PermissionInCurrentBusiness('personRSDelete',app.session.get('bid'),app.user) %}
-<button type="button" class="btn btn-sm btn-primary" onclick="loadComponent('{{ path('acp_rs_list') }}');">لیست دریافت‌ها و پرداخت‌ها</button>
+    <a title="لیست" class="bi bi-list-check mx-1 bi-top text-light" href="javascript:loadComponent('{{ path('acp_rs_list') }}');"></a>
 {% endif %}
 {% if permission.PermissionInCurrentBusiness('personRSPrint',app.session.get('bid'),app.user) %}
-    <a target="_blank" href="{{ path('app_person_rs_list_print') }}" class="btn btn-sm btn-info">
-        چاپ
-    </a>
+    <a title="چاپ لیست" target="_blank" href="{{ path('app_person_rs_list_print') }}" class="bi bi-printer-fill mx-1 bi-top text-light"></a>
 {% endif %}

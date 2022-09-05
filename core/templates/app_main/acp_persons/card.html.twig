@@ -4,18 +4,22 @@
     $(function() {
         'use strict'
 
-        if ($(".js-example-basic-single").length) {
-            $(".js-example-basic-single").select2();
-        }
+        $(".js-example-basic-single").select2({
+            placeholder: 'Select an option',
+            dropdownAutoWidth: true,
+            parent : $('.person-select')
+        });
     });
     function loadUserTransactions(id){
+        $('.c-loading').removeClass('d-none')
         active = id;
         $.ajax({
             type: "POST",
             url: Routing.generate('app_person_transactions',{'type':'load','id':id}),
             success: function(data)
             {
-               $('.table-data').html(data.view.content)
+               $('.table-person-card').html(data.view.content)
+                $('.c-loading').addClass('d-none')
             }
         });
     }
@@ -24,23 +28,28 @@
         window.open(Routing.generate('app_person_transactions_print',{'id':active}), '_blank').focus();
     }
 </script>
-<div class="container-fluid mx-0 px-0">
+<div class="container-fluid mx-0 px-0" onload="alert();">
     <div class="row">
         <div class="col-sm-12 col-md-12">
             <label>انتخاب شخص جهت مشاهده کارت حساب:</label>
-            <select class="form-select form-select-sm mb-3 js-example-basic-single" style="height: 12rem;!important;" onchange="loadUserTransactions(this.value)">
-                {% for person in persons %}
-                    <option value="{{ person.id }}">{{ person.nikename }}</option>
-                {% endfor %}
-            </select>
+            <div class="row">
+                <div class="col person-select">
+                    <select class="form-select form-select-sm mb-3 js-example-basic-single" style="width: 80%" onchange="loadUserTransactions(this.value)">
+                        {% for person in persons %}
+                            <option value="{{ person.id }}">{{ person.nikename }}</option>
+                        {% endfor %}
+                    </select>
+                    <span>
+                        <button onclick="printCard()" class="btn btn-success"><i class="bi bi-printer"></i> چاپ </button>
+                    </span>
+                </div>
+            </div>
+
         </div>
     </div>
     <div class="card mt-2">
-        <div class="card-header text-light bg-primary">
-            کارت حساب
-        </div>
         <div class="card-body">
-            <div class="table">
+            <div class="table table-person-card">
                 <table id="dataTable" class="table dtd text-center">
                     <thead>
                     <tr>
@@ -48,22 +57,44 @@
                         <th>تاریخ</th>
                         <th>بدهکار</th>
                         <th>بستانکار</th>
+                        <th>تشخیص</th>
+                        <th>تراز</th>
                         <th>شرح</th>
                     </tr>
                     </thead>
                     <tbody class="table-data">
+                    {% set balance = 0 %}
                     {% for data in datas %}
                         <tr class="{{ data.id }}">
                             <td>{{ loop.index }}</td>
                             <td>{{ data.file.date }}</td>
                             <td>{{ data.bd | number_format}}</td>
                             <td>{{ data.bs | number_format}}</td>
+                            {% if data.bd != 0 %}
+                                {%  set balance = balance - data.bd %}
+                                <td>بد</td>
+                            {% else %}
+                                {% set balance = balance + data.bs %}
+                                <td>بس</td>
+                            {% endif %}
+                            <td>{{ balance | number_format }}</td>
                             <td>{{ data.des }}</td>
                         </tr>
                     {% endfor %}
                     </tbody>
                 </table>
-                <button onclick="printCard()" class="btn btn-success"><i class="bi bi-printer"></i> چاپ </button>
+                <div class=" border border-danger rounded-5 p-2 mt-2">
+                    <p class="" style="font-size: 18px">
+                        تراز:
+                        <span class="text-secondary">{{ balance | abs | number_format }}</span>
+                        {% if balance < 0 %}
+                            بدهکار
+                        {% else %}
+                            بستانکار
+                        {% endif %}
+
+                    </p>
+                </div>
             </div>
         </div>
     </div>

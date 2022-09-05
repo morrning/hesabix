@@ -6,15 +6,20 @@ use App\Entity\Year;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class kernel extends AbstractController
 {
 
     private $em;
+    private $requestStack;
+    private $request;
 
-    function __construct(EntityManagerInterface  $entityManager)
+    function __construct(EntityManagerInterface  $entityManager,RequestStack $requestStack)
     {
         $this->em = $entityManager;
+        $this->requestStack = $requestStack;
+        $this->request = $requestStack->getCurrentRequest();
     }
 
     public function checkBID(Request $request){
@@ -25,8 +30,12 @@ class kernel extends AbstractController
         return $session->get('bid');
     }
 
-    public function checkActiveYear(Request $request): Year | bool{
-        $session = $request->getSession();
+    public function checkActiveYear(Request $request = null): Year | bool{
+        if($request)
+            $session = $request->getSession();
+        else
+            $session = $this->request->getSession();
+
         return $this->em->getRepository('App:Year')->find($session->get('activeYear'));
     }
     public function msgNotActiveYear(){

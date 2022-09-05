@@ -261,6 +261,7 @@ class ACPPersonsController extends AbstractController
             $personFile->setDes($form->get('des')->getData());
             $personFile->setDateSave($form->get('dateSave')->getData());
             $personFile->setRS($form->get('RS')->getData());
+            $personFile->setYear($year);
             $entityManager->persist($personFile);
             $entityManager->flush();
             $personPerson = new PersonRSPerson();
@@ -343,6 +344,7 @@ class ACPPersonsController extends AbstractController
     {
         if(! $permission->hasPermission('personRSDelete',$this->bidObject,$this->getUser()))
             throw $this->createAccessDeniedException();
+        //echo $this->activeYear->getId();
         return $this->json(
             [
                 'view'=>$this->render('app_main/acp_persons/rs/list.html.twig', [
