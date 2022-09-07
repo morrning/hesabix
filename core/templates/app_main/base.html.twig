@@ -47,9 +47,6 @@
     <link rel="stylesheet" href="{{ asset('app/assets/vendors/select2/select2.min.css') }}">
     <script src="{{ asset('app/assets/vendors/typeahead.js/typeahead.bundle.min.js') }}"></script>
     <script src="{{ asset('app/assets/vendors/select2/select2.min.js') }}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/shepherd.js@8.3.1/dist/js/shepherd.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/shepherd.js@8.3.1/dist/css/shepherd.css"/>
-
     {% block javascripts %}
     {% endblock %}
 
@@ -125,12 +122,12 @@
                                 </li>
                             {% endif %}
                             {% if permission.permission('personRSAdd',bidObject,app.user) or  permission.permission('personRSDelete',bidObject,app.user) %}
-                            <li class="nav-item">
-                                <a href="javascript:loadComponent(Routing.generate('acp_rs_list'))" class="nav-link float-start {% if permission.permission('personRSDelete',bidObject,app.user) == false %} disabled {% endif %}">دریافت و پرداخت</a>
-                                {% if permission.permission('personRSAdd',bidObject,app.user) %}
-                                    <a href="javascript:loadComponent(Routing.generate('acpPersonReciveSendNew'))" class="nav-link float-end"><i class="bi bi-plus-circle-fill"></i></a>
-                                {% endif %}
-                            </li>
+                                <li class="nav-item">
+                                    <a href="javascript:loadComponent(Routing.generate('acp_rs_list'))" class="nav-link float-start {% if permission.permission('personRSDelete',bidObject,app.user) == false %} disabled {% endif %}">دریافت و پرداخت</a>
+                                    {% if permission.permission('personRSAdd',bidObject,app.user) %}
+                                        <a href="javascript:loadComponent(Routing.generate('acpPersonReciveSendNew'))" class="nav-link float-end"><i class="bi bi-plus-circle-fill"></i></a>
+                                    {% endif %}
+                                </li>
                             {% endif %}
                         </ul>
                     </div>
@@ -143,14 +140,12 @@
                     </a>
                     <div class="collapse" id="emails1">
                         <ul class="nav sub-menu">
-                            {% if permission.permission('commodityAdd',bidObject,app.user) %}
+                            {% if permission.permission('commodityEdit',bidObject,app.user) or permission.permission('commodityDelete',bidObject,app.user) or permission.permission('commodityAdd',bidObject,app.user) %}
                                 <li class="nav-item">
-                                    <a href="javascript:loadComponent(Routing.generate('app_commodity_new'))" class="nav-link">کالا/خدمات جدید</a>
-                                </li>
-                            {% endif %}
-                            {% if permission.permission('commodityEdit',bidObject,app.user) or permission.permission('commodityDelete',bidObject,app.user) %}
-                                <li class="nav-item">
-                                    <a href="javascript:loadComponent(Routing.generate('app_commodity_list'))" class="nav-link"> کالاها و خدمات</a>
+                                    <a href="javascript:loadComponent(Routing.generate('app_commodity_list'))" class="nav-link float-start"> کالاها و خدمات</a>
+                                    {% if permission.permission('commodityAdd',bidObject,app.user) %}
+                                        <a href="javascript:loadComponent(Routing.generate('app_commodity_new'),true)" class="nav-link float-end"><i class="bi bi-plus-circle-fill"></i></a>
+                                    {% endif %}
                                 </li>
                             {% endif %}
                         </ul>
@@ -165,14 +160,12 @@
                     </a>
                     <div class="collapse" id="emails244">
                         <ul class="nav sub-menu">
-                            {% if permission.permission('storeAdd',bidObject,app.user) %}
-                                <li class="nav-item">
-                                    <a href="javascript:loadComponent(Routing.generate('app_store_new'))" class="nav-link">انبار جدید</a>
-                                </li>
-                            {% endif %}
                             {% if permission.permission('storeEdit',bidObject,app.user)  %}
                                 <li class="nav-item">
-                                    <a href="javascript:loadComponent(Routing.generate('app_store_list'))" class="nav-link">لیست انبارها</a>
+                                    <a href="javascript:loadComponent(Routing.generate('app_store_list'))" class="nav-link float-start">لیست انبار</a>
+                                    {% if permission.permission('storeAdd',bidObject,app.user) %}
+                                        <a href="javascript:loadComponent(Routing.generate('app_store_new'),true)" class="nav-link float-end"><i class="bi bi-plus-circle-fill"></i></a>
+                                    {% endif %}
                                 </li>
                             {% endif %}
                         </ul>
@@ -187,14 +180,12 @@
                     </a>
                     <div class="collapse" id="emails2">
                         <ul class="nav sub-menu">
-                            {% if permission.permission('bankAdd',bidObject,app.user) %}
-                                <li class="nav-item">
-                                    <a href="javascript:loadComponent(Routing.generate('app_bank_new'))" class="nav-link">بانک جدید</a>
-                                </li>
-                            {% endif %}
                             {% if permission.permission('bankEdit',bidObject,app.user) or permission.permission('bankDelete',bidObject,app.user) %}
                                 <li class="nav-item">
-                                    <a href="javascript:loadComponent(Routing.generate('app_bank_list'))" class="nav-link">لیست بانک‌ها</a>
+                                    <a href="javascript:loadComponent(Routing.generate('app_bank_list'))" class="nav-link float-start">لیست بانک‌</a>
+                                    {% if permission.permission('bankAdd',bidObject,app.user) %}
+                                        <a href="javascript:loadComponent(Routing.generate('app_bank_new'),true)" class="nav-link float-end"><i class="bi bi-plus-circle-fill"></i></a>
+                                    {% endif %}
                                 </li>
                             {% endif %}
                             {% if permission.permission('bankTransferAdd',bidObject,app.user) %}
@@ -347,21 +338,19 @@
     <div class="page-wrapper">
 
         <!-- partial:../../partials/_navbar.html -->
-        <nav class="navbar">
+        <nav class="navbar" style="background-color: #f9fafb">
             <a href="#" class="sidebar-toggler">
                 <i data-feather="menu"></i>
             </a>
-            <div class="navbar-content"  data-intro="Hello World! 👋">
+            <div class="navbar-content">
                 <form class="search-form">
-                    <div class="input-group">
-                        <div class="input-group-text">
-                            <i data-feather="book"></i>
-                        </div>
+                    <div class="input-group text-secondary">
+                        <i data-feather="book"></i>
                         <span class="text-secondary ms-3">{{bidObject.name}}</span>
-                         |
+                        |
                         آخرین سال مالی:
                         <span class="text-primary ms-1">{{ year.name }}</span>
-                         |
+                        |
                         سال مالی انتخابی:
                         <span class="text-primary ms-1">{{ yearSelected.name }}</span>
                     </div>
@@ -475,18 +464,18 @@
             </div>
         </nav>
         <!-- partial -->
-        <div class="mt-3 pt-5 container-fluid  mx-0 px-0">
+        <div class="pt-5 container-fluid  mx-0 px-0" style="margin-top: 10px;">
             <div class="progress c-loading d-none mb-1 rounded-0" style="height: 5px;">
                 <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
             </div>
-            <div class="row mx-md-1">
-                <div class="col-xl-12 main-content ps-xl-1 pe-xl-1">
-                    <div class="card">
-                        <h5 class="card-header d-flex justify-content-between align-items-center text-light" style="background-color: #027dc1">
-                            <div class="app-title" style=""></div>
-                            <div class="app-top"></div>
+            <div class="row mx-0 mt-0">
+                <div class="col-xl-12 main-content mx-0 px-0">
+                    <div class="card mx-0">
+                        <h5 class="card-header rounded-0 d-flex justify-content-between align-items-center text-light" style="background-color: #324a93">
+                            <div class="app-title display-6"></div>
+                            <div class="app-top my-0 py-0"></div>
                         </h5>
-                        <div class="card-body app-body">
+                        <div class="card-body px-1 app-body">
                         </div>
                     </div>
                 </div>
@@ -495,8 +484,9 @@
     </div>
 </div>
 </body>
-</html>
 {% if app.user.guide is null %}
+    <script src="https://cdn.jsdelivr.net/npm/shepherd.js@8.3.1/dist/js/shepherd.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/shepherd.js@8.3.1/dist/css/shepherd.css"/>
     <script>
         window.onload = function (){
             const tour = new Shepherd.Tour({
@@ -572,4 +562,4 @@
         }
     </script>
 {% endif %}
-
+</html>

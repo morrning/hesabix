@@ -139,6 +139,11 @@ function loadComponent(component,modalShow=false){
 function reloadJs(){
     $(function () {
         'use strict';
+        if( $('table.dtds').length )
+        {
+            var table = new Tabulator("table.dtds", {
+            });
+        }
 
         $(function () {
             if ( $.fn.dataTable.isDataTable( '.dtd' ) ) {

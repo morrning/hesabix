@@ -351,7 +351,7 @@ class ACPPersonsController extends AbstractController
                     'files' => $entityManager->getRepository('App:PersonRSFile')->getListAll($this->bid,$this->activeYear)
                 ]),
                 'topView' => $this->render('app_main/acp_persons/rs/buttons.html.twig'),
-                'title'=>'لیست دریافت و پرداخت‌ها'
+                'title'=>'دریافت و پرداخت‌ها'
             ]
         );
     }

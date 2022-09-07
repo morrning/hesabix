@@ -49,7 +49,7 @@
         </thead>
         <tbody>
         {% for person in persons %}
-        <tr class="{{ person.id }}">
+        <tr data-row-id="{{ person.id }}" class="{{ person.id }}">
             <td>{{ person.num }}</td>
             <td>{{ person.nikename }}</td>
             <td>{{ person.nameandfamily }}</td>
@@ -57,7 +57,7 @@
             <td>{{ person.mobile }}</td>
             <td>
                 {% if permission.PermissionInCurrentBusiness('personEdit',app.session.get('bid'),app.user) %}
-                <a class="text-info" onclick="loadComponent(Routing.generate('acpPersonEdit',{'id':{{ person.id }}}))"><i class="bi bi-pen"></i></a>
+                    <a class="text-info" onclick="loadComponent(Routing.generate('acpPersonEdit',{'id':{{ person.id }}}),true)"><i class="bi bi-pen"></i></a>
                 {% endif %}
                 {% if permission.hasPermissionInCurrentBusiness('personDelete',app.session.get('bid'),app.user) %}
                     <a class="text-danger" onclick="deletePerson({{ person.id }})"><i class="bi bi-trash"></i></a>

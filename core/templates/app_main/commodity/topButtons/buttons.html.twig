@@ -1,6 +1,6 @@
 {% if permission.PermissionInCurrentBusiness('commodityAdd',app.session.get('bid'),app.user) %}
-<button type="button" class="btn btn-sm btn-success" onclick="loadComponent('{{ path('app_commodity_new') }}');">کالا و خدمات جدید</button>
+    <a title="کالا و خدمات جدید" class="bi bi-plus-circle-fill mx-1 bi-top text-light" href="javascript:loadComponent('{{ path('app_commodity_new') }}',true);"></a>
 {% endif %}
 {% if permission.PermissionInCurrentBusiness('commodityEdit',app.session.get('bid'),app.user) or permission.PermissionInCurrentBusiness('commodityDelete',app.session.get('bid'),app.user) %}
-<button type="button" class="btn btn-sm btn-primary" onclick="loadComponent('{{ path('app_commodity_list') }}');">لیست کالا‌ها و خدمات</button>
+    <a title="لیست کالا و خدمات" class="bi bi-list mx-1 bi-top text-light" href="javascript:loadComponent('{{ path('app_commodity_list') }}');"></a>
 {% endif %}

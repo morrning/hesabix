@@ -229,7 +229,8 @@ class AppMainController extends AbstractController
             [
                 'view'=>$this->render('app_main/dashboard.html.twig', [
                     'persons' => $entityManager->getRepository('App:Person')->findBy(['bid'=>$bid]),
-                    'banks' => $entityManager->getRepository('App:BanksAccount')->findBy(['bussiness'=>$bid])
+                    'banks' => $entityManager->getRepository('App:BanksAccount')->findBy(['bussiness'=>$bid]),
+                    'commodity' => $entityManager->getRepository('App:Commodity')->findBy(['bid'=>$bid]),
                 ]),
                 'title'=>'داشبورد'
             ]

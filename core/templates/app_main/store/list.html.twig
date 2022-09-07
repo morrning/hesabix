@@ -20,9 +20,7 @@
                 <td>{{ data.boos }}</td>
                 <td>
                     {% if permission.PermissionInCurrentBusiness('storeEdit',app.session.get('bid'),app.user) %}
-                        <button class="btn btn-sm btn-info text-light" onclick="loadComponent(Routing.generate('app_store_edit',{'id':{{ data.id }}}))">
-                            <i class="bi bi-pen"></i>
-                        </button>
+                        <a class="text-info" onclick="loadComponent(Routing.generate('app_store_edit',{'id':{{ data.id }}}),true)"><i class="bi bi-pen"></i></a>
                     {% endif %}
                 </td>
             </tr>

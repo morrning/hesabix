@@ -55,10 +55,10 @@
                 <td>{{ comm.unit.name }}</td>
                 <td>
                     {% if permission.PermissionInCurrentBusiness('commodityEdit',app.session.get('bid'),app.user) %}
-                        <button class="btn btn-sm btn-info text-light" onclick="loadComponent(Routing.generate('app_commodity_edit',{'id':{{ comm.id }}}))">ویرایش</button>
+                        <a class="text-info" onclick="loadComponent(Routing.generate('app_commodity_edit',{'id':{{ comm.id }}}),true)"><i class="bi bi-pen"></i></a>
                     {% endif %}
                     {% if permission.PermissionInCurrentBusiness('commodityDelete',app.session.get('bid'),app.user) %}
-                        <button class="btn btn-sm btn-danger text-light" onclick="deletecommodity({{ comm.id }})">حذف</button>
+                        <a class="text-danger" onclick="deletecommodity({{ comm.id }})"><i class="bi bi-trash"></i></a>
                     {% endif %}
                 </td>
             </tr>

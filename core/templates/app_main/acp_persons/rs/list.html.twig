@@ -39,7 +39,7 @@
 </script>
 <div class="table-responsive">
     {% if files | length != 0 %}
-        <table id="dataTable" class="table table-smdtd text-center">
+        <table id="dataTable" class="table table-sm dtd text-center">
             <caption>لیست دریافت‌ها و پرداخت‌ها</caption>
             <thead>
             <tr>
@@ -64,7 +64,7 @@
                     <td>{{ file.dateSave }}</td>
                     <td>{{ file.des }}</td>
                     <td>
-                        <button class="btn btn-sm btn-danger text-light" onclick="deletePerson({{ file.id }})">حذف</button>
+                        <a class="text-danger" onclick="deletePerson({{ file.id }})"><i class="bi bi-trash"></i></a>
                     </td>
                 </tr>
             {% endfor %}

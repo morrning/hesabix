@@ -36,7 +36,7 @@
                     {% set balance = balance + data.bs %}
                     <td>بس</td>
                 {% endif %}
-                <td>{{ balance | number_format }}</td>
+                <td style="direction: ltr;">{{ balance | number_format }}</td>
                 <td>{{ data.des }}</td>
             </tr>
         {% endfor %}
