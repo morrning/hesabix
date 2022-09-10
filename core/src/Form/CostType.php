@@ -42,8 +42,8 @@ class CostType extends AbstractType
                 'choice_value'=> 'id',
                 'query_builder' => function (EntityRepository $er) use ($options) {
                     return $er->createQueryBuilder('u')
-                        ->where('u.code <= 1399')
-                        ->andWhere('u.code >= 1301');
+                        ->where('u.code < 21000')
+                        ->andWhere('u.code >= 17000');
                 },
                 'label'=>'مرکز هزینه',
                 'attr'=>[

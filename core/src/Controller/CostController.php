@@ -53,6 +53,16 @@ class CostController extends AbstractController
         ]);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            if($cost->getAmount()<=0){
+                $response['result'] = 0;
+                $response['modal-stay'] = 1;
+                $response['swal'] = [
+                    'text'=>'مبلغ وارد شده نا معتبر است',
+                    'confirmButtonText'=>'قبول',
+                    'icon'=>'error'
+                ];
+                return $this->json($response);
+            }
             $cost->setBid($this->bidObject);
             $cost->setSubmitter($this->getUser());
             $cost->setDateSubmit(time());
@@ -65,7 +75,7 @@ class CostController extends AbstractController
             $fitem->setDes('حساب بانکی: ' . $cost->getBank()->getName() . ' شرح: ' . $cost->getDes());
             $fitem->setBs($cost->getAmount());
             $fitem->setBd(0);
-            $fitem->setCode($entityManager->getRepository('App:HesabdariTable')->findOneBy(['code'=>1002]));
+            $fitem->setCode($entityManager->getRepository('App:HesabdariTable')->findOneBy(['code'=>10001]));
 
             $sitem = new HesabdariItem();
             $sitem->setType('cost');
@@ -97,7 +107,7 @@ class CostController extends AbstractController
                 ]),
                 'topView' => $this->render('app_main/cost/buttons.html.twig'),
 
-                'title'=>'درآمد جدید'
+                'title'=>'هزینه جدید'
 
             ]
         );

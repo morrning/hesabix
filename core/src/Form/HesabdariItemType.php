@@ -29,14 +29,30 @@ class HesabdariItemType extends AbstractType
                 'choice_label' => 'name',
                 'choice_value'=> 'code',
                 'group_by' => function($choice, $key, $value) {
-                    if ($choice->getCode() <= 1099 )
+                    if ($choice->getCode() < 11000 )
                         return 'دارایی جاری';
-                    elseif ($choice->getCode() <= 1199 )
+                    elseif ($choice->getCode() < 12000 )
                         return 'دارایی غیرجاری';
-                    elseif ($choice->getCode() <= 1299 )
-                        return 'درآمدها';
-                    elseif ($choice->getCode() <= 1399 )
-                        return 'هزینه‌ها';
+                    elseif ($choice->getCode() < 13999 )
+                        return 'بدهی‌های جاری';
+                    elseif ($choice->getCode() < 14000 )
+                        return 'بدهی‌های غیرجاری';
+                    elseif ($choice->getCode() < 15000 )
+                        return 'درآمد عملیاتی';
+                    elseif ($choice->getCode() < 16000 )
+                        return 'درآمد غیرعملیاتی';
+                    elseif ($choice->getCode() < 17000 )
+                        return 'هزینه‌های عملیاتی';
+                    elseif ($choice->getCode() < 18000 )
+                        return 'هزینه‌های غیرعملیاتی';
+                    elseif ($choice->getCode() < 19000 )
+                        return 'هزینه‌های پرسنلی';
+                    elseif ($choice->getCode() < 20000 )
+                        return 'هزینه‌های بازاریابی/توزیع/فروش';
+                    elseif ($choice->getCode() < 21000 )
+                        return 'فروش کالا و خدمات';
+                    elseif ($choice->getCode() < 22000 )
+                        return 'خرید کالا و خذمات';
                     return 'سایر';
                 },
             ]);

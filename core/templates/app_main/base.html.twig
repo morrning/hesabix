@@ -151,26 +151,6 @@
                         </ul>
                     </div>
                 </li>
-                <li class="nav-item nav-category">انبارداری</li>
-                <li class="nav-item">
-                    <a class="nav-link" data-bs-toggle="collapse" href="#emails244" role="button" aria-expanded="false" aria-controls="emails">
-                        <i class="link-icon" data-feather="archive"></i>
-                        <span class="link-title">انبار</span>
-                        <i class="link-arrow" data-feather="chevron-down"></i>
-                    </a>
-                    <div class="collapse" id="emails244">
-                        <ul class="nav sub-menu">
-                            {% if permission.permission('storeEdit',bidObject,app.user)  %}
-                                <li class="nav-item">
-                                    <a href="javascript:loadComponent(Routing.generate('app_store_list'))" class="nav-link float-start">لیست انبار</a>
-                                    {% if permission.permission('storeAdd',bidObject,app.user) %}
-                                        <a href="javascript:loadComponent(Routing.generate('app_store_new'),true)" class="nav-link float-end"><i class="bi bi-plus-circle-fill"></i></a>
-                                    {% endif %}
-                                </li>
-                            {% endif %}
-                        </ul>
-                    </div>
-                </li>
                 <li class="nav-item nav-category">حسابداری</li>
                 <li class="nav-item">
                     <a class="nav-link" data-bs-toggle="collapse" href="#emails2" role="button" aria-expanded="false" aria-controls="emails">
@@ -242,57 +222,15 @@
                             <li class="nav-item">
                                 <a href="javascript:loadComponent(Routing.generate('acpPersons'))" class="nav-link">فاکتور‌های خرید</a>
                             </li>
-                            {% if permission.permission('castAdd',bidObject,app.user) %}
-                                <li class="nav-item">
-                                    <a href="javascript:loadComponent(Routing.generate('app_cost_new'))" class="nav-link">هزینه</a>
-                                </li>
-                            {% endif %}
+
                             {% if permission.permission('castEdit',bidObject,app.user) or permission.permission('castDelete',bidObject,app.user) %}
                                 <li class="nav-item">
-                                    <a href="javascript:loadComponent(Routing.generate('app_cost_list'))" class="nav-link">لیست هزینه</a>
+                                    <a href="javascript:loadComponent(Routing.generate('app_cost_list'))" class="nav-link float-start">هزینه‌ها</a>
+                                {% if permission.permission('castAdd',bidObject,app.user) %}
+                                    <a href="javascript:loadComponent(Routing.generate('app_cost_new'),true)" class="nav-link float-end"><i class="bi bi-plus-circle-fill"></i></a>
+                                {% endif %}
                                 </li>
                             {% endif %}
-                            <li class="nav-item">
-                                <a href="javascript:loadComponent(Routing.generate('acpPersons'))" class="nav-link">ضایعات و مصرف</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="javascript:loadComponent(Routing.generate('acpPersons'))" class="nav-link">لیست ضایعات و مصرف</a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" data-bs-toggle="collapse" href="#emails5" role="button" aria-expanded="false" aria-controls="emails">
-                        <i class="link-icon" data-feather="book-open"></i>
-                        <span class="link-title">حسابداری</span>
-                        <i class="link-arrow" data-feather="chevron-down"></i>
-                    </a>
-                    <div class="collapse" id="emails5">
-                        <ul class="nav sub-menu">
-                            <li class="nav-item">
-                                <a href="javascript:loadComponent(Routing.generate('app_hesabdari_new'))" class="nav-link">سند جدید</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="javascript:loadComponent(Routing.generate('acpPersons'))" class="nav-link">لیست اسناد</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="javascript:loadComponent(Routing.generate('acpPersonNew'))" class="nav-link">تراز افتتاحیه</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="javascript:loadComponent(Routing.generate('acpPersons'))" class="nav-link">بستن سال مالی</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="javascript:loadComponent(Routing.generate('acpPersons'))" class="nav-link">جدول حساب‌ها</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="javascript:loadComponent(Routing.generate('acpPersons'))" class="nav-link">لیست هزینه</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="javascript:loadComponent(Routing.generate('acpPersons'))" class="nav-link">ضایعات و مصرف</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="javascript:loadComponent(Routing.generate('acpPersons'))" class="nav-link">لیست ضایعات و مصرف</a>
-                            </li>
                         </ul>
                     </div>
                 </li>

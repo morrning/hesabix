@@ -12,6 +12,8 @@ class GeneralController extends AbstractController
     #[Route('/', name: 'home')]
     public function home(EntityManagerInterface $entityManager): Response
     {
+        if($this->getUser())
+            return $this->redirectToRoute('app_main');
         return $this->render('general/home.html.twig', [
             'stat' => [
                 'users'=>$entityManager->getRepository('App:User')->count([]),

@@ -58,8 +58,12 @@ $(document).on('submit', 'form', function(e){
                         $("form").trigger('reset');
                     }
                 }
-                modalLoaded.hide();
-                $('#CoreModal').remove();
+                if(data.hasOwnProperty('modal-stay')){}
+                else{
+                    modalLoaded.hide();
+                    $('#CoreModal').remove();
+                }
+
             }
         });
     }
@@ -108,7 +112,7 @@ function loadComponent(component,modalShow=false){
                     }
                 }
                 else{
-                    let modal = '<div class="modal fade" id="CoreModal" tabindex="-1" aria-labelledby="CoreModalLabel" aria-hidden="true">\n' +
+                    let modal = '<div class="modal fade" id="CoreModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="CoreModalLabel" aria-hidden="true">\n' +
                         '  <div class="modal-dialog">\n' +
                         '    <div class="modal-content">\n' +
                         '      <div class="modal-header bg-light">\n' +
@@ -128,7 +132,6 @@ function loadComponent(component,modalShow=false){
                         $('#CoreModal').remove();
                     })
                     modalLoaded.show();
-
                 }
                 reloadJs();
             }

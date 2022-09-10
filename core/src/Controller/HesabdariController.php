@@ -71,7 +71,7 @@ class HesabdariController extends AbstractController
             return $this->redirectToRoute('app_main');
         }
         //check if bank selected
-        if($ref == 1002){
+        if($ref == 10001){
             //bank reference
             $defaultData = ['message' => $bid];
             $form = $this->createFormBuilder($defaultData)
@@ -87,7 +87,7 @@ class HesabdariController extends AbstractController
                 ])
                 ->getForm();
         }
-        elseif($ref == 1001){
+        elseif($ref == 10002){
             //tankhah reference
             $defaultData = ['message' => $bid];
             $form = $this->createFormBuilder($defaultData)

@@ -3,15 +3,15 @@
 {% block title %}کسب و کار ها{% endblock %}
 
 {% block body %}
-    <div class="container">
-        <div class="row">
-            <div class="col">
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-sm-12 col-md-6">
                 <div class="card">
-                    <div class="card-header bg-secondary text-light">
+                    <div class="card-header bg-light text-secondary">
                         <i class="bi bi-list-task"></i>
                         <span class="app-title">{{ block('title') }}</span>
                         <span class="text-start justify-content-start float-end">
-                        <div class="btn btn-sm btn-light" onclick="loadComponent(Routing.generate('app_business_new'))">
+                        <div class="btn btn-sm btn-primary" onclick="loadComponent(Routing.generate('app_business_new'))">
                             <i class="bi bi-plus-square"></i>
                             راه اندازی کسب‌و‌کار جدید
                         </div>
