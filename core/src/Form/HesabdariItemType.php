@@ -16,11 +16,11 @@ class HesabdariItemType extends AbstractType
     {
         $builder
             ->add('bs',IntegerType::class,[
-                'attr'=>['onkeyup'=>'reloadData();',
+                'attr'=>['min'=>0,'onkeyup'=>'reloadData();',
                     'data-inputmask' => '\'alias\': \'currency\'']
             ])
             ->add('bd',IntegerType::class,[
-                'attr'=>['onkeyup'=>'reloadData();']
+                'attr'=>['min'=>0,'onkeyup'=>'reloadData();']
             ])
             ->add('type',TextType::class)
             ->add('des',TextType::class)

@@ -55,6 +55,8 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('/app/assets/dt/bs5/datatables.min.css') }}"/>
 
     <script type="text/javascript" src="{{ asset('/app/assets/dt/bs5/datatables.min.js') }}"></script>
+    <link rel="stylesheet" href="{{ asset('css/main.css') }}">
+
 </head>
 <script>
     $(document).ready(function() {
@@ -162,20 +164,18 @@
                         <ul class="nav sub-menu">
                             {% if permission.permission('bankEdit',bidObject,app.user) or permission.permission('bankDelete',bidObject,app.user) %}
                                 <li class="nav-item">
-                                    <a href="javascript:loadComponent(Routing.generate('app_bank_list'))" class="nav-link float-start">لیست بانک‌</a>
+                                    <a href="javascript:loadComponent(Routing.generate('app_bank_list'))" class="nav-link float-start">حساب‌های بانکی</a>
                                     {% if permission.permission('bankAdd',bidObject,app.user) %}
                                         <a href="javascript:loadComponent(Routing.generate('app_bank_new'),true)" class="nav-link float-end"><i class="bi bi-plus-circle-fill"></i></a>
                                     {% endif %}
                                 </li>
                             {% endif %}
-                            {% if permission.permission('bankTransferAdd',bidObject,app.user) %}
-                                <li class="nav-item">
-                                    <a href="javascript:loadComponent(Routing.generate('app_bank_transfer_new'))" class="nav-link">انتقال جدید</a>
-                                </li>
-                            {% endif %}
                             {% if permission.permission('bankTransferEdit',bidObject,app.user) or permission.permission('bankTransferDelete',bidObject,app.user) %}
                                 <li class="nav-item">
-                                    <a href="javascript:loadComponent(Routing.generate('app_bank_transfer_list'))" class="nav-link">لیست انتقال‌ها</a>
+                                    <a href="javascript:loadComponent(Routing.generate('app_bank_transfer_list'))" class="nav-link float-start">انتقال‌ها</a>
+                                {% if permission.permission('bankTransferAdd',bidObject,app.user) %}
+                                    <a href="javascript:loadComponent(Routing.generate('app_bank_transfer_new'),true)" class="nav-link float-end"><i class="bi bi-plus-circle-fill"></i></a>
+                                {% endif %}
                                 </li>
                             {% endif %}
                         </ul>
@@ -195,14 +195,12 @@
                             <li class="nav-item">
                                 <a href="javascript:loadComponent(Routing.generate('acpPersons'))" class="nav-link">فاکتور‌های فروش</a>
                             </li>
-                            {% if permission.permission('incomeAdd',bidObject,app.user) %}
-                                <li class="nav-item">
-                                    <a href="javascript:loadComponent(Routing.generate('app_income_new'))" class="nav-link">درآمد جدید</a>
-                                </li>
-                            {% endif %}
                             {% if permission.permission('incomeEdit',bidObject,app.user) or permission.permission('incomeDelete',bidObject,app.user) %}
                                 <li class="nav-item">
-                                    <a href="javascript:loadComponent(Routing.generate('app_income_list'))" class="nav-link">لیست درآمد</a>
+                                    <a href="javascript:loadComponent(Routing.generate('app_income_list'))" class="nav-link float-start">درآمدها</a>
+                                    {% if permission.permission('incomeAdd',bidObject,app.user) %}
+                                        <a href="javascript:loadComponent(Routing.generate('app_income_new'),true)" class="nav-link float-end"><i class="bi bi-plus-circle-fill"></i></a>
+                                    {% endif %}
                                 </li>
                             {% endif %}
                         </ul>

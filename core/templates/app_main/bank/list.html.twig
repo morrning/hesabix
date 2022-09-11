@@ -57,15 +57,11 @@
                 <td>{{ bank.shomarehesab }}</td>
                 <td>{{ bank.des }}</td>
                 <td>
-                    {% if permission.PermissionInCurrentBusiness('bankPrint',app.session.get('bid'),app.user) %}
-                        <button class="btn btn-sm btn-success" onclick="loadComponent(Routing.generate('app_bank_transactions_list',{'id':{{ bank.id }}}))">
-                            <i class="bi bi-list"></i>
-                        </button>
-                    {% endif %}
                     {% if permission.PermissionInCurrentBusiness('bankEdit',app.session.get('bid'),app.user) %}
-                        <button class="btn btn-sm btn-info text-light" onclick="loadComponent(Routing.generate('app_bank_edit',{'id':{{ bank.id }}}))">
-                            <i class="bi bi-pen"></i>
-                        </button>
+                        <a class="text-info" onclick="loadComponent(Routing.generate('app_bank_edit',{'id':{{ bank.id }}}),true)"><i class="bi bi-pen"></i></a>
+                    {% endif %}
+                    {% if permission.PermissionInCurrentBusiness('bankPrint',app.session.get('bid'),app.user) %}
+                        <a class="text-primary" onclick="loadComponent(Routing.generate('app_bank_transactions_list',{'id':{{ bank.id }}}),false)"><i class="bi bi-list-task"></i></a>
                     {% endif %}
                     {% if permission.PermissionInCurrentBusiness('bankdelete',app.session.get('bid'),app.user) %}
 

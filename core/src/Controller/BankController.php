@@ -228,18 +228,18 @@ class BankController extends AbstractController
             $fitem = new HesabdariItem();
             $fitem->setType('bank');
             $fitem->setTypeData($transfer->getSideOne()->getId());
-            $fitem->setDes('حساب بانکی: ' . $transfer->getSideOne()->getName());
+            $fitem->setDes('انتقال بین بانکی: ' . $transfer->getSideOne()->getName());
             $fitem->setBs($transfer->getAmount());
             $fitem->setBd(0);
-            $fitem->setCode($entityManager->getRepository('App:HesabdariTable')->findOneBy(['code'=>1002]));
+            $fitem->setCode($entityManager->getRepository('App:HesabdariTable')->findOneBy(['code'=>10001]));
 
             $sitem = new HesabdariItem();
             $sitem->setType('bank');
             $sitem->setTypeData($transfer->getSideTwo()->getId());
-            $sitem->setDes('حساب بانکی: ' . $transfer->getSideTwo()->getName());
+            $sitem->setDes('انتقال بین بانکی: ' . $transfer->getSideTwo()->getName());
             $sitem->setBd($transfer->getAmount());
             $sitem->setBs(0);
-            $sitem->setCode($entityManager->getRepository('App:HesabdariTable')->findOneBy(['code'=>1002]));
+            $sitem->setCode($entityManager->getRepository('App:HesabdariTable')->findOneBy(['code'=>10001]));
 
             $ref = 'banktransfer:' . $this->bid . ':' . $transfer->getId();
             $des = 'انتقال بین حساب بانکی';

@@ -6,6 +6,7 @@ use App\Entity\Commodity;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -18,6 +19,8 @@ class CommodityType extends AbstractType
         $builder
             ->add('name',TextType::class)
             ->add('des',TextType::class,['required'=>false])
+            ->add('priceBuy',IntegerType::class,['attr'=>['min'=>0]])
+            ->add('priceSell',IntegerType::class,['attr'=>['min'=>0]])
             ->add('unit', EntityType::class, [
                 'class' => \App\Entity\CommodityUnit::class,
                 'choice_label' => 'name',

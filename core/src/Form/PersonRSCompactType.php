@@ -47,7 +47,7 @@ class PersonRSCompactType extends AbstractType
                     'class'=>'person'
                 ]
             ])
-            ->add('amount',IntegerType::class)
+            ->add('amount',IntegerType::class,['attr'=>['min'=>0]])
             ->add('des',TextType::class)
             ->add('type',ChoiceType::class,[
                 'multiple'=>false,

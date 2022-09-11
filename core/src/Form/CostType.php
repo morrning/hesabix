@@ -50,7 +50,7 @@ class CostType extends AbstractType
                     'class'=>'otherData'
                 ]
             ])
-            ->add('amount',IntegerType::class)
+            ->add('amount',IntegerType::class,['attr'=>['min'=>0]])
             ->add('des',TextType::class,['label'=>'شرح','required'=>false])
             ->add('submit',SubmitType::class)
         ;

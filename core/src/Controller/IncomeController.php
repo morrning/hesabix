@@ -49,6 +49,16 @@ class IncomeController extends AbstractController
         ]);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            if($income->getAmount()<=0){
+                $response['result'] = 0;
+                $response['modal-stay'] = 1;
+                $response['swal'] = [
+                    'text'=>'مبلغ وارد شده نا معتبر است',
+                    'confirmButtonText'=>'قبول',
+                    'icon'=>'error'
+                ];
+                return $this->json($response);
+            }
             $income->setBid($this->bidObject);
             $income->setUser($this->getUser());
             $income->setDateSubmit(time());

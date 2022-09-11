@@ -24,7 +24,7 @@ class HbuyType extends AbstractType
             ]])
             ->add('title',TextType::class,['label'=>'عنوان'])
             ->add('des',TextType::class,['label'=>'توضیحات'])
-            ->add('tax',IntegerType::class,['label'=>'مالیات','data'=>0])
+            ->add('tax',IntegerType::class,['label'=>'مالیات','data'=>0,'attr'=>['min'=>0]])
             ->add('supplier', EntityType::class, [
                 'class' => \App\Entity\Person::class,
                 'choice_label' => 'nikeName',

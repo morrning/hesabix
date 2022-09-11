@@ -253,6 +253,17 @@ class ACPPersonsController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            if($form->get('amount')->getData()<=0){
+                $response['result'] = 0;
+                $response['modal-stay'] = 1;
+                $response['swal'] = [
+                    'text'=>'مبلغ وارد شده نا معتبر است',
+                    'confirmButtonText'=>'قبول',
+                    'icon'=>'error'
+                ];
+                return $this->json($response);
+            }
+
             //first create person;
             $personFile = new PersonRSFile();
             $personFile->setSubmitter($this->getUser());
@@ -293,6 +304,7 @@ class ACPPersonsController extends AbstractController
                 $pitem->setBd(0);
                 $oitem->setBs(0);
                 $oitem->setBd($form->get('amount')->getData());
+                $pitem->setCode($entityManager->getRepository('App:HesabdariTable')->findOneBy(['code'=>15001]));
             }
             else{
                 $pitem->setBs(0);
@@ -300,12 +312,12 @@ class ACPPersonsController extends AbstractController
                 $oitem->setBs($form->get('amount')->getData());
                 $oitem->setBd(0);
                 $pitem->setDes('پرداخت وجه به ' . $personPerson->getPerson()->getNikeName() . ' : ' . $personFile->getDes());
+                $pitem->setCode($entityManager->getRepository('App:HesabdariTable')->findOneBy(['code'=>18002]));
 
             }
 
 
-            $pitem->setCode($entityManager->getRepository('App:HesabdariTable')->findOneBy(['code'=>2001]));
-            $oitem->setCode($entityManager->getRepository('App:HesabdariTable')->findOneBy(['code'=>1002]));
+            $oitem->setCode($entityManager->getRepository('App:HesabdariTable')->findOneBy(['code'=>10001]));
             $oitem->setDes($pitem->getDes());
 
             $des = 'دریافت و پرداخت از اشخاص : ' . $personPerson->getPerson()->getNikeName() . ' شرح: ' . $personFile->getDes();

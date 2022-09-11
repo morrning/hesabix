@@ -50,7 +50,7 @@ class BankTransferEditType extends AbstractType
                     'class'=>'otherData'
                 ]
             ])
-            ->add('amount',IntegerType::class,['label'=>'مقدار'])
+            ->add('amount',IntegerType::class,['attr'=>['min'=>0],'label'=>'مقدار'])
             ->add('TransactionNum',TextType::class,['required'=>false,'label'=>'شماره پیگیری بانک'])
             ->add('des',TextType::class,['required'=>false, 'label'=>'توضیحات'])
             ->add('submit',SubmitType::class)

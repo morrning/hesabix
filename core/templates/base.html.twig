@@ -4,6 +4,8 @@
         <!-- Required meta tags -->
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="manifest" href="{{ asset('manifest.json') }}" />
+        <link rel=”apple-touch-icon” href="{{ asset('/img/logo-blue.png') }}">
         <title>{% trans %}hesabix{% endtrans %} - {% block title %}{% endblock %}</title>
         <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
         <link rel="icon" href="/favicon.ico" type="image/x-icon">
@@ -35,6 +37,19 @@
                 script.src = script_address + '?v=' + now.getFullYear().toString() + '0' + now.getMonth() + '0' + now.getDate() + '0' + now.getHours();
                 head.appendChild(script);
             })();
+        </script>
+
+        <script>
+            if ("serviceWorker" in navigator) {
+                navigator.serviceWorker
+                    .register("{{ asset('serviceWorker.js') }}")
+                    .then(reg => {
+                        console.log("Service worker registred successfully", reg);
+                    })
+                    .catch(err => {
+                        console.log("service worker not registred !!", err);
+                    });
+            }
         </script>
     </head>
     <body>

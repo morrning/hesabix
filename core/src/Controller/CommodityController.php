@@ -43,6 +43,16 @@ class CommodityController extends AbstractController
         ]);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            if($form->get('priceBuy')->getData()<0 or $form->get('priceSell')->getData()<0){
+                $response['result'] = 0;
+                $response['modal-stay'] = 1;
+                $response['swal'] = [
+                    'text'=>'مبلغ وارد شده نا معتبر است',
+                    'confirmButtonText'=>'قبول',
+                    'icon'=>'error'
+                ];
+                return $this->json($response);
+            }
             $commodity->setCode($entityManager->getRepository('App:Business')->getNewNumberCommodity($this->bid));
             $commodity->setBid($this->bidObject);
             $entityManager->persist($commodity);

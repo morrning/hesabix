@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: CommodityRepository::class)]
 class Commodity
 {
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
@@ -35,9 +36,17 @@ class Commodity
     #[ORM\OneToMany(mappedBy: 'commodity', targetEntity: HbuyItem::class, orphanRemoval: true)]
     private $hbuyItems;
 
+    #[ORM\Column(type: 'integer', nullable: true)]
+    private $priceBuy;
+
+    #[ORM\Column(type: 'integer', nullable: true)]
+    private $priceSell;
+
     public function __construct()
     {
         $this->hbuyItems = new ArrayCollection();
+        $this->setPriceBuy(0);
+        $this->setPriceSell(0);
     }
 
     public function getId(): ?int
@@ -131,6 +140,30 @@ class Commodity
                 $hbuyItem->setCommodity(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getPriceBuy(): ?int
+    {
+        return $this->priceBuy;
+    }
+
+    public function setPriceBuy(?int $priceBuy): self
+    {
+        $this->priceBuy = $priceBuy;
+
+        return $this;
+    }
+
+    public function getPriceSell(): ?int
+    {
+        return $this->priceSell;
+    }
+
+    public function setPriceSell(?int $priceSell): self
+    {
+        $this->priceSell = $priceSell;
 
         return $this;
     }

@@ -22,11 +22,7 @@ thead tr th{
 .bi-top{
     font-size: 23px;
 }
-@font-face {
-    font-family: "iransans";
-    src: url("../../fonts/IRANSansWeb_Light.woff2") format("woff2");
-    src: url("../../fonts/IRANSansWeb_Light.woff") format("woff");
-}
+
 label.required:before {
     content: "* ";
     color:Red;
@@ -74,8 +70,8 @@ label.required:before {
     --bs-black-rgb: 0, 0, 0;
     --bs-body-color-rgb: 0, 0, 0;
     --bs-body-bg-rgb: 249, 250, 251;
-    --bs-font-sans-serif: "iransans", "Roboto", Helvetica, sans-serif;
-    --bs-font-monospace: "iransans", SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    --bs-font-sans-serif: "Vazir FD", "Roboto", Helvetica, sans-serif;
+    --bs-font-monospace: "Vazir FD", SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
     --bs-gradient: linear-gradient(180deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0));
     --bs-body-font-family: var(--bs-font-sans-serif);
     --bs-body-font-size: 0.875rem;
@@ -23366,7 +23362,7 @@ pre {
 
 code {
     padding: 5px;
-    font-family: "iransans", Roboto, Helvetica, sans-serif;
+    font-family: "Vazir FD", Roboto, Helvetica, sans-serif;
     font-weight: 400;
     font-size: .875rem;
     border-radius: 4px
@@ -23727,14 +23723,14 @@ svg.icon-xxl {
 .main-content .highlight pre {
     padding: 15px;
     font-size: .875rem;
-    font-family: "iransans", Roboto, Helvetica, sans-serif;
+    font-family: "Vazir FD", Roboto, Helvetica, sans-serif;
     background: 0 0;
     line-height: 1.4;
     margin: 0
 }
 
 .main-content .highlight pre code {
-    font-family: "iransans", Roboto, Helvetica, sans-serif;
+    font-family: "Vazir FD", Roboto, Helvetica, sans-serif;
     padding: 0;
     tab-size: 8;
     color: #000;
@@ -26753,7 +26749,7 @@ div.apexcharts-canvas .apexcharts-tooltip .apexcharts-tooltip-title {
 }
 
 div.apexcharts-canvas .apexcharts-tooltip * {
-    font-family: "iransans", Roboto, Helvetica, sans-serif !important
+    font-family: "Vazir FD", Roboto, Helvetica, sans-serif !important
 }
 
 div.apexcharts-canvas .apexcharts-tooltip-series-group.apexcharts-active,
@@ -27189,7 +27185,7 @@ div.table-responsive>div.dataTables_wrapper>div.row>div[class^=col-]:last-child 
     color: #000;
     background: rgba(255, 255, 255, .9);
     border: 1px solid #e9ecef;
-    font-family: "iransans", Helvetica, sans-serif;
+    font-family: "Vazir FD", Helvetica, sans-serif;
     box-shadow: 0 5px 10px 0 rgba(183, 192, 206, .2)
 }
 

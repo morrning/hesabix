@@ -1,0 +1,16 @@
+{
+  "name": "حسابداری آنلاین حسابیکس",
+  "short_name": "حسابیکس",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FFE9D2",
+  "theme_color": "#FFE1C4",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/img/logo-blue.png",
+      "type": "image/png",
+      "sizes": "72x72"
+    }
+  ]
+}

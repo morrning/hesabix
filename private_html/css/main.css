@@ -4,7 +4,6 @@
     src: local('Shabnam FD'), url('../fonts/vazir/Farsi-Digits/Vazir-Light-FD.woff') format('woff'), url('../fonts/vazir/Farsi-Digits/Vazir-Light-FD.ttf') format('truetype');
     font-weight: normal;
     font-style:normal;
-
 }
 body{
     font-family: 'Vazir FD',Tahoma;!important;
@@ -25,4 +24,7 @@ label.required:before {
 td{
     color: red;
     background-color: red;
+}
+.sidebar .sidebar-body .nav.sub-menu .nav-item .nav-link{
+    font-size: 15px;
 }
