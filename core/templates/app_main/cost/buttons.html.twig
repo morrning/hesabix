@@ -1,11 +1,11 @@
 {% if permission.PermissionInCurrentBusiness('castAdd',app.session.get('bid'),app.user) %}
-    <button type="button" class="btn btn-sm btn-success" onclick="loadComponent('{{ path('app_cost_new') }}');">هزینه جدید</button>
+    <a title="هزینه جدید" class="mx-1 bi-top text-light" onclick="loadComponent('{{ path('app_cost_new') }}',true);"><i class="bi bi-plus-circle-fill"></i></a>
 {% endif %}
 {% if permission.PermissionInCurrentBusiness('castEdit',app.session.get('bid'),app.user) or permission.PermissionInCurrentBusiness('castDelete',app.session.get('bid'),app.user) %}
-    <button type="button" class="btn btn-sm btn-primary" onclick="loadComponent('{{ path('app_cost_list') }}');">لیست هزینه‌ها</button>
+    <a title="لیست هزینه‌ها" class="mx-1 bi-top text-light" onclick="loadComponent('{{ path('app_cost_list') }}');"><i class="bi bi-list"></i></a>
 {% endif %}
 {% if permission.PermissionInCurrentBusiness('castPrint',app.session.get('bid'),app.user) %}
-    <a target="_blank" href="{{ path('app_cost_list_print') }}" class="btn btn-sm btn-info">
-        چاپ لیست هزینه‌ها
+    <a title="چاپ لیست هزینه‌ها" target="_blank" href="{{ path('app_cost_list_print') }}" class="mx-1 bi-top text-light">
+        <i class="bi bi-printer"></i>
     </a>
 {% endif %}

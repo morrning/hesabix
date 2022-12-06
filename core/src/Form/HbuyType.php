@@ -6,6 +6,7 @@ use App\Entity\Hbuy;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -17,14 +18,15 @@ class HbuyType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('dateBuy',TextType::class,['label'=>'تاریخ تراکنش','attr'=>[
+            ->add('dateBuy',TextType::class,['label'=>'تاریخ خرید','attr'=>[
                 'class'=>'tarikh',
                 'data-sb-validations'=>'required',
                 'id'=>'date'
             ]])
             ->add('title',TextType::class,['label'=>'عنوان'])
+            ->add('items',HiddenType::class)
             ->add('des',TextType::class,['label'=>'توضیحات'])
-            ->add('tax',IntegerType::class,['label'=>'مالیات','data'=>0,'attr'=>['min'=>0]])
+            ->add('tax',IntegerType::class,['label'=>'مالیات','data'=>$options['tax'],'attr'=>['min'=>0]])
             ->add('supplier', EntityType::class, [
                 'class' => \App\Entity\Person::class,
                 'choice_label' => 'nikeName',
@@ -46,7 +48,8 @@ class HbuyType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Hbuy::class,
-            'bid'=>null
+            'bid'=>null,
+            'tax'=>0
         ]);
     }
 }

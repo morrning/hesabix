@@ -1,0 +1,56 @@
+{% extends "app_main/pdf/base.html.twig" %}
+{% block body %}
+    <span>شماره : <b>{{ item.id }}</b></span>
+    <span>تاریخ : <b>{{ item.dateBuy }}</b></span>
+
+    <style>
+        table {
+            border-collapse: collapse;
+            border-spacing: 0;
+            width: 100%;
+            border: 1px solid #ddd;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+    </style>
+    <p style="border: 1px solid black;">
+        <span> فروشنده :{{ item.supplier.nikeName }}</span>
+        {% if item.supplier.company is not null %}
+            <span> نام شرکت :{{ item.supplier.company }}</span>
+        {% endif %}
+        {% if item.supplier.tel is not null %}
+            <span> تلفن :{{ item.supplier.tel }}</span>
+        {% endif %}
+        {% if item.supplier.mobile is not null %}
+            <span> موبایل :{{ item.supplier.mobile }}</span>
+        {% endif %}
+    </p>
+    </hr>
+    <table style="border: 1px solid black;">
+        <tbody>
+        <tr style="text-align: center; background-color: grey; color: white">
+            <td>ردیف</td>
+            <th>کالا</th>
+            <th>تعداد</th>
+            <th>قیمت</th>
+            <th>تخفیف</th>
+            <th>قیمت کل</th>
+        </tr>
+        {% set balance = 0 %}
+        {% set sum = 0 %}
+        {% for data in datas %}
+            <tr style="text-align: center">
+                <td>{{ loop.index }}</td>
+                <td>{{ data.commodity.name }}</td>
+                <td>{{ data.num }}</td>
+                <td>{{ data.price | number_format }}</td>
+                <td>{{ data.off  | number_format }}</td>
+                <td>{{ (data.num * data.price) - data.off  | number_format}}</td>
+                {% set sum = sum + (data.num * data.price) - data.off %}
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <h2>جمع کل فاکتور : {{ sum |number_format }}</h2>
+{% endblock %}

@@ -1,27 +1,56 @@
+<style>
+    thead{
+        background-color:#324a93;
+    }
+    thead tr th{
+        color:white !important;
+    }
+    tr td,tr th,thead{
+        border: 1px solid gray;
+    }
+    tr td *{
+        border-radius: 0 !important;
+        text-align: center;
+
+    }
+    tr td select{
+        min-height: 40px;
+
+    }
+    tr td.unit input{
+        max-width: 120px;
+    }
+    tbody.tbody tr td.num input{
+        max-width: 120px;
+    }
+</style>
 <div class="container-fluid mb-5 mx-0 px-0">
+    {{ form_start(form) }}
     <div class="row">
-        <div class="col-sm-12 col-md-12">
+        <div class="title col-sm-12 col-md-6">
             {{ form_row(form.title) }}
         </div>
-        <div class="col-sm-12 col-md-4">
-            {{ form_start(form) }}
+        <div class="des col-sm-12 col-md-6">
+            {{ form_row(form.des) }}
+        </div>
+        <div class="date col-sm-12 col-md-4">
             {{ form_row(form.dateBuy,{'attr':{}}) }}
         </div>
         <div class="col-sm-12 col-md-4">
             {{ form_row(form.supplier) }}
         </div>
-        <div class="col-sm-12 col-md-4">
-            {{ form_start(form) }}
+        <div class="tax col-sm-12 col-md-4">
             {{ form_row(form.tax) }}
         </div>
         {{ form_end(form) }}
-
-        <div class="rounded border border-primary my-2">
+        <br>
+        <h3 class="mt-3">اقلام فاکتور</h3>
+        <div class="my-2 pb-3 px-0">
             <div class="table-responsive">
                 <table class="table">
                     <thead>
                     <tr>
-                        <th scope="col">ردیف</th>
+                        <th scope="col"  style="max-width: 2rem">#</th>
                         <th scope="col">کالا</th>
                         <th scope="col">شرح</th>
                         <th scope="col">واحد</th>
@@ -37,26 +66,98 @@
                 </table>
             </div>
         </div>
-        <button type="button" class="btn btn-sm btn-primary" onclick="addRow()">ردیف جدید</button>
+        <div>
+            <h3 class="float-end">
+                جمع کل:
+                <span class="total-buy-price text-danger">0</span>
+            </h3>
+            <button type="button" class="btn btn-sm btn-primary" onclick="addRow()">
+                <i class="bi bi-plus"></i>
+                ردیف جدید</button>
+            <button type="button" class="btn btn-sm btn-success" onclick="save()">
+                <i class="bi bi-save2"></i>
+                ثبت خرید
+            </button>
+        </div>
+
 
     </div>
 </div>
 
 <script>
-    function reloadData(){
-        $('.tbody > tr').each(function (index) {
-            $(this).find('th.index').html(index + 1);
+
+    function save(){
+
+        if($('.tax div input').val().length  == 0 || $('.title div input').val().length  == 0 || $('.des div input').val().length  == 0 || $('.date div input').val().length  == 0){
+            swal.fire('تمام موارد الزامی را تکمیل کنید!');
+        }
+        else{
+            //check table has row
+            if($('.tbody').children().length == 0){
+                swal.fire('حداقل یک آیتم را به فاکتور اضافه کنید.');
+            }
+            else {
+                var dtable = [];
+                $('.tbody').children().each(function () {
+                    var tempData = {
+                        'item' : $(this).find('td.commodity select :selected').val(),
+                        'des' : $(this).find('td.des input').val(),
+                        'num' : $(this).find('td.num input').val(),
+                        'price' : $(this).find('td.price input').val(),
+                        'off' : $(this).find('td.off input').val(),
+                    }
+                    dtable.push(tempData);
+                });
+                $('input#hbuy_items').val(JSON.stringify(dtable));
+                $('form[name="hbuy"]').submit();
+            }
+        }
+
+
+    }
+    function addPayRow(){
+        $.ajax({
+            type: "POST",
+            url: Routing.generate('app_hboy_get_new_pay'),
+            success: function(data)
+            {
+                $('.tbodypay').append(data.view.content);
+                reloadTable();
+            }
         });
-        //calculate balance
-        var bd = 0;
-        var bs = 0;
-        $('.tbody > tr').each(function (index) {
-            bs +=  parseInt($(this).find('td.bs input').val());
-            bd +=  parseInt($(this).find('td.bd input').val());
+    }
+    function reloadBuyTable(id){
+        let res = ($('tr#table-row-' + id + ' td.price input').val() * $('tr#table-row-' + id + ' td.num input').val()) - $('tr#table-row-' + id + ' td.off input').val()
+        $('tr#table-row-' + id + ' td.price-total input').val(res.toLocaleString());
+        reloadBuyTableSum();
+    }
+
+    function reloadBuyTableSum(){
+        let sum = 0;
+        $('.tbody tr').each(function (index) {
+           sum += parseInt($(this).find('td.price-total input').val().replace(',',''));
         });
-        $('.bs-label').html(bs);
-        $('.bd-label').html(bd);
-        $('.bt-label').html(bd - bs);
+        $('.total-buy-price').html(sum.toLocaleString());
+    }
+    function setCommodityDate(cid,eid){
+        $.ajax({
+            type: "POST",
+            url: Routing.generate('api_commodity_get',{'id':cid}),
+            success: function(data)
+            {
+                $('tr#table-row-' + eid + ' td.unit input').val(data.unit)
+                $('tr#table-row-' + eid + ' td.des input').val(data.des)
+                $('tr#table-row-' + eid + ' td.price input').val(data.price_sell)
+                $('tr#table-row-' + eid + ' td.price-total input').val(data.price_sell.toLocaleString())
+                reloadBuyTable(eid);
+            }
+        });
+    }
+    function reloadTable(){
+        $('.tbody > tr').each(function (index) {
+            $(this).find('th.index span').html(index + 1);
+        });
+        reloadBuyTableSum();
     }
     function addRow(){
         $.ajax({
@@ -65,13 +166,13 @@
             success: function(data)
             {
                 $('.tbody').append(data.view.content);
-                reloadData();
+                reloadTable();
             }
         });
     }
     function removeRow(id){
         $('#table-row-' + id).remove();
-        reloadData();
+        reloadTable();
     }
 
     function insertDocument(){

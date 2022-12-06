@@ -109,9 +109,10 @@ class PayController extends AbstractController
     #[Route('/app/user/buy/history', name: 'app_user_buy_history')]
     public function shopHistory(EntityManagerInterface $entityManager): Response
     {
-        $items = $entityManager->getRepository('App:Pay')->findBy(['user'=>$this->getUser()]);
+        $items = $entityManager->getRepository('App:Pay')->findBy(['user'=>$this->getUser()],['id'=>'DESC']);
         return $this->render('/buy/history.html.twig', [
-            'items' => $items
+            'items' => $items,
+
         ]);
     }
 }

@@ -1,0 +1,16 @@
+{% extends 'help/base.html.twig' %}
+
+{% block title %}{{ topic.title }}{% endblock %}
+
+{% block helpBody %}
+    <p>{{ topic.body | raw }}</p>
+    {% if is_granted('ROLE_ADMIN') %}
+        <a class="btn btn-danger" href="{{ path('app_help_delete',{'id':topic.id}) }}">
+            <i class="bi bi-trash"></i>
+        </a>
+        <a class="btn btn-warning" href="{{ path('app_help_edit',{'id':topic.id}) }}">
+            <i class="bi bi-pen"></i>
+        </a>
+
+    {% endif %}
+{% endblock %}

@@ -22,6 +22,9 @@ class HelpTopics
     #[ORM\Column(type: 'string', length: 255)]
     private $url;
 
+    #[ORM\ManyToOne(targetEntity: HelpCat::class, inversedBy: 'helpTopics')]
+    private $cat;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -59,6 +62,18 @@ class HelpTopics
     public function setUrl(string $url): self
     {
         $this->url = $url;
+
+        return $this;
+    }
+
+    public function getCat(): ?HelpCat
+    {
+        return $this->cat;
+    }
+
+    public function setCat(?HelpCat $cat): self
+    {
+        $this->cat = $cat;
 
         return $this;
     }

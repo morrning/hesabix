@@ -1,0 +1,9 @@
+{% extends 'help/base.html.twig' %}
+{% block title %}{{ cat.name }}{% endblock %}
+{% block helpBody %}
+    <ul>
+        {% for topic in topics %}
+            <li><a href="{{ path('app_help',{'id':topic.url}) }}">{{ topic.title }}</a></li>
+        {% endfor %}
+    </ul>
+{% endblock %}

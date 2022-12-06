@@ -35,11 +35,15 @@ class IncomeFile
     private $bank;
 
     #[ORM\Column(type: 'bigint')]
-    private $amount;
+    private $amount = 0;
 
     #[ORM\ManyToOne(targetEntity: HesabdariTable::class, inversedBy: 'incomeFiles')]
     #[ORM\JoinColumn(nullable: false)]
     private $incomeTable;
+
+    #[ORM\ManyToOne(targetEntity: Year::class, inversedBy: 'incomeFiles')]
+    #[ORM\JoinColumn(nullable: false)]
+    private $year;
 
     public function getId(): ?int
     {
@@ -138,6 +142,18 @@ class IncomeFile
     public function setIncomeTable(?HesabdariTable $incomeTable): self
     {
         $this->incomeTable = $incomeTable;
+
+        return $this;
+    }
+
+    public function getYear(): ?Year
+    {
+        return $this->year;
+    }
+
+    public function setYear(?Year $year): self
+    {
+        $this->year = $year;
 
         return $this;
     }

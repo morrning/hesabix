@@ -42,7 +42,8 @@ class IncomeType extends AbstractType
                 'choice_value'=> 'id',
                 'query_builder' => function (EntityRepository $er) use ($options) {
                     return $er->createQueryBuilder('u')
-                        ->where('u.code <= 1299')
+                        ->where('u.code < 16000')
+                        ->andWhere('u.code > 14000')
                         ->andWhere('u.code >= 1201');
                 },
                 'label'=>'مرکز درآمد',

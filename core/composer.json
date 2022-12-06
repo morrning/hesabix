@@ -13,6 +13,7 @@
         "doctrine/doctrine-migrations-bundle": "^3.2",
         "doctrine/orm": "^2.10",
         "dompdf/dompdf": "^1.2",
+        "evilfreelancer/routeros-api-php": "^1.4",
         "friendsofsymfony/ckeditor-bundle": "^2.4",
         "friendsofsymfony/jsrouting-bundle": "^3.1",
         "gregwar/captcha-bundle": "^2.2",

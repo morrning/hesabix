@@ -28,3 +28,6 @@ td{
 .sidebar .sidebar-body .nav.sub-menu .nav-item .nav-link{
     font-size: 15px;
 }
+.btn-link{
+    text-decoration: none;
+}

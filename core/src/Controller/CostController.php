@@ -24,7 +24,8 @@ class CostController extends AbstractController
     private $bid = null;
     private $request = null;
     private $bidObject = null;
-
+    private $activeYear = null;
+    private $activeYearObject = null;
     public function __construct(RequestStack $requestStack, EntityManagerInterface $entityManager, kernel $kernel)
     {
         $this->request = $requestStack->getCurrentRequest();
@@ -35,6 +36,11 @@ class CostController extends AbstractController
         $this->bidObject = $entityManager->getRepository('App:Business')->find($this->bid);
         if (! $this->bidObject)
             throw $this->createNotFoundException();
+        $this->activeYear = $kernel->checkActiveYear($this->request);
+        if(!$this->activeYear){
+            throw $this->createNotFoundException();
+        }
+        $this->activeYearObject = $entityManager->getRepository('App:Year')->find($this->activeYear);
     }
 
     /**
@@ -66,6 +72,7 @@ class CostController extends AbstractController
             $cost->setBid($this->bidObject);
             $cost->setSubmitter($this->getUser());
             $cost->setDateSubmit(time());
+            $cost->setYear($this->activeYearObject);
             $entityManager->getRepository('App:Cost')->add($cost);
 
             //add hesabdari file
@@ -106,9 +113,7 @@ class CostController extends AbstractController
                     'form' => $form->createView(),
                 ]),
                 'topView' => $this->render('app_main/cost/buttons.html.twig'),
-
                 'title'=>'هزینه جدید'
-
             ]
         );
     }
@@ -186,7 +191,7 @@ class CostController extends AbstractController
             return $this->json(
                 [
                     'view'=>$this->render('app_main/cost/list.html.twig', [
-                        'datas' => $entityManager->getRepository('App:Cost')->getListAll($this->bid)
+                        'datas' => $entityManager->getRepository('App:Cost')->getListAll($this->bid,$this->activeYear)
                     ]),
                     'topView' => $this->render('app_main/cost/buttons.html.twig'),
                     'title'=>'لیست هزینه‌ها'
@@ -221,8 +226,9 @@ class CostController extends AbstractController
         if(! $permission->hasPermission('castPrint',$this->bidObject,$this->getUser()))
             throw $this->createAccessDeniedException();
         $pdfMGR->streamTwig2PDF('app_main/cost/list_pdf.html.twig',[
-            'datas' => $entityManager->getRepository('App:Cost')->getListAll($this->bid),
+            'datas' => $entityManager->getRepository('App:Cost')->getListAll($this->bid,$this->activeYear),
             'bid'=>$this->bidObject,
+            'year'=>$this->activeYearObject,
             'page_title'=>'لیست هزینه‌ها'
         ]);
     }

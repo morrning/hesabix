@@ -1,11 +1,15 @@
 {% if permission.PermissionInCurrentBusiness('incomeAdd',app.session.get('bid'),app.user) %}
-    <button type="button" class="btn btn-sm btn-success" onclick="loadComponent('{{ path('app_income_new') }}');">درآمد جدید</button>
+    <a title="درآمد جدید" class="mx-1 bi-top text-light" onclick="loadComponent('{{ path('app_income_new') }}',true);">
+        <i class="bi bi-plus-circle-fill"></i>
+    </a>
 {% endif %}
 {% if permission.PermissionInCurrentBusiness('incomeEdit',app.session.get('bid'),app.user) or permission.PermissionInCurrentBusiness('incomeDelete',app.session.get('bid'),app.user) %}
-    <button type="button" class="btn btn-sm btn-primary" onclick="loadComponent('{{ path('app_income_list') }}');">لیست درآمدها</button>
+    <a title="لیست درآمدها" class="mx-1 bi-top text-light" onclick="loadComponent('{{ path('app_income_list') }}');">
+        <i class="bi bi-list"></i>
+    </a>
 {% endif %}
 {% if permission.PermissionInCurrentBusiness('personPrint',app.session.get('bid'),app.user) %}
-    <a target="_blank" href="{{ path('app_income_list_print') }}" class="btn btn-sm btn-info">
-        چاپ لیست درآمد
+    <a title="چاپ لیست درآمد‌ها" target="_blank" href="{{ path('app_income_list_print') }}" class="mx-1 bi-top text-light">
+        <i class="bi bi-printer"></i>
     </a>
 {% endif %}

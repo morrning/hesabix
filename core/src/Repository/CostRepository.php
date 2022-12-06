@@ -45,11 +45,12 @@ class CostRepository extends ServiceEntityRepository
         }
     }
 
-    public function getListAll($bid)
+    public function getListAll($bid,$year)
     {
         return $this->createQueryBuilder('p')
             ->andWhere('p.bid = :val')
-            ->setParameter('val', $bid)
+            ->andWhere('p.year = :year')
+            ->setParameters(['val'=> $bid,'year'=>$year])
             ->orderBy('p.id', 'ASC')
             ->getQuery()
             ->getResult()

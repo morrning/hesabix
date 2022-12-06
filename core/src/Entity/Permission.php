@@ -108,6 +108,15 @@ class Permission
     #[ORM\Column(type: 'boolean', nullable: true)]
     private $storeDelete;
 
+    #[ORM\Column(type: 'boolean', nullable: true)]
+    private $buyAdd;
+
+    #[ORM\Column(type: 'boolean', nullable: true)]
+    private $buyEdit;
+
+    #[ORM\Column(type: 'boolean', nullable: true)]
+    private $buyDelete;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -481,6 +490,42 @@ class Permission
     public function setStoreDelete(?bool $storeDelete): self
     {
         $this->storeDelete = $storeDelete;
+
+        return $this;
+    }
+
+    public function getBuyAdd(): ?bool
+    {
+        return $this->buyAdd;
+    }
+
+    public function setBuyAdd(?bool $buyAdd): self
+    {
+        $this->buyAdd = $buyAdd;
+
+        return $this;
+    }
+
+    public function getBuyEdit(): ?bool
+    {
+        return $this->buyEdit;
+    }
+
+    public function setBuyEdit(?bool $buyEdit): self
+    {
+        $this->buyEdit = $buyEdit;
+
+        return $this;
+    }
+
+    public function getBuyDelete(): ?bool
+    {
+        return $this->buyDelete;
+    }
+
+    public function setBuyDelete(?bool $buyDelete): self
+    {
+        $this->buyDelete = $buyDelete;
 
         return $this;
     }

@@ -24,7 +24,8 @@ class IncomeController extends AbstractController
     private $bid = null;
     private $request = null;
     private $bidObject = null;
-
+    private $activeYear = null;
+    private $activeYearObject = null;
     public function __construct(RequestStack $requestStack, EntityManagerInterface $entityManager, kernel $kernel)
     {
         $this->request = $requestStack->getCurrentRequest();
@@ -35,6 +36,11 @@ class IncomeController extends AbstractController
         $this->bidObject = $entityManager->getRepository('App:Business')->find($this->bid);
         if (! $this->bidObject)
             throw $this->createNotFoundException();
+        $this->activeYear = $kernel->checkActiveYear($this->request);
+        if(!$this->activeYear){
+            throw $this->createNotFoundException();
+        }
+        $this->activeYearObject = $entityManager->getRepository('App:Year')->find($this->activeYear);
     }
 
     #[Route('/app/income/new', name: 'app_income_new', options: ["expose"=>true])]
@@ -61,6 +67,7 @@ class IncomeController extends AbstractController
             }
             $income->setBid($this->bidObject);
             $income->setUser($this->getUser());
+            $income->setYear($this->activeYearObject);
             $income->setDateSubmit(time());
             $entityManager->getRepository('App:IncomeFile')->add($income);
 
@@ -71,7 +78,7 @@ class IncomeController extends AbstractController
             $fitem->setDes('حساب بانکی: ' . $income->getBank()->getName(). ' شرح: ' . $income->getDes());
             $fitem->setBd($income->getAmount());
             $fitem->setBs(0);
-            $fitem->setCode($entityManager->getRepository('App:HesabdariTable')->findOneBy(['code'=>1002]));
+            $fitem->setCode($entityManager->getRepository('App:HesabdariTable')->findOneBy(['code'=>10001]));
 
             $sitem = new HesabdariItem();
             $sitem->setType('income');
@@ -137,7 +144,7 @@ class IncomeController extends AbstractController
             $fitem->setDes('حساب بانکی: ' . $income->getBank()->getName(). ' شرح: ' . $income->getDes());
             $fitem->setBd($income->getAmount());
             $fitem->setBs(0);
-            $fitem->setCode($entityManager->getRepository('App:HesabdariTable')->findOneBy(['code'=>1002]));
+            $fitem->setCode($entityManager->getRepository('App:HesabdariTable')->findOneBy(['code'=>10001]));
 
             $sitem = new HesabdariItem();
             $sitem->setType('income');
@@ -183,7 +190,7 @@ class IncomeController extends AbstractController
             return $this->json(
                 [
                     'view'=>$this->render('app_main/income/list.html.twig', [
-                        'datas' => $entityManager->getRepository('App:IncomeFile')->getListAll($this->bid)
+                        'datas' => $entityManager->getRepository('App:IncomeFile')->getListAll($this->bid,$this->activeYear)
                     ]),
                     'topView' => $this->render('app_main/income/buttons.html.twig'),
                     'title'=>'لیست درآمدها'
@@ -203,7 +210,6 @@ class IncomeController extends AbstractController
             $hesabdari->removeByRef('income',$this->bid,$income->getId());
             $entityManager->getRepository('App:IncomeFile')->remove($income);
             $log->add($this->bidObject,$this->getUser(),'web','فروش و درآمد','حذف درآمد');
-
         }
         return $this->json(
             [
@@ -218,9 +224,10 @@ class IncomeController extends AbstractController
         if(! $permission->hasPermission('incomePrint',$this->bidObject,$this->getUser()))
             throw $this->createAccessDeniedException();
         $pdfMGR->streamTwig2PDF('app_main/income/list_pdf.html.twig',[
-            'datas' => $entityManager->getRepository('App:IncomeFile')->getListAll($this->bid),
+            'datas' => $entityManager->getRepository('App:IncomeFile')->getListAll($this->bid,$this->activeYear),
             'bid'=>$this->bidObject,
-            'page_title'=>'لیست درآمدها'
+            'page_title'=>'لیست درآمدها',
+            'year'=>$this->activeYearObject
         ]);
     }
 }

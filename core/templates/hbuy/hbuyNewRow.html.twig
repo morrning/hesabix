@@ -1,14 +1,17 @@
-
-<tr id="table-row-{{ id }}" class="">
+<tr id="table-row-{{ id }}" class="align-items-center">
     {{ form_start(form) }}
-    <th scope="row" class="index"></th>
-    <td class="commodity">{{ form_widget(form.commodity) }}</td>
-    <td class="des">{{ form_widget(form.des) }}</td>
-    <td class="unit"></td>
-    <td class="num"></td>
-    <td class="price"></td>
-    <td class="off"></td>
-    <td class="price-total"></td>
-    <td><button class="btn btn-xs btn-danger text-light" onclick="removeRow('{{ id }}');">حذف</button></td>
+    <th scope="row" class="index align-middle text-center m-0 p-0"><span class="m-0 p-0"></span></th>
+    <td class="commodity m-0 p-0">{{ form_widget(form.commodity,{
+            'attr':{
+                'onChange':"setCommodityDate(this.value,'" ~ id ~ "')"
+            }
+        }) }}</td>
+    <td class="des m-0 p-0">{{ form_widget(form.des) }}</td>
+    <td class="unit m-0 p-0"><input type="text" class="form-control" readonly="readonly" value="{{ commodity.unit.name }}"></td>
+    <td class="num m-0 p-0">{{ form_widget(form.num,{'attr':{'min':1,'onChange':'reloadBuyTable("' ~ id ~ '")'}}) }}</td>
+    <td class="price m-0 p-0">{{ form_widget(form.price,{'attr':{'min':0,'value':commodity.priceSell,'onChange':'reloadBuyTable("' ~ id ~ '")'}}) }}</td>
+    <td class="off m-0 p-0">{{ form_widget(form.off,{'attr':{'min':0,'onChange':'reloadBuyTable("' ~ id ~ '")'}}) }}</td>
+    <td class="price-total m-0 p-0"><input type="text" class="form-control" readonly value="{{ commodity.priceSell | number_format }}"></td>
+    <td class=" m-0 p-0 align-middle text-center"><a class="text-danger" href="javascript:removeRow('{{ id }}');"><i class="bi bi-trash"></i></a></td>
     {{ form_end(form) }}
 </tr>

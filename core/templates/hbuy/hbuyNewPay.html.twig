@@ -1,0 +1,9 @@
+<tr id="table-row-{{ id }}" class="align-items-center">
+    {{ form_start(form) }}
+    <td class="commodity m-0 p-0">{{ form_widget(form.bank) }}</td>
+    <td class="num m-0 p-0">{{ form_widget(form.amount,{'attr':{'min':1,'onChange':'reloadBuyTable("' ~ id ~ '")'}}) }}</td>
+    <td class="des m-0 p-0">{{ form_widget(form.datePay) }}</td>
+    <td class="des m-0 p-0">{{ form_widget(form.idpay) }}</td>
+    <td class="align-middle text-center m-0 p-0"><a class="text-danger" href="javascript:removeRow('{{ id }}');"><i class="bi bi-trash"></i></a></td>
+    {{ form_end(form) }}
+</tr>

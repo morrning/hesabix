@@ -49,6 +49,9 @@ class Hbuy
     #[ORM\OneToMany(mappedBy: 'hbuy', targetEntity: HbuyItem::class, orphanRemoval: true)]
     private $hbuyItems;
 
+    #[ORM\Column(type: 'text', nullable: true)]
+    private $items;
+
     public function __construct()
     {
         $this->hbuyItems = new ArrayCollection();
@@ -193,6 +196,18 @@ class Hbuy
                 $hbuyItem->setHbuy(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getItems(): ?string
+    {
+        return $this->items;
+    }
+
+    public function setItems(?string $items): self
+    {
+        $this->items = $items;
 
         return $this;
     }

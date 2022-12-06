@@ -90,6 +90,146 @@
                     </div>
                 </div>
             </div>
+            <div class="col-sm-6 col-md-4 grid-margin stretch-card">
+                <div class="card border border-warning">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-baseline">
+                            <h6 class="card-title mb-0">هزینه‌ها</h6>
+                            <div class="dropdown mb-2">
+                                <button class="btn p-0" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-horizontal icon-lg text-muted pb-3px"><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle><circle cx="5" cy="12" r="1"></circle></svg>
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="">
+                                    <a class="dropdown-item d-flex align-items-center" href="javascript:loadComponent('{{ path('app_cost_new') }}',true);">
+                                        <i class="bi bi-plus"></i>
+                                        جدید
+                                    </a>
+                                    <a class="dropdown-item d-flex align-items-center" href="javascript:loadComponent(Routing.generate('app_cost_list'));">
+                                        <i class="bi bi-list"></i>
+                                        لیست هزینه‌ها
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 mx-0 px-0">
+                                <span class="mb-2 text-danger">تجمعی : {{ costSum | number_format }} {{ bid.ArzMain.name}} </span>
+                                {% for c in costs %}
+                                    <div class="d-flex flex-column">
+                                        <a href="javascript:;" class="d-flex align-items-center border-top  py-1 mt-2">
+                                            <div class="w-100">
+                                                <div class="d-flex justify-content-between">
+                                                    <h6 class="text-body mb-2">{{ c.amount | number_format }} {{ bid.ArzMain.name}}</h6>
+                                                    <p class="text-muted tx-12">{{ c.dateSave }}</p>
+                                                </div>
+                                                <p class="text-muted tx-13">{{ c.hesabdariTable.name }}</p>
+                                                <h6 class="text-body mb-2">{{ c.des }}</h6>
+
+                                            </div>
+                                        </a>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-4 grid-margin stretch-card">
+                <div class="card border border-warning">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-baseline">
+                            <h6 class="card-title mb-0">درآمدها</h6>
+                            <div class="dropdown mb-2">
+                                <button class="btn p-0" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-horizontal icon-lg text-muted pb-3px"><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle><circle cx="5" cy="12" r="1"></circle></svg>
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="">
+                                    <a class="dropdown-item d-flex align-items-center" href="javascript:loadComponent('{{ path('app_income_new') }}',true);">
+                                        <i class="bi bi-plus"></i>
+                                        جدید
+                                    </a>
+                                    <a class="dropdown-item d-flex align-items-center" href="javascript:loadComponent(Routing.generate('app_income_list'));">
+                                        <i class="bi bi-list"></i>
+                                        لیست درآمدها
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 mx-0 px-0">
+                                <span class="mb-2 text-danger">تجمعی : {{ incomeSum | number_format }} {{ bid.ArzMain.name}} </span>
+                                {% for c in incomes %}
+                                    <div class="d-flex flex-column">
+                                        <a href="javascript:;" class="d-flex align-items-center border-top  py-1 mt-2">
+                                            <div class="w-100">
+                                                <div class="d-flex justify-content-between">
+                                                    <h6 class="text-body mb-2">{{ c.amount | number_format }} {{ bid.ArzMain.name}}</h6>
+                                                    <p class="text-muted tx-12">{{ c.dateSave }}</p>
+                                                </div>
+                                                <p class="text-muted tx-13">{{ c.incomeTable.name }}</p>
+                                                <h6 class="text-body mb-2">{{ c.des }}</h6>
+
+                                            </div>
+                                        </a>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6 col-md-4 grid-margin stretch-card">
+                <div class="card border border-warning">
+                    <div class="card-body mx-0 px-0">
+                        <div id="chartCostIncome"></div>
+                        <script>
+                            var options = {
+                                series: [{
+                                    name: '{{ bid.Arzmain.name }}',
+                                    data: [{{ costSum }}, {{ incomeSum }}]
+                                }],
+                                chart: {
+                                    type: 'bar',
+                                    height: 480
+                                },
+                                plotOptions: {
+                                    bar: {
+                                        borderRadius: 4,
+                                        horizontal: false,
+                                    }
+                                },
+                                dataLabels: {
+                                    enabled: false
+                                },
+                                xaxis: {
+                                    categories: ['هزینه', 'درآمد'],
+                                    labels: {
+                                        show: true,
+                                        style: {
+                                            colors: ['#05a34a', '#fbbc06'],
+                                            fontSize: "14px",
+                                            fontFamily: "'vazir FD', Helvetica, sans-serif"
+                                        }
+                                    }
+                                },
+                                yaxis: {
+                                    labels: {
+                                        show: true,
+                                        style: {
+                                            fontSize: "12px",
+                                            fontFamily: "'vazir FD', Helvetica, sans-serif"
+                                        }
+                                    }
+                                }
+                            };
+
+                            var chart = new ApexCharts(document.querySelector("#chartCostIncome"), options);
+                            chart.render();
+                        </script>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

@@ -87,6 +87,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'boolean', nullable: true)]
     private $guide;
 
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private $resetToken;
+
+    #[ORM\Column(type: 'string', length: 50, nullable: true)]
+    private $resetValidTime;
+
     public function __construct()
     {
         $this->businesses = new ArrayCollection();
@@ -620,6 +626,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setGuide(?bool $guide): self
     {
         $this->guide = $guide;
+
+        return $this;
+    }
+
+    public function getResetToken(): ?string
+    {
+        return $this->resetToken;
+    }
+
+    public function setResetToken(?string $resetToken): self
+    {
+        $this->resetToken = $resetToken;
+
+        return $this;
+    }
+
+    public function getResetValidTime(): ?string
+    {
+        return $this->resetValidTime;
+    }
+
+    public function setResetValidTime(?string $resetValidTime): self
+    {
+        $this->resetValidTime = $resetValidTime;
 
         return $this;
     }

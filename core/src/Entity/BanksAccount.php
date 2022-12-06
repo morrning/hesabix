@@ -53,12 +53,16 @@ class BanksAccount
     #[ORM\OneToMany(mappedBy: 'bank', targetEntity: Cost::class, orphanRemoval: true)]
     private $costs;
 
+    #[ORM\OneToMany(mappedBy: 'bank', targetEntity: HbuyPay::class, orphanRemoval: true)]
+    private $hbuyPays;
+
     public function __construct()
     {
         $this->personRSOthers = new ArrayCollection();
         $this->banksTransfers = new ArrayCollection();
         $this->incomeFiles = new ArrayCollection();
         $this->costs = new ArrayCollection();
+        $this->hbuyPays = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -276,6 +280,36 @@ class BanksAccount
             // set the owning side to null (unless already changed)
             if ($cost->getBank() === $this) {
                 $cost->setBank(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, HbuyPay>
+     */
+    public function getHbuyPays(): Collection
+    {
+        return $this->hbuyPays;
+    }
+
+    public function addHbuyPay(HbuyPay $hbuyPay): self
+    {
+        if (!$this->hbuyPays->contains($hbuyPay)) {
+            $this->hbuyPays[] = $hbuyPay;
+            $hbuyPay->setBank($this);
+        }
+
+        return $this;
+    }
+
+    public function removeHbuyPay(HbuyPay $hbuyPay): self
+    {
+        if ($this->hbuyPays->removeElement($hbuyPay)) {
+            // set the owning side to null (unless already changed)
+            if ($hbuyPay->getBank() === $this) {
+                $hbuyPay->setBank(null);
             }
         }
 

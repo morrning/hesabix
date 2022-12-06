@@ -13,7 +13,7 @@
                 <p class="lead">با پرداخت هزینه‌ای اندک به مدت یک سال نمایش تبلیغات را در حسابیکس برای حساب کاربری خود غیر فعال کنید.این پرداخت شامل تمام کسب و کارهایی که در آن عضو هستید نیز می باشد. با خیال راحت و بدون تبلیغات کسب‌و‌کار خود را مدیریت کنید.</p>
                 <div class="d-grid gap-2 d-md-flex justify-content-md-start">
                     <a href="{{ path('app_pay') }}" class="btn btn-primary btn-lg px-4 me-md-2">پرداخت مبلغ ۲۵ هزار تومان</a>
-                    <a href="{{ path('app_user_profile') }}" class="btn btn-outline-secondary btn-lg px-4">بازگشت</a>
+                    <a href="{{ path('app_user_profile',{'res':0}) }}" class="btn btn-outline-secondary btn-lg px-4">بازگشت</a>
                 </div>
             </div>
             {% if app.user.adsBan == false %}

@@ -23884,8 +23884,8 @@ div.tox .buy-now-wrapper .tox-button svg {
 .main-wrapper .page-wrapper {
     min-height: 100vh;
     background: #f9fafb;
-    width: calc(100% - 240px);
-    margin-right: 240px;
+    width: calc(100% - 220px);
+    margin-right: 220px;
     display: flex;
     flex-direction: column;
     -webkit-transition: margin .1s ease, width .1s ease;
@@ -23950,7 +23950,7 @@ div.tox .buy-now-wrapper .tox-button svg {
 }
 
 .navbar {
-    width: calc(100% - 240px);
+    width: calc(100% - 220px);
     height: 60px;
     background: #fff;
     border-bottom: 1px solid #e9ecef;
@@ -23959,7 +23959,7 @@ div.tox .buy-now-wrapper .tox-button svg {
     padding: 0;
     position: fixed;
     left: 0;
-    right: 240px;
+    right: 220px;
     z-index: 978;
     box-shadow: -3px 0 10px 0 rgba(183, 192, 206, .2);
     transition: width .1s ease, right .1s ease
@@ -24142,7 +24142,7 @@ div.tox .buy-now-wrapper .tox-button svg {
 }
 
 .sidebar {
-    width: 240px;
+    width: 220px;
     height: 100%;
     position: fixed;
     right: 0;
@@ -24162,7 +24162,7 @@ div.tox .buy-now-wrapper .tox-button svg {
     padding: 0 25px;
     border-left: 1px solid #e9ecef;
     z-index: 999;
-    width: 240px;
+    width: 220px;
     -webkit-transition: width .1s ease;
     transition: width .1s ease
 }
@@ -24623,7 +24623,7 @@ div.tox .buy-now-wrapper .tox-button svg {
 @media (max-width:991px) {
     .sidebar {
         z-index: 999;
-        margin-right: -240px;
+        margin-right: -220px;
         visibility: hidden
     }
 

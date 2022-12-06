@@ -1,0 +1,70 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 col-md-4 mb-2">
+                <div class="card mb-2">
+                    <div class="card-header bg-primary text-light">
+                        <i class="bi bi-person"></i>
+                        {{ app.user.name }}
+                    </div>
+                    <div class="card-body">
+                        <img class="rounded float-start" style="height: 80px;" src="{{ asset('https://www.gravatar.com/avatar/' ~ twigFunctions.gravatarHash(app.user.email)) }}" alt="">
+                        <ul class="float-start">
+                            <li>
+                                <a href="{{ path('app_main') }}">
+                                    تعداد کسب‌و‌کارها:
+                                    {{ EntityMGR.findBy('App:Business',{'owner':app.user}) | length }}
+                                </a>
+                            </li>
+                            <li>
+                                نوع اکانت:
+                                <span class="text-success">
+                                    {% if app.user.adsBan %}
+                                        سطح ۱ - بدون تبلیغات
+                                    {% else %}
+                                        رایگان! برای همیشه
+                                    {% endif %}
+                                </span>
+                            </li>
+                            <li>
+                                تاریخ عضویت:
+                                <span class="text-success">{{ Jdate.jdate('d/F/Y',app.user.dateSubmit) }}</span>
+                            </li>
+                            {% if app.user.adsBan %}
+                                <li>
+                                    اعتبار باقی‌مانده:
+                                    <span class="text-success">{{ twigFunctions.dayToNow(app.user.adsBanExpire) }}  </span>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
+                <div class="list-group">
+                    <a href="#" class="list-group-item list-group-item-action active" aria-current="true">
+                        امکانات
+                    </a>
+                    <a href="{{ path('app_user_profile',{'res':0}) }}" class="list-group-item list-group-item-action">پروفایل کاربری</a>
+                    {% if app.user.adsBan == false %}
+                        <a href="{{ path('app_remove_ads') }}" class="list-group-item list-group-item-action">پنهان کردن تبلیغات</a>
+                    {% endif %}
+                    <a href="{{ path('app_user_buy_history') }}" class="list-group-item list-group-item-action">سوابق خرید</a>
+                    <a href="{{ path('app_user_change_password') }}" class="list-group-item list-group-item-action">تغییر کلمه عبور</a>
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-8">
+                <div class="card">
+                    <div class="card-header bg-light">
+                        {{ block('title') }}
+                    </div>
+                    <div class="card-body">
+                        {% block userBody %}{% endblock %}
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

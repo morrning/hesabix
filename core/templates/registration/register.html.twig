@@ -3,48 +3,46 @@
 {% block title %}عضویت در حسابیکس{% endblock %}
 
 {% block body %}
-    <div class="container-fluid mt-sm-5 mt-md-5">
-        <div class="row justify-content-center">
-            <div class="col-sm-12 col-md-5">
-                <div class="card">
-                    <div class="card-header text-dark bg-light">
-                        <i class="bi bi-person-check-fill"></i>
-                        عضویت در حسابیکس
+    <div class="container px-md-5">
+        <div class="container px-md-5 my-3 bg-white">
+            <div class="row align-items-center justify-content-center rounded-5">
+                <div class="col-lg-8 col-sm-12 py-3 border shadow-lg">
+                    <p class="mb-4">
+                        <i class="bi bi-person-plus me-2"></i>
+                        {{ block('title') }}
+                    </p>
+                    {% for flashError in app.flashes('verify_email_error') %}
+                        <div class="alert alert-danger" role="alert">{{ flashError }}</div>
+                    {% endfor %}
+                    {{ form_start(registrationForm,{'attr':{'class':'ajax-off'}}) }}
+                    {{ form_row(registrationForm.name) }}
+                    {{ form_row(registrationForm.email) }}
+                    {{ form_row(registrationForm.plainPassword, {
+                        label: 'Password'
+                    }) }}
+                    <div class="card my-2">
+                        <div class="card-body text-center justify-content-center">
+                            {{ form_row(registrationForm.captcha, {
+                                label: 'تشخیص روبات از انسان'
+                            }) }}
+                        </div>
                     </div>
-                    <div class="card-body">
-                        {% for flashError in app.flashes('verify_email_error') %}
-                            <div class="alert alert-danger" role="alert">{{ flashError }}</div>
-                        {% endfor %}
-                        {{ form_start(registrationForm,{'attr':{'class':'ajax-off'}}) }}
-                        {{ form_row(registrationForm.name) }}
-                        {{ form_row(registrationForm.email) }}
-                        {{ form_row(registrationForm.plainPassword, {
-                            label: 'Password'
-                        }) }}
-                        <div class="card my-2">
-                            <div class="card-body text-center justify-content-center">
-                                {{ form_row(registrationForm.captcha, {
-                                    label: 'تشخیص روبات از انسان'
-                                }) }}
-                            </div>
-                        </div>
-                        {{ form_row(registrationForm.agreeTerms) }}
-                        <div class="d-grid gap-2">
-                            <button type="submit" class="btn btn-primary">
-                                <i class="bi bi-plus-square"></i>
-                                {% trans %}Register{% endtrans %}
-                            </button>
-                        </div>
-                        {{ form_end(registrationForm) }}
-                        <br>
-                        <span class="mt-3">حساب کاربری دارید؟</span>
-                        <a href="{{ path('login') }}" class="btn btn-sm btn-secondary">
-                            {% trans %}Login{% endtrans %}
-                        </a>
-                        <button type="submit" class="btn btn-sm btn-secondary">
-                            {% trans %}Forget Password{% endtrans %}
+                    {{ form_row(registrationForm.agreeTerms) }}
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-plus-square"></i>
+                            {% trans %}Register{% endtrans %}
                         </button>
                     </div>
+                    {{ form_end(registrationForm) }}
+                    <br>
+                    <span class="mt-3">حساب کاربری دارید؟</span>
+                    <a href="{{ path('login') }}" class="btn btn-sm btn-secondary">
+                        {% trans %}Login{% endtrans %}
+                    </a>
+                    <a href="{{ path('app_user_forget_password') }}" class="btn btn-sm btn-secondary">
+                        {% trans %}Forget Password{% endtrans %}
+                    </a>
                 </div>
             </div>
         </div>

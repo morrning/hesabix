@@ -59,10 +59,10 @@
                 <td>{{ data.des }}</td>
                 <td>
                     {% if permission.PermissionInCurrentBusiness('castEdit',app.session.get('bid'),app.user) %}
-                        <button class="btn btn-sm btn-info text-light" onclick="loadComponent(Routing.generate('app_cost_edit',{'id':{{ data.id }}}))">ویرایش</button>
+                        <a class="text-info" onclick="loadComponent(Routing.generate('app_cost_edit',{'id':{{ data.id }}}),true)"><i class="bi bi-pen"></i></a>
                     {% endif %}
                     {% if permission.PermissionInCurrentBusiness('castDelete',app.session.get('bid'),app.user) %}
-                        <button class="btn btn-sm btn-danger text-light" onclick="deleteBank({{ data.id }})">حذف</button>
+                        <a class="text-danger" onclick="deleteBank({{ data.id }})"><i class="bi bi-trash"></i></a>
                     {% endif %}
                 </td>
             </tr>

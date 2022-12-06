@@ -1,0 +1,6 @@
+{% if permission.PermissionInCurrentBusiness('buyAdd',app.session.get('bid'),app.user) %}
+    <a title="فاکتور خرید جدید" class="bi bi-plus-fill mx-1 bi-top text-light" href="javascript:loadComponent('{{ path('app_hbuy_new') }}');"><i class="bi bi-plus-circle-fill"></i> </a>
+{% endif %}
+{% if permission.PermissionInCurrentBusiness('buyEdit',app.session.get('bid'),app.user) or permission.PermissionInCurrentBusiness('buyDelete',app.session.get('bid'),app.user) %}
+    <a title="لیست فاکتور خرید" class="mx-1 bi-top text-light" href="javascript:loadComponent('{{ path('app_hbuy_list') }}');"><i class="bi bi-list-task"></i> </a>
+{% endif %}

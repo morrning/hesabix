@@ -1,0 +1,82 @@
+<script>
+    function deleteHbuy(id){
+        Swal.fire({
+            title: 'حذف',
+            text: "با حذف فاکتور کلیه اسناد حسابداری و پرداخت‌ها حذف می شوند.آیا برای حذف مطمئن هستید؟",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    type: "POST",
+                    url: Routing.generate('app_hbuy_delete',{'id':id}),
+                    success: function(data)
+                    {
+                        if(data.result == 1){
+                            Swal.fire(
+                                'حذف',
+                                'با موفقیت حذف شد.',
+                                'success'
+                            )
+                            $('tr.' + id).remove();
+                        }
+                        else{
+                            Swal.fire(
+                                'حذف',
+                                'بانک به دلیل داشتن تراکنش قابل حذف نیست.',
+                                'error'
+                            )
+                        }
+                    }
+                });
+            }
+        })
+    }
+</script>
+<div class="table-responsive p-0">
+    <table id="dataTable" class="dtd table text-center">
+        <thead>
+        <tr>
+            <th>ردیف</th>
+            <th>تاریخ</th>
+            <th>شخص</th>
+            <th>عنوان</th>
+            <th>مبلغ</th>
+            <th>توضیحات</th>
+            <th>بیشتر</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for data in datas %}
+
+            <tr class="{{ data.id }}">
+                <td>{{ loop.index }}</td>
+                <td>{{ data.dateBuy }}</td>
+                <td>{{ data.supplier.nikeName }}</td>
+                <td>{{ data.title }}</td>
+                {% set items = EntityMGR.findBy('App:HbuyItem',{'hbuy':data}) %}
+                {% set amount = 0 %}
+                {% for item in items %}
+                    {% set amount = amount + (item.num * item.price) %}
+                {% endfor %}
+                <td>{{ amount | number_format }}</td>
+                <td>{{ data.des }}</td>
+                <td>
+                    {% if permission.PermissionInCurrentBusiness('buyEdit',app.session.get('bid'),app.user) %}
+                        <a class="text-info" onclick="loadComponent(Routing.generate('app_bank_edit',{'id':{{ data.id }}}),true)"><i class="bi bi-pen"></i></a>
+                    {% endif %}
+                    {% if permission.PermissionInCurrentBusiness('buyPrint',app.session.get('bid'),app.user) %}
+                        <a target="_blank" class="text-primary" href="{{ path('app_hbuy_print',{'id':data.id}) }}"><i class="bi bi-eye"></i></a>
+                    {% endif %}
+                    {% if permission.PermissionInCurrentBusiness('buyDelete',app.session.get('bid'),app.user) %}
+                        <a class="text-danger" onclick="deleteHbuy({{ data.id }})"><i class="bi bi-trash"></i></a>
+                    {% endif %}
+
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>

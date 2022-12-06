@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\CostRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CostRepository::class)]
@@ -39,6 +41,14 @@ class Cost
 
     #[ORM\Column(type: 'bigint')]
     private $amount = 0;
+
+    #[ORM\ManyToOne(targetEntity: Year::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    private $year;
+
+    public function __construct()
+    {
+    }
 
     public function getId(): ?int
     {
@@ -140,4 +150,17 @@ class Cost
 
         return $this;
     }
+
+    public function getYear(): ?Year
+    {
+        return $this->year;
+    }
+
+    public function setYear(?Year $year): self
+    {
+        $this->year = $year;
+
+        return $this;
+    }
+
 }

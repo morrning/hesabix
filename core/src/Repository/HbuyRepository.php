@@ -44,7 +44,16 @@ class HbuyRepository extends ServiceEntityRepository
             $this->_em->flush();
         }
     }
-
+    public function getListAll($bid)
+    {
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.bid = :val')
+            ->setParameter('val', $bid)
+            ->orderBy('p.id', 'DESC')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
     // /**
     //  * @return Hbuy[] Returns an array of Hbuy objects
     //  */

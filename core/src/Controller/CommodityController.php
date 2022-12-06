@@ -81,6 +81,25 @@ class CommodityController extends AbstractController
         );
     }
 
+    #[Route('/api/commodity/get/{id}', name: 'api_commodity_get', options: ["expose"=>true])]
+    public function api_commodity_get($id,Log $log,permission $permission,Request $request,EntityManagerInterface $entityManager): Response
+    {
+        if(! $permission->hasPermission('commodityEdit',$this->bidObject,$this->getUser()))
+            throw $this->createAccessDeniedException();
+        $commodity = $entityManager->getRepository('App:Commodity')->find($id);
+        if(! $commodity)
+            return $this->json(['result'=>0]);
+
+        return $this->json(
+            [
+                'name'=>$commodity->getName(),
+                'price_sell'=>$commodity->getPriceSell(),
+                'price_buy'=>$commodity->getPriceBuy(),
+                'des'=>$commodity->getDes(),
+                'unit'=>$commodity->getUnit()->getName()
+            ]
+        );
+    }
     #[Route('/app/commodity/edit/{id}', name: 'app_commodity_edit', options: ["expose"=>true])]
     public function app_commodity_edit($id,Log $log,permission $permission,Request $request,EntityManagerInterface $entityManager): Response
     {

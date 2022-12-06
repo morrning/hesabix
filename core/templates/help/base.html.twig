@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-3">
+            {% if is_granted('ROLE_ADMIN') %}
+            <div class="d-grid gap-2 pb-2">
+                <a class="btn btn-primary" href="{{ path('app_help_new') }}">مطلب جدید</a>
+            </div>
+            {% endif %}
+            <ul class="list-group">
+                {% set cats = EntityMGR.findAll('App:HelpCat') %}
+                {% for cat in cats %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                   <a href="{{ path('app_help_cat',{'id':cat.id}) }}">
+                       {{ cat.name }}
+                   </a>
+                    <span class="badge bg-primary rounded-pill">{{ EntityMGR.findBy('App:HelpTopics',{'cat':cat}) | length}}</span>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="col-md-9 border border-secondary rounded bg-light p-3">
+            <h1>{{ block('title') }}</h1>
+            <p>
+                {% block helpBody %}{% endblock %}
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}

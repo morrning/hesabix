@@ -46,7 +46,7 @@ class StackController extends AbstractController
     public function stackNew(Request $request): Response
     {
         if(is_null($this->getUser()))
-            return $this->redirectToRoute('app_login');
+            return $this->redirectToRoute('login');
 
         $stack = new \App\Entity\StackContent();
         $form = $this->createForm(StackNewContentType::class,$stack);

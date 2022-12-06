@@ -22,7 +22,7 @@ class HbuyItem
     private $commodity;
 
     #[ORM\Column(type: 'bigint')]
-    private $num;
+    private $num = 1;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $des;
@@ -32,6 +32,9 @@ class HbuyItem
 
     #[ORM\Column(type: 'bigint', nullable: true)]
     private $transfer;
+
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private $off;
 
     public function getId(): ?int
     {
@@ -106,6 +109,18 @@ class HbuyItem
     public function setTransfer(?string $transfer): self
     {
         $this->transfer = $transfer;
+
+        return $this;
+    }
+
+    public function getOff(): ?string
+    {
+        return $this->off;
+    }
+
+    public function setOff(?string $off): self
+    {
+        $this->off = $off;
 
         return $this;
     }
