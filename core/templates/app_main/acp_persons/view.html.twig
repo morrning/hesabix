@@ -1,0 +1,32 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    شخص:
+                    {{ person.nikename }}
+                </div>
+                <div class="card-body">
+                    <p>
+                        نام و نام خانوادگی: {{ person.nameandfamily }}
+                    </p>
+                    <p>
+                        نام شرکت: {{ person.company }}
+                    </p>
+                    <p>
+                        تلفن: {{ person.tel }}
+                    </p>
+                    <p>
+                        موبایل: {{ person.mobile }}
+                    </p>
+                    <p>
+                        آدرس:{{ person.country ~ ' ' ~ person.ostan ~ ' ' ~ person.city ~ person.address }}
+                    </p>
+                    <p>
+                        کد پستی: {{ person.postalcode }}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

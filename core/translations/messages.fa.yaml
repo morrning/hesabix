@@ -10,6 +10,9 @@ Name: نام و نام خانوادگی
 Submit: ثبت
 Keshvar: کشور
 Title: عنوان
+Country: کشور
+City: شهر
+Postalcode: کد پستی
 Cat: دسته‌بندی
 Body: متن
 Amount: مقدار

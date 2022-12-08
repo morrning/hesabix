@@ -62,6 +62,7 @@
                 {% if permission.hasPermissionInCurrentBusiness('personDelete',app.session.get('bid'),app.user) %}
                     <a class="text-danger" onclick="deletePerson({{ person.id }})"><i class="bi bi-trash"></i></a>
                 {% endif %}
+                <a class="text-success" onclick="loadComponent(Routing.generate('acpPersonView',{'id':{{ person.id }}}))"><i class="bi bi-eye"></i></a>
             </td>
         </tr>
         {% endfor %}

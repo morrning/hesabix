@@ -15,7 +15,7 @@ $(document).on('keydown', 'input[type=number]', function(e) {
 });
 
 var modalLoaded = null;
-
+var lastPage = ['/app/dashboard'];
 function coreLoading(state = true){
     if(state){
         $('.c-loading').removeClass('d-none')
@@ -24,7 +24,16 @@ function coreLoading(state = true){
         $('.c-loading').addClass('d-none');
     }
 }
+ function backBtn(){
+    if(lastPage.length <= 1){
+        loadComponent('/app/dashboard');
+    }
+    else{
+        lastPage.pop();
+        loadComponent(lastPage.pop());
+    }
 
+ }
 $(document).on('submit', 'form', function(e){
     if(!$('form').hasClass('ajax-off')){
         e.preventDefault(); // avoid to execute the actual submit of the form.
@@ -81,12 +90,15 @@ $(document).ajaxError(
 
     });
 function loadComponent(component,modalShow=false){
-    $('.c-loading').removeClass('d-none')
+    $('.c-loading').removeClass('d-none');
     $.ajax({
         url: component,
     })
         .done(function( data ) {
-            $('.c-loading').addClass('d-none')
+            $('.c-loading').addClass('d-none');
+            if(! modalShow){
+                lastPage.push(component);
+            }
             if(data.hasOwnProperty('swal')){
                 if(data.swal.hasOwnProperty('reload')){
                     swal.fire(data.swal).then((result) => {

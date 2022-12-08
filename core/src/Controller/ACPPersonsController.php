@@ -70,7 +70,33 @@ class ACPPersonsController extends AbstractController
         }
         throw $this->createAccessDeniedException();
     }
+    #[Route('/app/person/view/{id}', name: 'acpPersonView', options: ["expose"=>true])]
+    public function acpPersonView($id,permission $permission,Request $request, EntityManagerInterface $entityManager,kernel $kernel): Response
+    {
+        if( $permission->hasPermission('personEdit',$this->bidObject,$this->getUser()) ||  $permission->hasPermission('personDelete',$this->bidObject,$this->getUser()) )
+        {
+            $bid = $kernel->checkBID($request);
+            if(!$bid){
+                return $this->redirectToRoute('app_main');
+            }
+            $person = $entityManager->getRepository('App:Person')->find($id);
+            if(!$person)
+                throw $this->createNotFoundException();
+            if($person->getBid()->getId() != $this->bid)
+                throw $this->createAccessDeniedException();
 
+            return $this->json(
+                [
+                    'view'=>$this->render('app_main/acp_persons/view.html.twig', [
+                        'person' => $person
+                    ]),
+                    'topView' => $this->render('app_main/acp_persons/topButtons/buttons.html.twig'),
+                    'title'=>'شخص: ' . $person->getNikename()
+                ]
+            );
+        }
+        throw $this->createAccessDeniedException();
+    }
     #[Route('/app/persons/print', name: 'app_person_list_print', options: ["expose"=>true])]
     public function acpPersonsPrint(Log $log,permission $permission,Request $request,EntityManagerInterface $entityManager,pdfMGR $pdfMGR): Response
     {

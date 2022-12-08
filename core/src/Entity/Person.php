@@ -43,6 +43,21 @@ class Person
     #[ORM\OneToMany(mappedBy: 'supplier', targetEntity: Hbuy::class, orphanRemoval: true)]
     private $hbuys;
 
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private $country;
+
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private $ostan;
+
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private $city;
+
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private $address;
+
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private $postalcode;
+
     public function __construct()
     {
         $this->personRSPeople = new ArrayCollection();
@@ -194,6 +209,66 @@ class Person
                 $hbuy->setSupplier(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCountry(): ?string
+    {
+        return $this->country;
+    }
+
+    public function setCountry(?string $country): self
+    {
+        $this->country = $country;
+
+        return $this;
+    }
+
+    public function getOstan(): ?string
+    {
+        return $this->ostan;
+    }
+
+    public function setOstan(?string $ostan): self
+    {
+        $this->ostan = $ostan;
+
+        return $this;
+    }
+
+    public function getCity(): ?string
+    {
+        return $this->city;
+    }
+
+    public function setCity(?string $city): self
+    {
+        $this->city = $city;
+
+        return $this;
+    }
+
+    public function getAddress(): ?string
+    {
+        return $this->address;
+    }
+
+    public function setAddress(?string $address): self
+    {
+        $this->address = $address;
+
+        return $this;
+    }
+
+    public function getPostalcode(): ?string
+    {
+        return $this->postalcode;
+    }
+
+    public function setPostalcode(?string $postalcode): self
+    {
+        $this->postalcode = $postalcode;
 
         return $this;
     }
