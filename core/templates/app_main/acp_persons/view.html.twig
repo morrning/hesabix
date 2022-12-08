@@ -25,6 +25,7 @@
                     <p>
                         کد پستی: {{ person.postalcode }}
                     </p>
+                    <button class="btn btn-info" onclick="loadComponent(Routing.generate('acpPersonEdit',{'id':{{ person.id }}}),true)"><i class="bi bi-pen"></i> ویرایش</button>
                 </div>
             </div>
         </div>
