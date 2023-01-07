@@ -17,11 +17,8 @@ class Pay
     #[ORM\JoinColumn(nullable: false)]
     private $user;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    private $dateSubmit;
-
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $status;
+    private $dateSubmit;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $verifyCode;
@@ -34,6 +31,9 @@ class Pay
 
     #[ORM\Column(type: 'bigint')]
     private $amount;
+
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private $status;
 
     public function getId(): ?int
     {
@@ -57,21 +57,9 @@ class Pay
         return $this->dateSubmit;
     }
 
-    public function setDateSubmit(string $dateSubmit): self
+    public function setDateSubmit(?string $dateSubmit): self
     {
         $this->dateSubmit = $dateSubmit;
-
-        return $this;
-    }
-
-    public function getStatus(): ?string
-    {
-        return $this->status;
-    }
-
-    public function setStatus(?string $status): self
-    {
-        $this->status = $status;
 
         return $this;
     }
@@ -120,6 +108,18 @@ class Pay
     public function setAmount(string $amount): self
     {
         $this->amount = $amount;
+
+        return $this;
+    }
+
+    public function getStatus(): ?string
+    {
+        return $this->status;
+    }
+
+    public function setStatus(?string $status): self
+    {
+        $this->status = $status;
 
         return $this;
     }

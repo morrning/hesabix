@@ -101,16 +101,18 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="vw-100">
-                                <div class="alert alert-success mt-3 mx-md-5" role="alert">
-                                    <i class="bi bi-info-circle-fill me-3"></i>
-                                    به جدیدترین عضو حسابیکس
-                                    <b>{{ stat.lastbid.owner.name }}</b>
-                                    که کسب و کار خود را با نام
-                                    <b>{{ stat.lastbid.name }}</b>
-                                    شروع کردند خوش آمد میگوییم.
+                            {% if stat.lastbid.owner is not null %}
+                                <div class="vw-100">
+                                    <div class="alert alert-success mt-3 mx-md-5" role="alert">
+                                        <i class="bi bi-info-circle-fill me-3"></i>
+                                        به جدیدترین عضو حسابیکس
+                                        <b>{{ stat.lastbid.owner.name }}</b>
+                                        که کسب و کار خود را با نام
+                                        <b>{{ stat.lastbid.name }}</b>
+                                        شروع کردند خوش آمد میگوییم.
+                                    </div>
                                 </div>
-                            </div>
+                            {% endif %}
                         </div>
                     </div>
                 </div>

@@ -62,6 +62,11 @@
                     {{ form_row(form.maliyatafzode) }}
                 </div>
             </div>
+            <div class="row">
+                <div class="col">
+                    {{ form_row(form.salemaliLabel) }}
+                </div>
+            </div>
             {{ form_widget(form.submit) }}
             <button class="btn btn-primary" onclick="loadComponent(Routing.generate('app_business_list'))">بازگشت</button>
             {{ form_end(form) }}

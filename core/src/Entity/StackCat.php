@@ -24,7 +24,7 @@ class StackCat
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $img;
 
-    #[ORM\OneToMany(mappedBy: 'cat', targetEntity: StackContent::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'cat', targetEntity: StackContent::class)]
     private $stackContents;
 
     public function __construct()
@@ -102,5 +102,4 @@ class StackCat
 
         return $this;
     }
-    
 }

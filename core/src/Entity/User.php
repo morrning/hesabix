@@ -41,25 +41,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\OneToMany(mappedBy: 'owner', targetEntity: Business::class, orphanRemoval: true)]
     private $businesses;
-
-    #[ORM\OneToMany(mappedBy: 'submitter', targetEntity: PersonRSFile::class, orphanRemoval: true)]
-    private $personRSFiles;
-
-    #[ORM\OneToMany(mappedBy: 'Submitter', targetEntity: BanksTransfer::class, orphanRemoval: true)]
-    private $banksTransfers;
-
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Permission::class, orphanRemoval: true)]
-    private $permissions;
-
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Log::class)]
-    private $logs;
-
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: IncomeFile::class, orphanRemoval: true)]
-    private $incomeFiles;
-
-    #[ORM\OneToMany(mappedBy: 'submitter', targetEntity: Cost::class, orphanRemoval: true)]
-    private $costs;
-
+    
     #[ORM\Column(type: 'string', length: 255)]
     private $dateSubmit;
 
@@ -68,21 +50,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(type: 'bigint', nullable: true)]
     private $adsBanExpire;
-
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Pay::class, orphanRemoval: true)]
-    private $pays;
-
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: API::class)]
-    private $aPIs;
-
-    #[ORM\OneToMany(mappedBy: 'submitter', targetEntity: StackContent::class, orphanRemoval: true)]
-    private $stackContents;
-
-    #[ORM\OneToMany(mappedBy: 'submitter', targetEntity: Store::class, orphanRemoval: true)]
-    private $stores;
-
-    #[ORM\OneToMany(mappedBy: 'submitter', targetEntity: Hbuy::class, orphanRemoval: true)]
-    private $hbuys;
 
     #[ORM\Column(type: 'boolean', nullable: true)]
     private $guide;
@@ -93,20 +60,29 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'string', length: 50, nullable: true)]
     private $resetValidTime;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Permission::class)]
+    private $permissions;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Pay::class, orphanRemoval: true)]
+    private $pays;
+
+    #[ORM\OneToMany(mappedBy: 'submitter', targetEntity: StackContent::class, orphanRemoval: true)]
+    private $stackContents;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Log::class)]
+    private $logs;
+
+    #[ORM\OneToMany(mappedBy: 'submitter', targetEntity: HesabdariFile::class, orphanRemoval: true)]
+    private $hesabdariFiles;
+
     public function __construct()
     {
         $this->businesses = new ArrayCollection();
-        $this->personRSFiles = new ArrayCollection();
-        $this->banksTransfers = new ArrayCollection();
         $this->permissions = new ArrayCollection();
-        $this->logs = new ArrayCollection();
-        $this->incomeFiles = new ArrayCollection();
-        $this->costs = new ArrayCollection();
         $this->pays = new ArrayCollection();
-        $this->aPIs = new ArrayCollection();
         $this->stackContents = new ArrayCollection();
-        $this->stores = new ArrayCollection();
-        $this->hbuys = new ArrayCollection();
+        $this->logs = new ArrayCollection();
+        $this->hesabdariFiles = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -252,186 +228,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * @return Collection<int, PersonRSFile>
-     */
-    public function getPersonRSFiles(): Collection
-    {
-        return $this->personRSFiles;
-    }
-
-    public function addPersonRSFile(PersonRSFile $personRSFile): self
-    {
-        if (!$this->personRSFiles->contains($personRSFile)) {
-            $this->personRSFiles[] = $personRSFile;
-            $personRSFile->setSubmitter($this);
-        }
-
-        return $this;
-    }
-
-    public function removePersonRSFile(PersonRSFile $personRSFile): self
-    {
-        if ($this->personRSFiles->removeElement($personRSFile)) {
-            // set the owning side to null (unless already changed)
-            if ($personRSFile->getSubmitter() === $this) {
-                $personRSFile->setSubmitter(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, BanksTransfer>
-     */
-    public function getBanksTransfers(): Collection
-    {
-        return $this->banksTransfers;
-    }
-
-    public function addBanksTransfer(BanksTransfer $banksTransfer): self
-    {
-        if (!$this->banksTransfers->contains($banksTransfer)) {
-            $this->banksTransfers[] = $banksTransfer;
-            $banksTransfer->setSubmitter($this);
-        }
-
-        return $this;
-    }
-
-    public function removeBanksTransfer(BanksTransfer $banksTransfer): self
-    {
-        if ($this->banksTransfers->removeElement($banksTransfer)) {
-            // set the owning side to null (unless already changed)
-            if ($banksTransfer->getSubmitter() === $this) {
-                $banksTransfer->setSubmitter(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Permission>
-     */
-    public function getPermissions(): Collection
-    {
-        return $this->permissions;
-    }
-
-    public function addPermission(Permission $permission): self
-    {
-        if (!$this->permissions->contains($permission)) {
-            $this->permissions[] = $permission;
-            $permission->setUser($this);
-        }
-
-        return $this;
-    }
-
-    public function removePermission(Permission $permission): self
-    {
-        if ($this->permissions->removeElement($permission)) {
-            // set the owning side to null (unless already changed)
-            if ($permission->getUser() === $this) {
-                $permission->setUser(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Log>
-     */
-    public function getLogs(): Collection
-    {
-        return $this->logs;
-    }
-
-    public function addLog(Log $log): self
-    {
-        if (!$this->logs->contains($log)) {
-            $this->logs[] = $log;
-            $log->setUser($this);
-        }
-
-        return $this;
-    }
-
-    public function removeLog(Log $log): self
-    {
-        if ($this->logs->removeElement($log)) {
-            // set the owning side to null (unless already changed)
-            if ($log->getUser() === $this) {
-                $log->setUser(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, IncomeFile>
-     */
-    public function getIncomeFiles(): Collection
-    {
-        return $this->incomeFiles;
-    }
-
-    public function addIncomeFile(IncomeFile $incomeFile): self
-    {
-        if (!$this->incomeFiles->contains($incomeFile)) {
-            $this->incomeFiles[] = $incomeFile;
-            $incomeFile->setUser($this);
-        }
-
-        return $this;
-    }
-
-    public function removeIncomeFile(IncomeFile $incomeFile): self
-    {
-        if ($this->incomeFiles->removeElement($incomeFile)) {
-            // set the owning side to null (unless already changed)
-            if ($incomeFile->getUser() === $this) {
-                $incomeFile->setUser(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Cost>
-     */
-    public function getCosts(): Collection
-    {
-        return $this->costs;
-    }
-
-    public function addCost(Cost $cost): self
-    {
-        if (!$this->costs->contains($cost)) {
-            $this->costs[] = $cost;
-            $cost->setSubmitter($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCost(Cost $cost): self
-    {
-        if ($this->costs->removeElement($cost)) {
-            // set the owning side to null (unless already changed)
-            if ($cost->getSubmitter() === $this) {
-                $cost->setSubmitter(null);
-            }
-        }
-
-        return $this;
-    }
-
     public function getDateSubmit(): ?string
     {
         return $this->dateSubmit;
@@ -468,6 +264,73 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+   
+    public function getGuide(): ?bool
+    {
+        return $this->guide;
+    }
+
+    public function setGuide(?bool $guide): self
+    {
+        $this->guide = $guide;
+
+        return $this;
+    }
+
+    public function getResetToken(): ?string
+    {
+        return $this->resetToken;
+    }
+
+    public function setResetToken(?string $resetToken): self
+    {
+        $this->resetToken = $resetToken;
+
+        return $this;
+    }
+
+    public function getResetValidTime(): ?string
+    {
+        return $this->resetValidTime;
+    }
+
+    public function setResetValidTime(?string $resetValidTime): self
+    {
+        $this->resetValidTime = $resetValidTime;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Permission>
+     */
+    public function getPermissions(): Collection
+    {
+        return $this->permissions;
+    }
+
+    public function addPermission(Permission $permission): self
+    {
+        if (!$this->permissions->contains($permission)) {
+            $this->permissions[] = $permission;
+            $permission->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removePermission(Permission $permission): self
+    {
+        if ($this->permissions->removeElement($permission)) {
+            // set the owning side to null (unless already changed)
+            if ($permission->getUser() === $this) {
+                $permission->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
     /**
      * @return Collection<int, Pay>
      */
@@ -492,36 +355,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($pay->getUser() === $this) {
                 $pay->setUser(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, API>
-     */
-    public function getAPIs(): Collection
-    {
-        return $this->aPIs;
-    }
-
-    public function addAPI(API $aPI): self
-    {
-        if (!$this->aPIs->contains($aPI)) {
-            $this->aPIs[] = $aPI;
-            $aPI->setUser($this);
-        }
-
-        return $this;
-    }
-
-    public function removeAPI(API $aPI): self
-    {
-        if ($this->aPIs->removeElement($aPI)) {
-            // set the owning side to null (unless already changed)
-            if ($aPI->getUser() === $this) {
-                $aPI->setUser(null);
             }
         }
 
@@ -559,29 +392,29 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * @return Collection<int, Store>
+     * @return Collection<int, Log>
      */
-    public function getStores(): Collection
+    public function getLogs(): Collection
     {
-        return $this->stores;
+        return $this->logs;
     }
 
-    public function addStore(Store $store): self
+    public function addLog(Log $log): self
     {
-        if (!$this->stores->contains($store)) {
-            $this->stores[] = $store;
-            $store->setSubmitter($this);
+        if (!$this->logs->contains($log)) {
+            $this->logs[] = $log;
+            $log->setUser($this);
         }
 
         return $this;
     }
 
-    public function removeStore(Store $store): self
+    public function removeLog(Log $log): self
     {
-        if ($this->stores->removeElement($store)) {
+        if ($this->logs->removeElement($log)) {
             // set the owning side to null (unless already changed)
-            if ($store->getSubmitter() === $this) {
-                $store->setSubmitter(null);
+            if ($log->getUser() === $this) {
+                $log->setUser(null);
             }
         }
 
@@ -589,67 +422,31 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * @return Collection<int, Hbuy>
+     * @return Collection<int, HesabdariFile>
      */
-    public function getHbuys(): Collection
+    public function getHesabdariFiles(): Collection
     {
-        return $this->hbuys;
+        return $this->hesabdariFiles;
     }
 
-    public function addHbuy(Hbuy $hbuy): self
+    public function addHesabdariFile(HesabdariFile $hesabdariFile): self
     {
-        if (!$this->hbuys->contains($hbuy)) {
-            $this->hbuys[] = $hbuy;
-            $hbuy->setSubmitter($this);
+        if (!$this->hesabdariFiles->contains($hesabdariFile)) {
+            $this->hesabdariFiles[] = $hesabdariFile;
+            $hesabdariFile->setSubmitter($this);
         }
 
         return $this;
     }
 
-    public function removeHbuy(Hbuy $hbuy): self
+    public function removeHesabdariFile(HesabdariFile $hesabdariFile): self
     {
-        if ($this->hbuys->removeElement($hbuy)) {
+        if ($this->hesabdariFiles->removeElement($hesabdariFile)) {
             // set the owning side to null (unless already changed)
-            if ($hbuy->getSubmitter() === $this) {
-                $hbuy->setSubmitter(null);
+            if ($hesabdariFile->getSubmitter() === $this) {
+                $hesabdariFile->setSubmitter(null);
             }
         }
-
-        return $this;
-    }
-
-    public function getGuide(): ?bool
-    {
-        return $this->guide;
-    }
-
-    public function setGuide(?bool $guide): self
-    {
-        $this->guide = $guide;
-
-        return $this;
-    }
-
-    public function getResetToken(): ?string
-    {
-        return $this->resetToken;
-    }
-
-    public function setResetToken(?string $resetToken): self
-    {
-        $this->resetToken = $resetToken;
-
-        return $this;
-    }
-
-    public function getResetValidTime(): ?string
-    {
-        return $this->resetValidTime;
-    }
-
-    public function setResetValidTime(?string $resetValidTime): self
-    {
-        $this->resetValidTime = $resetValidTime;
 
         return $this;
     }

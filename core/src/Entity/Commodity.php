@@ -10,43 +10,17 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: CommodityRepository::class)]
 class Commodity
 {
-
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    private $name;
-
-    #[ORM\ManyToOne(targetEntity: CommodityUnit::class, inversedBy: 'commodities')]
-    #[ORM\JoinColumn(nullable: false)]
-    private $unit;
-
-    #[ORM\ManyToOne(targetEntity: Business::class, inversedBy: 'commodities')]
-    #[ORM\JoinColumn(nullable: false)]
-    private $bid;
-
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $des;
-
-    #[ORM\Column(type: 'bigint')]
-    private $code;
-
-    #[ORM\OneToMany(mappedBy: 'commodity', targetEntity: HbuyItem::class, orphanRemoval: true)]
-    private $hbuyItems;
-
-    #[ORM\Column(type: 'integer', nullable: true)]
-    private $priceBuy;
-
-    #[ORM\Column(type: 'integer', nullable: true)]
-    private $priceSell;
+    #[ORM\OneToMany(mappedBy: 'bank', targetEntity: HesabdariItem::class)]
+    private $hesabdariItems;
 
     public function __construct()
     {
-        $this->hbuyItems = new ArrayCollection();
-        $this->setPriceBuy(0);
-        $this->setPriceSell(0);
+        $this->hesabdariItems = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -54,116 +28,32 @@ class Commodity
         return $this->id;
     }
 
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
-
-    public function setName(string $name): self
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    public function getUnit(): ?CommodityUnit
-    {
-        return $this->unit;
-    }
-
-    public function setUnit(?CommodityUnit $unit): self
-    {
-        $this->unit = $unit;
-
-        return $this;
-    }
-
-    public function getBid(): ?Business
-    {
-        return $this->bid;
-    }
-
-    public function setBid(?Business $bid): self
-    {
-        $this->bid = $bid;
-
-        return $this;
-    }
-
-    public function getDes(): ?string
-    {
-        return $this->des;
-    }
-
-    public function setDes(?string $des): self
-    {
-        $this->des = $des;
-
-        return $this;
-    }
-
-    public function getCode(): ?string
-    {
-        return $this->code;
-    }
-
-    public function setCode(string $code): self
-    {
-        $this->code = $code;
-
-        return $this;
-    }
-
     /**
-     * @return Collection<int, HbuyItem>
+     * @return Collection<int, HesabdariItem>
      */
-    public function getHbuyItems(): Collection
+    public function getHesabdariItems(): Collection
     {
-        return $this->hbuyItems;
+        return $this->hesabdariItems;
     }
 
-    public function addHbuyItem(HbuyItem $hbuyItem): self
+    public function addHesabdariItem(HesabdariItem $hesabdariItem): self
     {
-        if (!$this->hbuyItems->contains($hbuyItem)) {
-            $this->hbuyItems[] = $hbuyItem;
-            $hbuyItem->setCommodity($this);
+        if (!$this->hesabdariItems->contains($hesabdariItem)) {
+            $this->hesabdariItems[] = $hesabdariItem;
+            $hesabdariItem->setBank($this);
         }
 
         return $this;
     }
 
-    public function removeHbuyItem(HbuyItem $hbuyItem): self
+    public function removeHesabdariItem(HesabdariItem $hesabdariItem): self
     {
-        if ($this->hbuyItems->removeElement($hbuyItem)) {
+        if ($this->hesabdariItems->removeElement($hesabdariItem)) {
             // set the owning side to null (unless already changed)
-            if ($hbuyItem->getCommodity() === $this) {
-                $hbuyItem->setCommodity(null);
+            if ($hesabdariItem->getBank() === $this) {
+                $hesabdariItem->setBank(null);
             }
         }
-
-        return $this;
-    }
-
-    public function getPriceBuy(): ?int
-    {
-        return $this->priceBuy;
-    }
-
-    public function setPriceBuy(?int $priceBuy): self
-    {
-        $this->priceBuy = $priceBuy;
-
-        return $this;
-    }
-
-    public function getPriceSell(): ?int
-    {
-        return $this->priceSell;
-    }
-
-    public function setPriceSell(?int $priceSell): self
-    {
-        $this->priceSell = $priceSell;
 
         return $this;
     }

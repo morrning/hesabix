@@ -19,10 +19,10 @@ class Log
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'logs')]
     private $user;
 
-    #[ORM\Column(type: 'string', length: 20)]
+    #[ORM\Column(type: 'string', length: 50)]
     private $dateSubmit;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(type: 'string', length: 25, nullable: true)]
     private $device;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]

@@ -56,7 +56,8 @@ class AppMainController extends AbstractController
         if(! $busi)
             throw $this->createNotFoundException();
         $form = $this->createForm(BusinessNewType::class,$busi,[
-            'action'=>$this->generateUrl('app_business_edit',['id'=>$this->bid])
+            'action'=>$this->generateUrl('app_business_edit',['id'=>$this->bid]),
+            'edit'=>true
         ]);
 
         $form->handleRequest($request);

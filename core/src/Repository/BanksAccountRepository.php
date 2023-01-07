@@ -45,16 +45,6 @@ class BanksAccountRepository extends ServiceEntityRepository
         }
     }
 
-    public function getListAll($bid)
-    {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.bussiness = :val')
-            ->setParameter('val', $bid)
-            ->orderBy('p.id', 'ASC')
-            ->getQuery()
-            ->getResult()
-            ;
-    }
     // /**
     //  * @return BanksAccount[] Returns an array of BanksAccount objects
     //  */
@@ -83,4 +73,15 @@ class BanksAccountRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function getListAll($bid)
+    {
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.bussiness = :val')
+            ->setParameter('val', $bid)
+            ->orderBy('p.id', 'ASC')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
 }

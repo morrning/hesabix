@@ -8,7 +8,6 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: StackContentRepository::class)]
-
 class StackContent
 {
     #[ORM\Id]
@@ -38,13 +37,11 @@ class StackContent
     #[ORM\Column(type: 'bigint')]
     private $view;
 
-    #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'stackContents')]
+    #[ORM\ManyToMany(targetEntity: User::class)]
     private $likes;
 
     #[ORM\ManyToOne(targetEntity: StackCat::class, inversedBy: 'stackContents')]
-    #[ORM\JoinColumn(nullable: false)]
     private $cat;
-
 
     public function __construct()
     {
@@ -175,5 +172,4 @@ class StackContent
 
         return $this;
     }
-
 }

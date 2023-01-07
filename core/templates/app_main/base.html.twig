@@ -254,6 +254,28 @@
                         </ul>
                     </div>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-bs-toggle="collapse" href="#emails111" role="button" aria-expanded="false" aria-controls="emails111">
+                        <i class="link-icon" data-feather="book"></i>
+                        <span class="link-title">حسابداری پایه</span>
+                        <i class="link-arrow" data-feather="chevron-down"></i>
+                    </a>
+                    <div class="collapse" id="emails111">
+                        <ul class="nav sub-menu">
+                            {% if permission.permission('bankEdit',bidObject,app.user) or permission.permission('bankDelete',bidObject,app.user) %}
+                                <li class="nav-item">
+                                    <a href="javascript:loadComponent(Routing.generate('app_bank_list'))" class="nav-link float-start">اسناد حسابداری</a>
+                                    {% if permission.permission('bankAdd',bidObject,app.user) %}
+                                        <a href="javascript:loadComponent(Routing.generate('app_hesabdari_new'),false)" class="nav-link float-end"><i class="bi bi-plus-circle-fill"></i></a>
+                                    {% endif %}
+                                </li>
+                                <li class="nav-item">
+                                    <a href="javascript:loadComponent(Routing.generate('app_bank_list'))" class="nav-link float-start">جدول حساب‌ها</a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </li>
                 <li class="nav-item nav-category">سایر</li>
                 {% if permission.permission('admin',bidObject,app.user) %}
                     <li class="nav-item">
@@ -320,7 +342,7 @@
                         </a>
                         <div class="dropdown-menu p-0" aria-labelledby="notificationDropdown">
                             <div class="px-3 py-2 d-flex align-items-center justify-content-between border-bottom">
-                                <p>تنظیمات سریع</p>
+                                <p class="text-primary">تنظیمات سریع</p>
                             </div>
                             <div class="p-1">
                                 <a href="javascript:;" class="dropdown-item d-flex align-items-center py-2">
@@ -341,44 +363,49 @@
                                             </label>
                                         </div>
                                     </div>
-                                    <hr />
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <select class="form-select form-select-sm" aria-label=".form-select-sm" onchange="changeYear(this)">
-                                                {% for yr in yrs %}
-                                                    <option {% if yr.id == yearSelected.id %} selected {% endif%} value="{{ yr.id }}">{{ yr.name }}</option>
-                                                {% endfor %}
+                                </a>
+                            </div>
 
-                                            </select>
+                            <div class="border-top px-3 py-2 d-flex align-items-center justify-content-between border-bottom">
+                                <p class="text-primary">سال مالی</p>
+                            </div>
+                            <div class="p-1">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <select class="form-select form-select-sm" aria-label=".form-select-sm" onchange="changeYear(this)">
+                                            {% for yr in yrs %}
+                                                <option {% if yr.id == yearSelected.id %} selected {% endif%} value="{{ yr.id }}">{{ yr.name }}</option>
+                                            {% endfor %}
 
-                                            <script>
-                                                function changeYear(el){
-                                                    $.ajax({
-                                                        type: "POST",
-                                                        url: Routing.generate('app_change_year', {
-                                                            'id': {{ bid }},
-                                                            'year': el.value
-                                                        }),
-                                                        success: function (data) {
-                                                            if(data.hasOwnProperty('swal')){
-                                                                if(data.swal.hasOwnProperty('reload')){
-                                                                    swal.fire(data.swal).then((result) => {
-                                                                        if (result.isConfirmed) {
-                                                                            location.reload();
-                                                                        }
-                                                                    })
-                                                                }
-                                                                else{
-                                                                    swal.fire(data.swal)
-                                                                }
+                                        </select>
+
+                                        <script>
+                                            function changeYear(el){
+                                                $.ajax({
+                                                    type: "POST",
+                                                    url: Routing.generate('app_change_year', {
+                                                        'id': {{ bid }},
+                                                        'year': el.value
+                                                    }),
+                                                    success: function (data) {
+                                                        if(data.hasOwnProperty('swal')){
+                                                            if(data.swal.hasOwnProperty('reload')){
+                                                                swal.fire(data.swal).then((result) => {
+                                                                    if (result.isConfirmed) {
+                                                                        location.reload();
+                                                                    }
+                                                                })
+                                                            }
+                                                            else{
+                                                                swal.fire(data.swal)
                                                             }
                                                         }
-                                                    });
-                                                }
-                                            </script>
-                                        </div>
+                                                    }
+                                                });
+                                            }
+                                        </script>
                                     </div>
-                                </a>
+                                </div>
                             </div>
                         </div>
                     </li>

@@ -74,7 +74,7 @@ class BusinessController extends AbstractController
                 $year->setBid($busi);
                 $year->setStart(time());
                 $year->setEnd(time() + 31536000);// 31536000 = 1 year
-                $year->setName('سال مالی اول');
+                $year->setName($busi->getSalemaliLabel());
                 $entityManager->persist($year);
                 $entityManager->flush();
                 $log->add($busi,$this->getUser(),'web','پیکربندی','ایجاد کسب و کار');

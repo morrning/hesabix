@@ -18,26 +18,24 @@ class HesabdariTable
     #[ORM\Column(type: 'string', length: 255)]
     private $name;
 
-    #[ORM\Column(type: 'string', length: 10)]
+    #[ORM\Column(type: 'bigint')]
     private $code;
+
+    #[ORM\ManyToOne(targetEntity: self::class)]
+    private $upper;
+
+    #[ORM\Column(type: 'string', length: 255)]
+    private $type;
+
+    #[ORM\Column(type: 'boolean', nullable: true)]
+    private $canSelect;
 
     #[ORM\OneToMany(mappedBy: 'code', targetEntity: HesabdariItem::class, orphanRemoval: true)]
     private $hesabdariItems;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $type;
-
-    #[ORM\OneToMany(mappedBy: 'incomeTable', targetEntity: IncomeFile::class, orphanRemoval: true)]
-    private $incomeFiles;
-
-    #[ORM\OneToMany(mappedBy: 'hesabdariTable', targetEntity: Cost::class, orphanRemoval: true)]
-    private $costs;
-
     public function __construct()
     {
         $this->hesabdariItems = new ArrayCollection();
-        $this->incomeFiles = new ArrayCollection();
-        $this->costs = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -65,6 +63,42 @@ class HesabdariTable
     public function setCode(string $code): self
     {
         $this->code = $code;
+
+        return $this;
+    }
+
+    public function getUpper(): ?self
+    {
+        return $this->upper;
+    }
+
+    public function setUpper(?self $upper): self
+    {
+        $this->upper = $upper;
+
+        return $this;
+    }
+
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    public function setType(string $type): self
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    public function getCanSelect(): ?bool
+    {
+        return $this->canSelect;
+    }
+
+    public function setCanSelect(?bool $canSelect): self
+    {
+        $this->canSelect = $canSelect;
 
         return $this;
     }
@@ -99,75 +133,4 @@ class HesabdariTable
         return $this;
     }
 
-    public function getType(): ?string
-    {
-        return $this->type;
-    }
-
-    public function setType(?string $type): self
-    {
-        $this->type = $type;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, IncomeFile>
-     */
-    public function getIncomeFiles(): Collection
-    {
-        return $this->incomeFiles;
-    }
-
-    public function addIncomeFile(IncomeFile $incomeFile): self
-    {
-        if (!$this->incomeFiles->contains($incomeFile)) {
-            $this->incomeFiles[] = $incomeFile;
-            $incomeFile->setIncomeTable($this);
-        }
-
-        return $this;
-    }
-
-    public function removeIncomeFile(IncomeFile $incomeFile): self
-    {
-        if ($this->incomeFiles->removeElement($incomeFile)) {
-            // set the owning side to null (unless already changed)
-            if ($incomeFile->getIncomeTable() === $this) {
-                $incomeFile->setIncomeTable(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Cost>
-     */
-    public function getCosts(): Collection
-    {
-        return $this->costs;
-    }
-
-    public function addCost(Cost $cost): self
-    {
-        if (!$this->costs->contains($cost)) {
-            $this->costs[] = $cost;
-            $cost->setHesabdariTable($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCost(Cost $cost): self
-    {
-        if ($this->costs->removeElement($cost)) {
-            // set the owning side to null (unless already changed)
-            if ($cost->getHesabdariTable() === $this) {
-                $cost->setHesabdariTable(null);
-            }
-        }
-
-        return $this;
-    }
 }

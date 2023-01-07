@@ -44,16 +44,7 @@ class CommodityRepository extends ServiceEntityRepository
             $this->_em->flush();
         }
     }
-    public function getListAll($bid)
-    {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.bid = :val')
-            ->setParameter('val', $bid)
-            ->orderBy('p.id', 'ASC')
-            ->getQuery()
-            ->getResult()
-            ;
-    }
+
     // /**
     //  * @return Commodity[] Returns an array of Commodity objects
     //  */

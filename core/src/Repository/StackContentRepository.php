@@ -4,6 +4,8 @@ namespace App\Repository;
 
 use App\Entity\StackContent;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -19,15 +21,28 @@ class StackContentRepository extends ServiceEntityRepository
         parent::__construct($registry, StackContent::class);
     }
 
-    public function findtop($count)
+    /**
+     * @throws ORMException
+     * @throws OptimisticLockException
+     */
+    public function add(StackContent $entity, bool $flush = true): void
     {
-        return $this->createQueryBuilder('n')
-            ->where('n.upperID is NULL')
-            ->orderBy('n.id', 'DESC')
-            ->setMaxResults($count)
-            ->getQuery()
-            ->getResult()
-            ;
+        $this->_em->persist($entity);
+        if ($flush) {
+            $this->_em->flush();
+        }
+    }
+
+    /**
+     * @throws ORMException
+     * @throws OptimisticLockException
+     */
+    public function remove(StackContent $entity, bool $flush = true): void
+    {
+        $this->_em->remove($entity);
+        if ($flush) {
+            $this->_em->flush();
+        }
     }
 
     // /**

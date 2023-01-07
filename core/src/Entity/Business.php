@@ -15,18 +15,17 @@ class Business
     #[ORM\Column(type: 'integer')]
     private $id;
 
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'businesses')]
+    private $owner;
+
+    #[ORM\OneToMany(mappedBy: 'bid', targetEntity: Permission::class)]
+    private $permissions;
+
     #[ORM\Column(type: 'string', length: 255)]
     private $name;
 
     #[ORM\Column(type: 'string', length: 255)]
     private $legalName;
-
-    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'businesses')]
-    #[ORM\JoinColumn(nullable: false)]
-    private $owner;
-
-    #[ORM\OneToMany(mappedBy: 'bid', targetEntity: Person::class)]
-    private $people;
 
     #[ORM\Column(type: 'string', length: 100)]
     private $type;
@@ -40,7 +39,7 @@ class Business
     #[ORM\Column(type: 'string', length: 15, nullable: true)]
     private $codeeghtesadi;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(type: 'string', length: 100, nullable: true)]
     private $shomaresabt;
 
     #[ORM\Column(type: 'string', length: 50, nullable: true)]
@@ -49,7 +48,7 @@ class Business
     #[ORM\Column(type: 'string', length: 50, nullable: true)]
     private $ostan;
 
-    #[ORM\Column(type: 'string', length: 50, nullable: true)]
+    #[ORM\Column(type: 'string', length: 100, nullable: true)]
     private $shahr;
 
     #[ORM\Column(type: 'string', length: 10, nullable: true)]
@@ -70,82 +69,100 @@ class Business
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $email;
 
-    #[ORM\ManyToOne(targetEntity: ArzType::class)]
-    #[ORM\JoinColumn(nullable: false)]
-    private $arzMain;
-
     #[ORM\Column(type: 'integer')]
     private $maliyatafzode;
 
-    #[ORM\OneToMany(mappedBy: 'bid', targetEntity: HesabdariFile::class, orphanRemoval: true)]
-    private $hesabdariFiles;
+    #[ORM\ManyToOne(targetEntity: ArzType::class, inversedBy: 'businesses')]
+    private $arzMain;
 
-    #[ORM\Column(type: 'integer')]
-    private $numHesabdari = 0;
+    #[ORM\OneToMany(mappedBy: 'bid', targetEntity: Year::class)]
+    private $years;
 
-    #[ORM\Column(type: 'integer')]
-    private $numPersons = 0;
-
-    #[ORM\OneToMany(mappedBy: 'bussiness', targetEntity: BanksAccount::class, orphanRemoval: true)]
-    private $banksAccounts;
-
-    #[ORM\OneToMany(mappedBy: 'bid', targetEntity: PersonRSFile::class, orphanRemoval: true)]
-    private $personRSFiles;
-
-    #[ORM\OneToMany(mappedBy: 'bid', targetEntity: Commodity::class, orphanRemoval: true)]
-    private $commodities;
-
-    #[ORM\Column(type: 'bigint')]
-    private $numCommodity = 0;
-
-    #[ORM\OneToMany(mappedBy: 'bid', targetEntity: BanksTransfer::class, orphanRemoval: true)]
-    private $banksTransfers;
-
-    #[ORM\OneToMany(mappedBy: 'bid', targetEntity: Permission::class, orphanRemoval: true)]
-    private $permissions;
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private $salemaliLabel;
 
     #[ORM\OneToMany(mappedBy: 'bid', targetEntity: Log::class)]
     private $logs;
 
-    #[ORM\OneToMany(mappedBy: 'bid', targetEntity: IncomeFile::class, orphanRemoval: true)]
-    private $incomeFiles;
+    #[ORM\OneToMany(mappedBy: 'bid', targetEntity: Person::class)]
+    private $people;
 
-    #[ORM\OneToMany(mappedBy: 'bid', targetEntity: Cost::class, orphanRemoval: true)]
-    private $costs;
+    #[ORM\Column(type: 'bigint')]
+    private $numPersons;
 
-    #[ORM\OneToMany(mappedBy: 'bid', targetEntity: API::class, orphanRemoval: true)]
-    private $aPIs;
+    #[ORM\Column(type: 'bigint')]
+    private $numHesabdari;
 
-    #[ORM\OneToMany(mappedBy: 'bid', targetEntity: Store::class, orphanRemoval: true)]
-    private $stores;
+    #[ORM\Column(type: 'bigint')]
+    private $numCommodity;
 
-    #[ORM\OneToMany(mappedBy: 'bid', targetEntity: Year::class, orphanRemoval: true)]
-    private $years;
+    #[ORM\OneToMany(mappedBy: 'bid', targetEntity: HesabdariFile::class, orphanRemoval: true)]
+    private $hesabdariFiles;
 
-    #[ORM\OneToMany(mappedBy: 'bid', targetEntity: Hbuy::class, orphanRemoval: true)]
-    private $hbuys;
+    #[ORM\OneToMany(mappedBy: 'bussiness', targetEntity: BanksAccount::class, orphanRemoval: true)]
+    private $banksAccounts;
 
     public function __construct()
     {
+        $this->permissions = new ArrayCollection();
+        $this->years = new ArrayCollection();
+        $jdate = new \App\Service\Jdate;
+        $endecoYear = $jdate->jdate('Y/n/d', time() + 31536000);
+        $this->setSalemaliLabel(str_replace('%s',$endecoYear,'سال مالی منتهی به %s'));
+        $this->logs = new ArrayCollection();
         $this->people = new ArrayCollection();
+        $this->setNumPersons(0);
+        $this->setNumHesabdari(0);
+        $this->setNumCommodity(0);
         $this->hesabdariFiles = new ArrayCollection();
         $this->banksAccounts = new ArrayCollection();
-        $this->personRSFiles = new ArrayCollection();
-        $this->commodities = new ArrayCollection();
-        $this->banksTransfers = new ArrayCollection();
-        $this->permissions = new ArrayCollection();
-        $this->logs = new ArrayCollection();
-        $this->incomeFiles = new ArrayCollection();
-        $this->costs = new ArrayCollection();
-        $this->aPIs = new ArrayCollection();
-        $this->stores = new ArrayCollection();
-        $this->years = new ArrayCollection();
-        $this->hbuys = new ArrayCollection();
     }
 
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getOwner(): ?User
+    {
+        return $this->owner;
+    }
+
+    public function setOwner(?User $owner): self
+    {
+        $this->owner = $owner;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Permission>
+     */
+    public function getPermissions(): Collection
+    {
+        return $this->permissions;
+    }
+
+    public function addPermission(Permission $permission): self
+    {
+        if (!$this->permissions->contains($permission)) {
+            $this->permissions[] = $permission;
+            $permission->setBid($this);
+        }
+
+        return $this;
+    }
+
+    public function removePermission(Permission $permission): self
+    {
+        if ($this->permissions->removeElement($permission)) {
+            // set the owning side to null (unless already changed)
+            if ($permission->getBid() === $this) {
+                $permission->setBid(null);
+            }
+        }
+
+        return $this;
     }
 
     public function getName(): ?string
@@ -168,48 +185,6 @@ class Business
     public function setLegalName(string $legalName): self
     {
         $this->legalName = $legalName;
-
-        return $this;
-    }
-
-    public function getOwner(): ?User
-    {
-        return $this->owner;
-    }
-
-    public function setOwner(?User $owner): self
-    {
-        $this->owner = $owner;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Person[]
-     */
-    public function getPeople(): Collection
-    {
-        return $this->people;
-    }
-
-    public function addPerson(Person $person): self
-    {
-        if (!$this->people->contains($person)) {
-            $this->people[] = $person;
-            $person->setBid($this);
-        }
-
-        return $this;
-    }
-
-    public function removePerson(Person $person): self
-    {
-        if ($this->people->removeElement($person)) {
-            // set the owning side to null (unless already changed)
-            if ($person->getBid() === $this) {
-                $person->setBid(null);
-            }
-        }
 
         return $this;
     }
@@ -382,18 +357,6 @@ class Business
         return $this;
     }
 
-    public function getArzMain(): ?ArzType
-    {
-        return $this->arzMain;
-    }
-
-    public function setArzMain(?ArzType $arzMain): self
-    {
-        $this->arzMain = $arzMain;
-
-        return $this;
-    }
-
     public function getMaliyatafzode(): ?int
     {
         return $this->maliyatafzode;
@@ -406,218 +369,56 @@ class Business
         return $this;
     }
 
-    /**
-     * @return Collection<int, HesabdariFile>
-     */
-    public function getHesabdariFiles(): Collection
+    public function getArzMain(): ?ArzType
     {
-        return $this->hesabdariFiles;
+        return $this->arzMain;
     }
 
-    public function addHesabdariFile(HesabdariFile $hesabdariFile): self
+    public function setArzMain(?ArzType $arzMain): self
     {
-        if (!$this->hesabdariFiles->contains($hesabdariFile)) {
-            $this->hesabdariFiles[] = $hesabdariFile;
-            $hesabdariFile->setBid($this);
+        $this->arzMain = $arzMain;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Year>
+     */
+    public function getYears(): Collection
+    {
+        return $this->years;
+    }
+
+    public function addYear(Year $year): self
+    {
+        if (!$this->years->contains($year)) {
+            $this->years[] = $year;
+            $year->setBid($this);
         }
 
         return $this;
     }
 
-    public function removeHesabdariFile(HesabdariFile $hesabdariFile): self
+    public function removeYear(Year $year): self
     {
-        if ($this->hesabdariFiles->removeElement($hesabdariFile)) {
+        if ($this->years->removeElement($year)) {
             // set the owning side to null (unless already changed)
-            if ($hesabdariFile->getBid() === $this) {
-                $hesabdariFile->setBid(null);
+            if ($year->getBid() === $this) {
+                $year->setBid(null);
             }
         }
 
         return $this;
     }
 
-    public function getNumHesabdari(): ?int
+    public function getSalemaliLabel(): ?string
     {
-        return $this->numHesabdari;
+        return $this->salemaliLabel;
     }
 
-    public function setNumHesabdari(int $numHesabdari): self
+    public function setSalemaliLabel(?string $salemaliLabel): self
     {
-        $this->numHesabdari = $numHesabdari;
-
-        return $this;
-    }
-
-    public function getNumPersons(): ?int
-    {
-        return $this->numPersons;
-    }
-
-    public function setNumPersons(int $numPersons): self
-    {
-        $this->numPersons = $numPersons;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, BanksAccount>
-     */
-    public function getBanksAccounts(): Collection
-    {
-        return $this->banksAccounts;
-    }
-
-    public function addBanksAccount(BanksAccount $banksAccount): self
-    {
-        if (!$this->banksAccounts->contains($banksAccount)) {
-            $this->banksAccounts[] = $banksAccount;
-            $banksAccount->setBussiness($this);
-        }
-
-        return $this;
-    }
-
-    public function removeBanksAccount(BanksAccount $banksAccount): self
-    {
-        if ($this->banksAccounts->removeElement($banksAccount)) {
-            // set the owning side to null (unless already changed)
-            if ($banksAccount->getBussiness() === $this) {
-                $banksAccount->setBussiness(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, PersonRSFile>
-     */
-    public function getPersonRSFiles(): Collection
-    {
-        return $this->personRSFiles;
-    }
-
-    public function addPersonRSFile(PersonRSFile $personRSFile): self
-    {
-        if (!$this->personRSFiles->contains($personRSFile)) {
-            $this->personRSFiles[] = $personRSFile;
-            $personRSFile->setBid($this);
-        }
-
-        return $this;
-    }
-
-    public function removePersonRSFile(PersonRSFile $personRSFile): self
-    {
-        if ($this->personRSFiles->removeElement($personRSFile)) {
-            // set the owning side to null (unless already changed)
-            if ($personRSFile->getBid() === $this) {
-                $personRSFile->setBid(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Commodity>
-     */
-    public function getCommodities(): Collection
-    {
-        return $this->commodities;
-    }
-
-    public function addCommodity(Commodity $commodity): self
-    {
-        if (!$this->commodities->contains($commodity)) {
-            $this->commodities[] = $commodity;
-            $commodity->setBid($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCommodity(Commodity $commodity): self
-    {
-        if ($this->commodities->removeElement($commodity)) {
-            // set the owning side to null (unless already changed)
-            if ($commodity->getBid() === $this) {
-                $commodity->setBid(null);
-            }
-        }
-
-        return $this;
-    }
-
-    public function getNumCommodity(): ?string
-    {
-        return $this->numCommodity;
-    }
-
-    public function setNumCommodity(string $numCommodity): self
-    {
-        $this->numCommodity = $numCommodity;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, BanksTransfer>
-     */
-    public function getBanksTransfers(): Collection
-    {
-        return $this->banksTransfers;
-    }
-
-    public function addBanksTransfer(BanksTransfer $banksTransfer): self
-    {
-        if (!$this->banksTransfers->contains($banksTransfer)) {
-            $this->banksTransfers[] = $banksTransfer;
-            $banksTransfer->setBid($this);
-        }
-
-        return $this;
-    }
-
-    public function removeBanksTransfer(BanksTransfer $banksTransfer): self
-    {
-        if ($this->banksTransfers->removeElement($banksTransfer)) {
-            // set the owning side to null (unless already changed)
-            if ($banksTransfer->getBid() === $this) {
-                $banksTransfer->setBid(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Permission>
-     */
-    public function getPermissions(): Collection
-    {
-        return $this->permissions;
-    }
-
-    public function addPermission(Permission $permission): self
-    {
-        if (!$this->permissions->contains($permission)) {
-            $this->permissions[] = $permission;
-            $permission->setBid($this);
-        }
-
-        return $this;
-    }
-
-    public function removePermission(Permission $permission): self
-    {
-        if ($this->permissions->removeElement($permission)) {
-            // set the owning side to null (unless already changed)
-            if ($permission->getBid() === $this) {
-                $permission->setBid(null);
-            }
-        }
+        $this->salemaliLabel = $salemaliLabel;
 
         return $this;
     }
@@ -653,29 +454,95 @@ class Business
     }
 
     /**
-     * @return Collection<int, IncomeFile>
+     * @return Collection<int, Person>
      */
-    public function getIncomeFiles(): Collection
+    public function getPeople(): Collection
     {
-        return $this->incomeFiles;
+        return $this->people;
     }
 
-    public function addIncomeFile(IncomeFile $incomeFile): self
+    public function addPerson(Person $person): self
     {
-        if (!$this->incomeFiles->contains($incomeFile)) {
-            $this->incomeFiles[] = $incomeFile;
-            $incomeFile->setBid($this);
+        if (!$this->people->contains($person)) {
+            $this->people[] = $person;
+            $person->setBid($this);
         }
 
         return $this;
     }
 
-    public function removeIncomeFile(IncomeFile $incomeFile): self
+    public function removePerson(Person $person): self
     {
-        if ($this->incomeFiles->removeElement($incomeFile)) {
+        if ($this->people->removeElement($person)) {
             // set the owning side to null (unless already changed)
-            if ($incomeFile->getBid() === $this) {
-                $incomeFile->setBid(null);
+            if ($person->getBid() === $this) {
+                $person->setBid(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getNumPersons(): ?string
+    {
+        return $this->numPersons;
+    }
+
+    public function setNumPersons(string $numPersons): self
+    {
+        $this->numPersons = $numPersons;
+
+        return $this;
+    }
+
+    public function getNumHesabdari(): ?string
+    {
+        return $this->numHesabdari;
+    }
+
+    public function setNumHesabdari(string $numHesabdari): self
+    {
+        $this->numHesabdari = $numHesabdari;
+
+        return $this;
+    }
+
+    public function getNumCommodity(): ?string
+    {
+        return $this->numCommodity;
+    }
+
+    public function setNumCommodity(string $numCommodity): self
+    {
+        $this->numCommodity = $numCommodity;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, HesabdariFile>
+     */
+    public function getHesabdariFiles(): Collection
+    {
+        return $this->hesabdariFiles;
+    }
+
+    public function addHesabdariFile(HesabdariFile $hesabdariFile): self
+    {
+        if (!$this->hesabdariFiles->contains($hesabdariFile)) {
+            $this->hesabdariFiles[] = $hesabdariFile;
+            $hesabdariFile->setBid($this);
+        }
+
+        return $this;
+    }
+
+    public function removeHesabdariFile(HesabdariFile $hesabdariFile): self
+    {
+        if ($this->hesabdariFiles->removeElement($hesabdariFile)) {
+            // set the owning side to null (unless already changed)
+            if ($hesabdariFile->getBid() === $this) {
+                $hesabdariFile->setBid(null);
             }
         }
 
@@ -683,149 +550,29 @@ class Business
     }
 
     /**
-     * @return Collection<int, Cost>
+     * @return Collection<int, BanksAccount>
      */
-    public function getCosts(): Collection
+    public function getBanksAccounts(): Collection
     {
-        return $this->costs;
+        return $this->banksAccounts;
     }
 
-    public function addCost(Cost $cost): self
+    public function addBanksAccount(BanksAccount $banksAccount): self
     {
-        if (!$this->costs->contains($cost)) {
-            $this->costs[] = $cost;
-            $cost->setBid($this);
+        if (!$this->banksAccounts->contains($banksAccount)) {
+            $this->banksAccounts[] = $banksAccount;
+            $banksAccount->setBussiness($this);
         }
 
         return $this;
     }
 
-    public function removeCost(Cost $cost): self
+    public function removeBanksAccount(BanksAccount $banksAccount): self
     {
-        if ($this->costs->removeElement($cost)) {
+        if ($this->banksAccounts->removeElement($banksAccount)) {
             // set the owning side to null (unless already changed)
-            if ($cost->getBid() === $this) {
-                $cost->setBid(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, API>
-     */
-    public function getAPIs(): Collection
-    {
-        return $this->aPIs;
-    }
-
-    public function addAPI(API $aPI): self
-    {
-        if (!$this->aPIs->contains($aPI)) {
-            $this->aPIs[] = $aPI;
-            $aPI->setBid($this);
-        }
-
-        return $this;
-    }
-
-    public function removeAPI(API $aPI): self
-    {
-        if ($this->aPIs->removeElement($aPI)) {
-            // set the owning side to null (unless already changed)
-            if ($aPI->getBid() === $this) {
-                $aPI->setBid(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Store>
-     */
-    public function getStores(): Collection
-    {
-        return $this->stores;
-    }
-
-    public function addStore(Store $store): self
-    {
-        if (!$this->stores->contains($store)) {
-            $this->stores[] = $store;
-            $store->setBid($this);
-        }
-
-        return $this;
-    }
-
-    public function removeStore(Store $store): self
-    {
-        if ($this->stores->removeElement($store)) {
-            // set the owning side to null (unless already changed)
-            if ($store->getBid() === $this) {
-                $store->setBid(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Year>
-     */
-    public function getYears(): Collection
-    {
-        return $this->years;
-    }
-
-    public function addYear(Year $year): self
-    {
-        if (!$this->years->contains($year)) {
-            $this->years[] = $year;
-            $year->setBid($this);
-        }
-
-        return $this;
-    }
-
-    public function removeYear(Year $year): self
-    {
-        if ($this->years->removeElement($year)) {
-            // set the owning side to null (unless already changed)
-            if ($year->getBid() === $this) {
-                $year->setBid(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Hbuy>
-     */
-    public function getHbuys(): Collection
-    {
-        return $this->hbuys;
-    }
-
-    public function addHbuy(Hbuy $hbuy): self
-    {
-        if (!$this->hbuys->contains($hbuy)) {
-            $this->hbuys[] = $hbuy;
-            $hbuy->setBid($this);
-        }
-
-        return $this;
-    }
-
-    public function removeHbuy(Hbuy $hbuy): self
-    {
-        if ($this->hbuys->removeElement($hbuy)) {
-            // set the owning side to null (unless already changed)
-            if ($hbuy->getBid() === $this) {
-                $hbuy->setBid(null);
+            if ($banksAccount->getBussiness() === $this) {
+                $banksAccount->setBussiness(null);
             }
         }
 

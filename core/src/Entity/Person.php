@@ -31,17 +31,7 @@ class Person
     private $mobile;
 
     #[ORM\ManyToOne(targetEntity: Business::class, inversedBy: 'people')]
-    #[ORM\JoinColumn(nullable: false)]
     private $bid;
-
-    #[ORM\Column(type: 'bigint')]
-    private $num;
-
-    #[ORM\OneToMany(mappedBy: 'person', targetEntity: PersonRSPerson::class, orphanRemoval: true)]
-    private $personRSPeople;
-
-    #[ORM\OneToMany(mappedBy: 'supplier', targetEntity: Hbuy::class, orphanRemoval: true)]
-    private $hbuys;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $country;
@@ -58,10 +48,15 @@ class Person
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $postalcode;
 
+    #[ORM\Column(type: 'bigint')]
+    private $num;
+
+    #[ORM\OneToMany(mappedBy: 'person', targetEntity: HesabdariItem::class)]
+    private $hesabdariItems;
+
     public function __construct()
     {
-        $this->personRSPeople = new ArrayCollection();
-        $this->hbuys = new ArrayCollection();
+        $this->hesabdariItems = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -141,78 +136,6 @@ class Person
         return $this;
     }
 
-    public function getNum(): ?string
-    {
-        return $this->num;
-    }
-
-    public function setNum(string $num): self
-    {
-        $this->num = $num;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, PersonRSPerson>
-     */
-    public function getPersonRSPeople(): Collection
-    {
-        return $this->personRSPeople;
-    }
-
-    public function addPersonRSPerson(PersonRSPerson $personRSPerson): self
-    {
-        if (!$this->personRSPeople->contains($personRSPerson)) {
-            $this->personRSPeople[] = $personRSPerson;
-            $personRSPerson->setPerson($this);
-        }
-
-        return $this;
-    }
-
-    public function removePersonRSPerson(PersonRSPerson $personRSPerson): self
-    {
-        if ($this->personRSPeople->removeElement($personRSPerson)) {
-            // set the owning side to null (unless already changed)
-            if ($personRSPerson->getPerson() === $this) {
-                $personRSPerson->setPerson(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Hbuy>
-     */
-    public function getHbuys(): Collection
-    {
-        return $this->hbuys;
-    }
-
-    public function addHbuy(Hbuy $hbuy): self
-    {
-        if (!$this->hbuys->contains($hbuy)) {
-            $this->hbuys[] = $hbuy;
-            $hbuy->setSupplier($this);
-        }
-
-        return $this;
-    }
-
-    public function removeHbuy(Hbuy $hbuy): self
-    {
-        if ($this->hbuys->removeElement($hbuy)) {
-            // set the owning side to null (unless already changed)
-            if ($hbuy->getSupplier() === $this) {
-                $hbuy->setSupplier(null);
-            }
-        }
-
-        return $this;
-    }
-
     public function getCountry(): ?string
     {
         return $this->country;
@@ -269,6 +192,48 @@ class Person
     public function setPostalcode(?string $postalcode): self
     {
         $this->postalcode = $postalcode;
+
+        return $this;
+    }
+
+    public function getNum(): ?string
+    {
+        return $this->num;
+    }
+
+    public function setNum(string $num): self
+    {
+        $this->num = $num;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, HesabdariItem>
+     */
+    public function getHesabdariItems(): Collection
+    {
+        return $this->hesabdariItems;
+    }
+
+    public function addHesabdariItem(HesabdariItem $hesabdariItem): self
+    {
+        if (!$this->hesabdariItems->contains($hesabdariItem)) {
+            $this->hesabdariItems[] = $hesabdariItem;
+            $hesabdariItem->setPerson($this);
+        }
+
+        return $this;
+    }
+
+    public function removeHesabdariItem(HesabdariItem $hesabdariItem): self
+    {
+        if ($this->hesabdariItems->removeElement($hesabdariItem)) {
+            // set the owning side to null (unless already changed)
+            if ($hesabdariItem->getPerson() === $this) {
+                $hesabdariItem->setPerson(null);
+            }
+        }
 
         return $this;
     }

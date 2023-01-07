@@ -21,20 +21,23 @@ class HesabdariItem
     #[ORM\JoinColumn(nullable: false)]
     private $code;
 
-    #[ORM\Column(type: 'bigint')]
-    private $bs = 0;
+    #[ORM\Column(type: 'float')]
+    private $bs;
 
-    #[ORM\Column(type: 'bigint')]
-    private $bd = 0;
+    #[ORM\Column(type: 'float')]
+    private $bd;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $des;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    private $type;
-
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $typeData;
+    private $data;
+
+    #[ORM\ManyToOne(targetEntity: Person::class, inversedBy: 'hesabdariItems')]
+    private $person;
+
+    #[ORM\ManyToOne(targetEntity: Commodity::class, inversedBy: 'hesabdariItems')]
+    private $bank;
 
     public function getId(): ?int
     {
@@ -65,24 +68,24 @@ class HesabdariItem
         return $this;
     }
 
-    public function getBs(): ?string
+    public function getBs(): ?float
     {
         return $this->bs;
     }
 
-    public function setBs(string $bs): self
+    public function setBs(float $bs): self
     {
         $this->bs = $bs;
 
         return $this;
     }
 
-    public function getBd(): ?string
+    public function getBd(): ?float
     {
         return $this->bd;
     }
 
-    public function setBd(string $bd): self
+    public function setBd(float $bd): self
     {
         $this->bd = $bd;
 
@@ -101,26 +104,38 @@ class HesabdariItem
         return $this;
     }
 
-    public function getType(): ?string
+    public function getData(): ?string
     {
-        return $this->type;
+        return $this->data;
     }
 
-    public function setType(string $type): self
+    public function setData(?string $data): self
     {
-        $this->type = $type;
+        $this->data = $data;
 
         return $this;
     }
 
-    public function getTypeData(): ?string
+    public function getPerson(): ?Person
     {
-        return $this->typeData;
+        return $this->person;
     }
 
-    public function setTypeData(?string $typeData): self
+    public function setPerson(?Person $person): self
     {
-        $this->typeData = $typeData;
+        $this->person = $person;
+
+        return $this;
+    }
+
+    public function getBank(): ?Commodity
+    {
+        return $this->bank;
+    }
+
+    public function setBank(?Commodity $bank): self
+    {
+        $this->bank = $bank;
 
         return $this;
     }

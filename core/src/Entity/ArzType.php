@@ -18,7 +18,7 @@ class ArzType
     #[ORM\Column(type: 'string', length: 25)]
     private $name;
 
-    #[ORM\Column(type: 'string', length: 5)]
+    #[ORM\Column(type: 'string', length: 10)]
     private $symbol;
 
     #[ORM\Column(type: 'string', length: 15)]
@@ -27,12 +27,20 @@ class ArzType
     #[ORM\Column(type: 'string', length: 255)]
     private $shortLabel;
 
-    #[ORM\OneToMany(mappedBy: 'Arztype', targetEntity: Hbuy::class, orphanRemoval: true)]
-    private $hbuys;
+    #[ORM\OneToMany(mappedBy: 'arzMain', targetEntity: Business::class)]
+    private $businesses;
+
+    #[ORM\OneToMany(mappedBy: 'arzType', targetEntity: HesabdariFile::class, orphanRemoval: true)]
+    private $hesabdariFiles;
+
+    #[ORM\OneToMany(mappedBy: 'arzType', targetEntity: BanksAccount::class, orphanRemoval: true)]
+    private $banksAccounts;
 
     public function __construct()
     {
-        $this->hbuys = new ArrayCollection();
+        $this->businesses = new ArrayCollection();
+        $this->hesabdariFiles = new ArrayCollection();
+        $this->banksAccounts = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -89,29 +97,89 @@ class ArzType
     }
 
     /**
-     * @return Collection<int, Hbuy>
+     * @return Collection<int, Business>
      */
-    public function getHbuys(): Collection
+    public function getBusinesses(): Collection
     {
-        return $this->hbuys;
+        return $this->businesses;
     }
 
-    public function addHbuy(Hbuy $hbuy): self
+    public function addBusiness(Business $business): self
     {
-        if (!$this->hbuys->contains($hbuy)) {
-            $this->hbuys[] = $hbuy;
-            $hbuy->setArztype($this);
+        if (!$this->businesses->contains($business)) {
+            $this->businesses[] = $business;
+            $business->setArzMain($this);
         }
 
         return $this;
     }
 
-    public function removeHbuy(Hbuy $hbuy): self
+    public function removeBusiness(Business $business): self
     {
-        if ($this->hbuys->removeElement($hbuy)) {
+        if ($this->businesses->removeElement($business)) {
             // set the owning side to null (unless already changed)
-            if ($hbuy->getArztype() === $this) {
-                $hbuy->setArztype(null);
+            if ($business->getArzMain() === $this) {
+                $business->setArzMain(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, HesabdariFile>
+     */
+    public function getHesabdariFiles(): Collection
+    {
+        return $this->hesabdariFiles;
+    }
+
+    public function addHesabdariFile(HesabdariFile $hesabdariFile): self
+    {
+        if (!$this->hesabdariFiles->contains($hesabdariFile)) {
+            $this->hesabdariFiles[] = $hesabdariFile;
+            $hesabdariFile->setArzType($this);
+        }
+
+        return $this;
+    }
+
+    public function removeHesabdariFile(HesabdariFile $hesabdariFile): self
+    {
+        if ($this->hesabdariFiles->removeElement($hesabdariFile)) {
+            // set the owning side to null (unless already changed)
+            if ($hesabdariFile->getArzType() === $this) {
+                $hesabdariFile->setArzType(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, BanksAccount>
+     */
+    public function getBanksAccounts(): Collection
+    {
+        return $this->banksAccounts;
+    }
+
+    public function addBanksAccount(BanksAccount $banksAccount): self
+    {
+        if (!$this->banksAccounts->contains($banksAccount)) {
+            $this->banksAccounts[] = $banksAccount;
+            $banksAccount->setArzType($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBanksAccount(BanksAccount $banksAccount): self
+    {
+        if ($this->banksAccounts->removeElement($banksAccount)) {
+            // set the owning side to null (unless already changed)
+            if ($banksAccount->getArzType() === $this) {
+                $banksAccount->setArzType(null);
             }
         }
 
