@@ -102,6 +102,9 @@ class Business
     #[ORM\OneToMany(mappedBy: 'bussiness', targetEntity: BanksAccount::class, orphanRemoval: true)]
     private $banksAccounts;
 
+    #[ORM\OneToMany(mappedBy: 'bid', targetEntity: Commodity::class, orphanRemoval: true)]
+    private $commodities;
+
     public function __construct()
     {
         $this->permissions = new ArrayCollection();
@@ -116,6 +119,7 @@ class Business
         $this->setNumCommodity(0);
         $this->hesabdariFiles = new ArrayCollection();
         $this->banksAccounts = new ArrayCollection();
+        $this->commodities = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -573,6 +577,36 @@ class Business
             // set the owning side to null (unless already changed)
             if ($banksAccount->getBussiness() === $this) {
                 $banksAccount->setBussiness(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Commodity>
+     */
+    public function getCommodities(): Collection
+    {
+        return $this->commodities;
+    }
+
+    public function addCommodity(Commodity $commodity): self
+    {
+        if (!$this->commodities->contains($commodity)) {
+            $this->commodities[] = $commodity;
+            $commodity->setBid($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCommodity(Commodity $commodity): self
+    {
+        if ($this->commodities->removeElement($commodity)) {
+            // set the owning side to null (unless already changed)
+            if ($commodity->getBid() === $this) {
+                $commodity->setBid(null);
             }
         }
 

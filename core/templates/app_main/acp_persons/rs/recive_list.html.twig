@@ -1,0 +1,72 @@
+<script>
+    function deletePerson(id){
+        Swal.fire({
+            title: 'حذف',
+            text: "آیا برای حذف مطمئن هستید؟",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                coreLoading(true)
+                $.ajax({
+                    type: "POST",
+                    url: Routing.generate('acpPersonRessendDelete',{'id':id}),
+                    success: function(data)
+                    {
+                        if(data.result == 1){
+                            coreLoading(false)
+                            Swal.fire(
+                                'حذف',
+                                'با موفقیت حذف شد.',
+                                'success'
+                            )
+                            $('tr.' + id).remove();
+                        }
+                        else{
+                            Swal.fire(
+                                'حذف',
+                                'شخص به دلیل داشتن تراکنش قابل حذف نیست.',
+                                'error'
+                            )
+                        }
+                    }
+                });
+            }
+        })
+    }
+</script>
+<div class="table-responsive">
+    {% if files | length != 0 %}
+        <table id="dataTable" class="table table-sm dtd text-center">
+            <caption>لیست دریافت‌ها و پرداخت‌ها</caption>
+            <thead>
+            <tr>
+                <th># کد</th>
+                <th>تاریخ</th>
+                <th>شرح</th>
+                <th>مبلغ</th>
+                <th>بیشتر</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for file in files %}
+                <tr class="{{ file.id }}">
+                    <td>{{ loop.index }}</td>
+                    <td>{{ Jdate.jdate('Y/n/d',file.date) }}</td>
+                    <td>{{ file.des }}</td>
+                    <td>{{ hesabdari.getHesabdariFileBalance(file) | number_format }}</td>
+                    <td>
+                        <a class="text-danger" onclick="deletePerson({{ file.id }})"><i class="bi bi-trash"></i></a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div class="alert alert-primary" role="alert">
+            تراکنشی وجود ندارد.
+        </div>
+    {% endif %}
+</div>

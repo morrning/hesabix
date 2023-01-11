@@ -2,30 +2,30 @@
 
 namespace App\Repository;
 
-use App\Entity\Commodity;
+use App\Entity\CommodityUnit;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @method Commodity|null find($id, $lockMode = null, $lockVersion = null)
- * @method Commodity|null findOneBy(array $criteria, array $orderBy = null)
- * @method Commodity[]    findAll()
- * @method Commodity[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method CommodityUnit|null find($id, $lockMode = null, $lockVersion = null)
+ * @method CommodityUnit|null findOneBy(array $criteria, array $orderBy = null)
+ * @method CommodityUnit[]    findAll()
+ * @method CommodityUnit[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class CommodityRepository extends ServiceEntityRepository
+class CommodityUnitRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Commodity::class);
+        parent::__construct($registry, CommodityUnit::class);
     }
 
     /**
      * @throws ORMException
      * @throws OptimisticLockException
      */
-    public function add(Commodity $entity, bool $flush = true): void
+    public function add(CommodityUnit $entity, bool $flush = true): void
     {
         $this->_em->persist($entity);
         if ($flush) {
@@ -37,7 +37,7 @@ class CommodityRepository extends ServiceEntityRepository
      * @throws ORMException
      * @throws OptimisticLockException
      */
-    public function remove(Commodity $entity, bool $flush = true): void
+    public function remove(CommodityUnit $entity, bool $flush = true): void
     {
         $this->_em->remove($entity);
         if ($flush) {
@@ -46,7 +46,7 @@ class CommodityRepository extends ServiceEntityRepository
     }
 
     // /**
-    //  * @return Commodity[] Returns an array of Commodity objects
+    //  * @return CommodityUnit[] Returns an array of CommodityUnit objects
     //  */
     /*
     public function findByExampleField($value)
@@ -63,7 +63,7 @@ class CommodityRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?Commodity
+    public function findOneBySomeField($value): ?CommodityUnit
     {
         return $this->createQueryBuilder('c')
             ->andWhere('c.exampleField = :val')
@@ -73,15 +73,4 @@ class CommodityRepository extends ServiceEntityRepository
         ;
     }
     */
-
-    public function getListAll($bid)
-    {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.bid = :val')
-            ->setParameter('val', $bid)
-            ->orderBy('p.id', 'ASC')
-            ->getQuery()
-            ->getResult()
-            ;
-    }
 }

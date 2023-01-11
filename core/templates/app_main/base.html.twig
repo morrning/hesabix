@@ -146,9 +146,15 @@
                             {% endif %}
                             {% if permission.permission('personRSAdd',bidObject,app.user) or  permission.permission('personRSDelete',bidObject,app.user) %}
                                 <li class="nav-item">
-                                    <a href="javascript:loadComponent(Routing.generate('acp_rs_list'))" class="nav-link float-start {% if permission.permission('personRSDelete',bidObject,app.user) == false %} disabled {% endif %}">دریافت و پرداخت</a>
+                                    <a href="javascript:loadComponent(Routing.generate('acp_recive_list'))" class="nav-link float-start {% if permission.permission('personRSDelete',bidObject,app.user) == false %} disabled {% endif %}">دریافت</a>
                                     {% if permission.permission('personRSAdd',bidObject,app.user) %}
-                                        <a href="javascript:loadComponent(Routing.generate('acpPersonReciveSendNew'))" class="nav-link float-end"><i class="bi bi-plus-circle-fill"></i></a>
+                                        <a href="javascript:loadComponent(Routing.generate('acpPersonReciveNew'))" class="nav-link float-end"><i class="bi bi-plus-circle-fill"></i></a>
+                                    {% endif %}
+                                </li>
+                                <li class="nav-item">
+                                    <a href="javascript:loadComponent(Routing.generate('acp_recive_list'))" class="nav-link float-start {% if permission.permission('personRSDelete',bidObject,app.user) == false %} disabled {% endif %}">پرداخت</a>
+                                    {% if permission.permission('personRSAdd',bidObject,app.user) %}
+                                        <a href="javascript:loadComponent(Routing.generate('acpPersonReciveNew'))" class="nav-link float-end"><i class="bi bi-plus-circle-fill"></i></a>
                                     {% endif %}
                                 </li>
                             {% endif %}

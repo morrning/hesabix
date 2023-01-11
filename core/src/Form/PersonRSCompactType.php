@@ -22,18 +22,6 @@ class PersonRSCompactType extends AbstractType
                 'data-sb-validations'=>'required',
                 'id'=>'date'
             ]])
-            ->add('RS',ChoiceType::class,[
-                'multiple'=>false,
-                'expanded'=>true,
-                'choices'  => [
-                    'دریافت از شخص' => true,
-                    'پرداخت به شخص' => false,
-                ],
-                'data'=>true,
-                'attr'=>[
-                    'class'=>'float-start'
-                ]
-            ])
             ->add('person', EntityType::class, [
                 'class' => \App\Entity\Person::class,
                 'choice_label' => 'nikename',

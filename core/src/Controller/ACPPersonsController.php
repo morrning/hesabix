@@ -17,6 +17,7 @@ use App\Service\kernel;
 use App\Service\pdfMGR;
 use App\Service\permission;
 use Doctrine\ORM\EntityManagerInterface;
+use Proxies\__CG__\App\Entity\HesabdariFile;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -235,8 +236,8 @@ class ACPPersonsController extends AbstractController
         );
     }
 
-    #[Route('/app/person/ressend/new', name: 'acpPersonReciveSendNew', options: ["expose"=>true])]
-    public function acpPersonReciveSendNew(Log $log,permission $permission,Request $request,hesabdari $hesabdari,EntityManagerInterface $entityManager,kernel $kernel): Response
+    #[Route('/app/person/recive/new', name: 'acpPersonReciveNew', options: ["expose"=>true])]
+    public function acpPersonReciveNew(Log $log,permission $permission,Request $request,hesabdari $hesabdari,EntityManagerInterface $entityManager,kernel $kernel): Response
     {
         if(! $permission->hasPermission('personRSAdd',$this->bidObject,$this->getUser()))
             throw $this->createAccessDeniedException();
@@ -273,7 +274,7 @@ class ACPPersonsController extends AbstractController
         }
         $rs = ['test'];
         $form = $this->createForm(PersonRSCompactType::class,$rs,[
-            'action'=>$this->generateUrl('acpPersonReciveSendNew'),
+            'action'=>$this->generateUrl('acpPersonReciveNew'),
             'bid'=>$this->bid
         ]);
 
@@ -290,69 +291,42 @@ class ACPPersonsController extends AbstractController
                 return $this->json($response);
             }
 
-            //first create person;
-            $personFile = new PersonRSFile();
-            $personFile->setSubmitter($this->getUser());
-            $personFile->setDateSubmit(time());
-            $personFile->setBid($this->bidObject);
-            $personFile->setDes($form->get('des')->getData());
-            $personFile->setDateSave($form->get('dateSave')->getData());
-            $personFile->setRS($form->get('RS')->getData());
-            $personFile->setYear($year);
-            $entityManager->persist($personFile);
+            $file = new HesabdariFile;
+            $file->setType('person_recive');
+            $file->setArzType($this->bidObject->getArzMain());
+            $file->setBid($this->bidObject);
+            $file->setCanEdit(false);
+            $file->setDate(time());
+            $file->setSubmitter($this->getUser());
+            $file->setYear($this->activeYearObject);
+            $file->setDes($form->get('des')->getData());
+            $entityManager->persist($file);
             $entityManager->flush();
-            $personPerson = new PersonRSPerson();
-            $personPerson->setAmount($form->get('amount')->getData());
-            $personPerson->setPerson($form->get('person')->getData());
-            $personPerson->setFile($personFile);
-            $entityManager->persist($personPerson);
+
+            //set person part with code 14001
+            $table = $entityManager->getRepository('App:HesabdariTable')->findOneBy(['code' => 14001]);
+            $h1 = new HesabdariItem();
+            $h1->setBs($form->get('amount')->getData());
+            $h1->setFile($file);
+            $h1->setPerson($form->get('person')->getData());
+            $h1->setCode($table);
+            $h1->setDes($table->getName() . ' : ' . $form->get('person')->getData()->getNikeName());
+            $entityManager->persist($h1);
             $entityManager->flush();
-            $personOther = new PersonRSOther();
-            $personOther->setFile($personFile);
-            $personOther->setAmount($form->get('amount')->getData());
-            $personOther->setData($form->get('data')->getData()->getId());
-            $personOther->setType($form->get('type')->getData());
-            $personOther->setBank($form->get('data')->getData());
-            $entityManager->persist($personOther);
+
+            //set bank part with code 14002
+            $table = $entityManager->getRepository('App:HesabdariTable')->findOneBy(['code' => 14002]);
+            $h2 = new HesabdariItem();
+            $h2->setBd($form->get('amount')->getData());
+            $h2->setFile($file);
+            $h2->setBank($form->get('data')->getData());
+            $h2->setCode($table);
+            $h2->setDes($table->getName() . ' : ' . $form->get('data')->getData()->getName());
+            $entityManager->persist($h2);
             $entityManager->flush();
-            //add hesabdari file
-            $ref = 'rs:' . $this->bid . ':' . $personFile->getId();
-            $pitem = new HesabdariItem();
-            $oitem = new HesabdariItem();
-            $pitem->setType('person');
-            $pitem->setTypeData($personPerson->getPerson()->getId());
-            $pitem->setDes($personPerson->getPerson()->getNikeName());
-            $oitem->setType('bank');
-            $oitem->setTypeData($personOther->getBank()->getId());
-            if($personFile->getRS()){
-                $pitem->setDes('دریافت وجه از ' . $personPerson->getPerson()->getNikeName() . ' : ' . $personFile->getDes());
-                $pitem->setBs($form->get('amount')->getData());
-                $pitem->setBd(0);
-                $oitem->setBs(0);
-                $oitem->setBd($form->get('amount')->getData());
-                $pitem->setCode($entityManager->getRepository('App:HesabdariTable')->findOneBy(['code'=>15001]));
-            }
-            else{
-                $pitem->setBs(0);
-                $pitem->setBd($form->get('amount')->getData());
-                $oitem->setBs($form->get('amount')->getData());
-                $oitem->setBd(0);
-                $pitem->setDes('پرداخت وجه به ' . $personPerson->getPerson()->getNikeName() . ' : ' . $personFile->getDes());
-                $pitem->setCode($entityManager->getRepository('App:HesabdariTable')->findOneBy(['code'=>18002]));
-
-            }
-
-
-            $oitem->setCode($entityManager->getRepository('App:HesabdariTable')->findOneBy(['code'=>10001]));
-            $oitem->setDes($pitem->getDes());
-
-            $des = 'دریافت و پرداخت از اشخاص : ' . $personPerson->getPerson()->getNikeName() . ' شرح: ' . $personFile->getDes();
-            $personFile->setHesab(
-                $hesabdari->insertNewDoc($this->getUser(),$personFile->getDateSave(),$des,$this->bidObject,$ref,[$pitem,$oitem])
-            );
-            $entityManager->persist($personFile);
-            $entityManager->flush();
-            $log->add($this->bidObject,$this->getUser(),'web','اشخاص','افزودن دریافت و پرداخت ');
+            
+            //add log
+            $log->add($this->bidObject,$this->getUser(),'web','اشخاص','افزودن دریافت از اشخاص');
 
             $response = [];
             $response['result'] = 1;
@@ -361,7 +335,7 @@ class ACPPersonsController extends AbstractController
                 'confirmButtonText'=>'قبول',
                 'icon'=>'success'
             ];
-            $response['component'] = $this->generateUrl('acp_rs_list');
+            $response['component'] = $this->generateUrl('acp_recive_list');
             return $this->json($response);
         }
         return $this->json(
@@ -371,25 +345,25 @@ class ACPPersonsController extends AbstractController
                 ]),
                 'topView' => $this->render('app_main/acp_persons/rs/buttons.html.twig'),
 
-                'title'=>'دریافت و پرداخت جدید'
+                'title'=>'دریافت از اشخاص'
 
             ]
         );
     }
 
-    #[Route('/app/person/resend/list', name: 'acp_rs_list', options: ["expose"=>true])]
-    public function acp_rs_list(permission $permission,Request $request, EntityManagerInterface $entityManager,kernel $kernel): Response
+    #[Route('/app/person/recive/list', name: 'acp_recive_list', options: ["expose"=>true])]
+    public function acp_recive_list(permission $permission,Request $request, EntityManagerInterface $entityManager,kernel $kernel): Response
     {
         if(! $permission->hasPermission('personRSDelete',$this->bidObject,$this->getUser()))
             throw $this->createAccessDeniedException();
         //echo $this->activeYear->getId();
         return $this->json(
             [
-                'view'=>$this->render('app_main/acp_persons/rs/list.html.twig', [
-                    'files' => $entityManager->getRepository('App:PersonRSFile')->getListAll($this->bid,$this->activeYear)
+                'view'=>$this->render('app_main/acp_persons/rs/recive_list.html.twig', [
+                    'files' => $entityManager->getRepository('App:HesabdariFile')->getListAll($this->bid,$this->activeYear)
                 ]),
                 'topView' => $this->render('app_main/acp_persons/rs/buttons.html.twig'),
-                'title'=>'دریافت و پرداخت‌ها'
+                'title'=>'لیست دریافت از اشخاص'
             ]
         );
     }

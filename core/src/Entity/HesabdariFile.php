@@ -34,8 +34,8 @@ class HesabdariFile
     #[ORM\Column(type: 'string', length: 50)]
     private $date;
 
-    #[ORM\Column(type: 'bigint')]
-    private $num;
+    #[ORM\Column(type: 'string', length: 50)]
+    private $num = 0;
 
     #[ORM\Column(type: 'string', length: 255)]
     private $des;
@@ -45,6 +45,9 @@ class HesabdariFile
 
     #[ORM\Column(type: 'boolean', nullable: true)]
     private $canEdit;
+
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private $type;
 
     public function __construct()
     {
@@ -178,6 +181,18 @@ class HesabdariFile
     public function setCanEdit(?bool $canEdit): self
     {
         $this->canEdit = $canEdit;
+
+        return $this;
+    }
+
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    public function setType(?string $type): self
+    {
+        $this->type = $type;
 
         return $this;
     }

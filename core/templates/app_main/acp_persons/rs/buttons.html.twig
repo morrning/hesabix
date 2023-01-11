@@ -1,8 +1,8 @@
 {% if permission.PermissionInCurrentBusiness('personRSAdd',app.session.get('bid'),app.user) %}
-    <a title="دریافت و پرداخت جدید" class="bi bi-plus-circle-fill mx-1 bi-top text-light" href="javascript:loadComponent('{{ path('acpPersonReciveSendNew') }}');"></a>
+
 {% endif %}
 {% if permission.PermissionInCurrentBusiness('personRSDelete',app.session.get('bid'),app.user) %}
-    <a title="لیست" class="bi bi-list-check mx-1 bi-top text-light" href="javascript:loadComponent('{{ path('acp_rs_list') }}');"></a>
+    <a title="لیست دریافت‌ها" class="bi bi-list-check mx-1 bi-top text-light" href="javascript:loadComponent('{{ path('acp_recive_list') }}');"></a>
 {% endif %}
 {% if permission.PermissionInCurrentBusiness('personRSPrint',app.session.get('bid'),app.user) %}
     <a title="چاپ لیست" target="_blank" href="{{ path('app_person_rs_list_print') }}" class="bi bi-printer-fill mx-1 bi-top text-light"></a>

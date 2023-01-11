@@ -22,10 +22,10 @@ class HesabdariItem
     private $code;
 
     #[ORM\Column(type: 'float')]
-    private $bs;
+    private $bs = 0;
 
     #[ORM\Column(type: 'float')]
-    private $bd;
+    private $bd = 0;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $des;
@@ -36,7 +36,7 @@ class HesabdariItem
     #[ORM\ManyToOne(targetEntity: Person::class, inversedBy: 'hesabdariItems')]
     private $person;
 
-    #[ORM\ManyToOne(targetEntity: Commodity::class, inversedBy: 'hesabdariItems')]
+    #[ORM\ManyToOne(targetEntity: BanksAccount::class, inversedBy: 'hesabdariItems')]
     private $bank;
 
     public function getId(): ?int
@@ -128,12 +128,12 @@ class HesabdariItem
         return $this;
     }
 
-    public function getBank(): ?Commodity
+    public function getBank(): ?BanksAccount
     {
         return $this->bank;
     }
 
-    public function setBank(?Commodity $bank): self
+    public function setBank(?BanksAccount $bank): self
     {
         $this->bank = $bank;
 

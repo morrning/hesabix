@@ -62,4 +62,13 @@ private $kernel;
             'typeData'=>$params[2]
         ]);
     }
+
+    public function getHesabdariFileBalance(HesabdariFile $file): int{
+        $items = $this->em->getRepository('App:HesabdariItem')->findBy(['file' => $file]);
+        $amount = 0;
+        foreach($items as $item){
+            $amount += $item->getBs();
+        }
+        return $amount;
+    }
 }

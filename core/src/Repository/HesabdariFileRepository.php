@@ -73,4 +73,17 @@ class HesabdariFileRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function getListAll($bid,$year)
+    {
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.bid = :val')
+            ->andWhere('p.year = :year')
+            ->setParameter('val', $bid)
+            ->setParameter('year', $year)
+            ->orderBy('p.id', 'ASC')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
 }
