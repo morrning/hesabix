@@ -35,7 +35,7 @@ class BankController extends AbstractController
         if(!$this->bid){
             throw $this->createNotFoundException();
         }
-        $this->bidObject = $entityManager->getRepository('App:Business')->find($this->bid);
+        $this->bidObject = $entityManager->getRepository(\App\Entity\Business::class)->find($this->bid);
         if (! $this->bidObject)
             throw $this->createNotFoundException();
         $this->activeYear = $kernel->checkActiveYear($this->request);
@@ -53,7 +53,7 @@ class BankController extends AbstractController
             return $this->json(
                 [
                     'view'=>$this->render('app_main/bank/list.html.twig', [
-                        'banks' => $entityManager->getRepository('App:BanksAccount')->getListAll($this->bid),
+                        'banks' => $entityManager->getRepository(\App\Entity\BanksAccount::class)->getListAll($this->bid),
                         'bid'=> $this->bid
                     ]),
                     'topView' => $this->render('app_main/bank/topButtons/buttons.html.twig'),
@@ -69,7 +69,7 @@ class BankController extends AbstractController
     {
         if( $permission->hasPermission('bankPrint',$this->bidObject,$this->getUser()) )
         {
-            $bank = $entityManager->getRepository('App:BanksAccount')->find($id);
+            $bank = $entityManager->getRepository(\App\Entity\BanksAccount::class)->find($id);
             if(! $bank)
                 throw $this->createNotFoundException();
             if($bank->getBussiness() != $this->bidObject)
@@ -135,7 +135,7 @@ class BankController extends AbstractController
     {
         if(! $permission->hasPermission('bankEdit',$this->bidObject,$this->getUser()))
             throw $this->createAccessDeniedException();
-        $bank = $entityManager->getRepository('App:BanksAccount')->find($id);
+        $bank = $entityManager->getRepository(\App\Entity\BanksAccount::class)->find($id);
         if(!$bank)
             throw $this->createNotFoundException();
 
@@ -174,7 +174,7 @@ class BankController extends AbstractController
     {
         if(! $permission->hasPermission('bankDelete',$this->bidObject,$this->getUser()))
             throw $this->createAccessDeniedException();
-        $bank = $entityManager->getRepository('App:BanksAccount')->find($id);
+        $bank = $entityManager->getRepository(\App\Entity\BanksAccount::class)->find($id);
         if($bank){
             if($this->bidObject->getOwner() == $this->getUser()){
                 $canDelete = true;

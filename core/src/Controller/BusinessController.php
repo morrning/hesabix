@@ -18,7 +18,7 @@ class BusinessController extends AbstractController
     public function app_main(EntityManagerInterface $entityManager): Response
     {
         $buss = $this->getUser()->getBusinesses();
-        $perms = $entityManager->getRepository('App:Permission')->getPermissionsbyUser($this->getUser());
+        $perms = $entityManager->getRepository(\App\Entity\Permission::class)->getPermissionsbyUser($this->getUser());
         foreach ($perms as $perm)
             $buss[] = $perm->getBid();
         return $this->render('app_main/main.html.twig', [
@@ -30,7 +30,7 @@ class BusinessController extends AbstractController
     public function app_business_list(EntityManagerInterface $entityManager): Response
     {
         $buss = $this->getUser()->getBusinesses();
-        $perms = $entityManager->getRepository('App:Permission')->getPermissionsbyUser($this->getUser());
+        $perms = $entityManager->getRepository(\App\Entity\Permission::class)->getPermissionsbyUser($this->getUser());
         foreach ($perms as $perm)
             $buss[] = $perm->getBid();
         return $this->json([
@@ -53,7 +53,7 @@ class BusinessController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             //check user has business later
-            $bes = $entityManager->getRepository('App:Business')->findOneBy(['owner'=>$this->getUser()]);
+            $bes = $entityManager->getRepository(\App\Entity\Business::class)->findOneBy(['owner'=>$this->getUser()]);
             if($bes){
                 $response['result'] = 0;
                 $response['swal'] = [
@@ -101,13 +101,13 @@ class BusinessController extends AbstractController
     #[Route('/app/business/view/{id}', name: 'app_business')]
     public function app_business($id,Request $request, EntityManagerInterface $entityManager): Response
     {
-        $bid = $entityManager->find('App:Business',$id);
+        $bid = $entityManager->find(\App\Entity\Business::class,$id);
         if(is_null($bid))
             throw $this->createNotFoundException();
 
         $session = $request->getSession();
         $session->set('bid',$id);
-        $year = $entityManager->getRepository('App:Year')->findOneBy(['active'=>true,'bid'=>$bid]);
+        $year = $entityManager->getRepository(\App\Entity\Year::class)->findOneBy(['active'=>true,'bid'=>$bid]);
         if(! $year){
             $year = new Year();
             $year->setActive(true);
@@ -119,18 +119,18 @@ class BusinessController extends AbstractController
             $entityManager->flush();
         }
         if($session->get('activeYear') == null){
-            $yearSelected = $entityManager->getRepository('App:Year')->findOneBy(['active'=>true,'bid'=>$bid]);
+            $yearSelected = $entityManager->getRepository(\App\Entity\Year::class)->findOneBy(['active'=>true,'bid'=>$bid]);
             $session->set('activeYear',$year->getId());
         }
         else{
-            $yearSelected = $entityManager->getRepository('App:Year')->findOneBy(['id'=>$session->get('activeYear'),'bid'=>$bid]);
+            $yearSelected = $entityManager->getRepository(\App\Entity\Year::class)->findOneBy(['id'=>$session->get('activeYear'),'bid'=>$bid]);
         }
 
         return $this->render('app_main/base.html.twig', [
             'bid' => $id,
             'year'=>$year,
             'yearSelected' => $yearSelected,
-            'yrs'=>$entityManager->getRepository('App:Year')->findBy(['bid'=>$bid])
+            'yrs'=>$entityManager->getRepository(\App\Entity\Year::class)->findBy(['bid'=>$bid])
         ]);
     }
 }
