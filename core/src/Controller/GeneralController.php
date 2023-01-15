@@ -16,11 +16,11 @@ class GeneralController extends AbstractController
             return $this->redirectToRoute('app_main');
         return $this->render('general/home.html.twig', [
             'stat' => [
-                'users'=>$entityManager->getRepository('App:User')->count([]),
-                'bid'=>$entityManager->getRepository('App:Business')->count([]),
-                'doc'=>$entityManager->getRepository('App:HesabdariFile')->count([]),
-                'com'=>$entityManager->getRepository('App:Commodity')->count([]),
-                'lastbid'=>$entityManager->getRepository('App:Business')->findLast()
+                'users'=>$entityManager->getRepository(\App\Entity\User::class)->count([]),
+                'bid'=>$entityManager->getRepository(\App\Entity\Business::class)->count([]),
+                'doc'=>$entityManager->getRepository(\App\Entity\HesabdariFile::class)->count([]),
+                'com'=>$entityManager->getRepository(\App\Entity\Commodity::class)->count([]),
+                'lastbid'=>$entityManager->getRepository(\App\Entity\Business::class)->findLast()
             ],
         ]);
     }

@@ -15,7 +15,7 @@
                             <li>
                                 <a href="{{ path('app_main') }}">
                                     تعداد کسب‌و‌کارها:
-                                    {{ EntityMGR.findBy('App:Business',{'owner':app.user}) | length }}
+                                    {{ EntityMGR.findBy('\\App\\Entity\\Business',{'owner':app.user}) | length }}
                                 </a>
                             </li>
                             <li>

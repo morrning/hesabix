@@ -27,7 +27,7 @@ class CommodityController extends AbstractController
         if(!$this->bid){
             throw $this->createNotFoundException();
         }
-        $this->bidObject = $entityManager->getRepository('App:Business')->find($this->bid);
+        $this->bidObject = $entityManager->getRepository(\App\Entity\Business::class)->find($this->bid);
         if (! $this->bidObject)
             throw $this->createNotFoundException();
     }
@@ -53,7 +53,7 @@ class CommodityController extends AbstractController
                 ];
                 return $this->json($response);
             }
-            $commodity->setCode($entityManager->getRepository('App:Business')->getNewNumberCommodity($this->bid));
+            $commodity->setCode($entityManager->getRepository(\App\Entity\Business::class)->getNewNumberCommodity($this->bid));
             $commodity->setBid($this->bidObject);
             $entityManager->persist($commodity);
             $entityManager->flush();
@@ -86,7 +86,7 @@ class CommodityController extends AbstractController
     {
         if(! $permission->hasPermission('commodityEdit',$this->bidObject,$this->getUser()))
             throw $this->createAccessDeniedException();
-        $commodity = $entityManager->getRepository('App:Commodity')->find($id);
+        $commodity = $entityManager->getRepository(\App\Entity\Commodity::class)->find($id);
         if(! $commodity)
             return $this->json(['result'=>0]);
 
@@ -105,7 +105,7 @@ class CommodityController extends AbstractController
     {
         if(! $permission->hasPermission('commodityEdit',$this->bidObject,$this->getUser()))
             throw $this->createAccessDeniedException();
-        $commodity = $entityManager->getRepository('App:Commodity')->find($id);
+        $commodity = $entityManager->getRepository(\App\Entity\Commodity::class)->find($id);
         if(! $commodity)
             throw $this->createNotFoundException();
 
@@ -148,7 +148,7 @@ class CommodityController extends AbstractController
             return $this->json(
                 [
                     'view'=>$this->render('app_main/commodity/list.html.twig', [
-                        'comms' => $entityManager->getRepository('App:Commodity')->getListAll($this->bid)
+                        'comms' => $entityManager->getRepository(\App\Entity\Commodity::class)->getListAll($this->bid)
                     ]),
                     'topView' => $this->render('app_main/commodity/topButtons/buttons.html.twig'),
                     'title'=>'کالاها و خدمات'
@@ -164,7 +164,7 @@ class CommodityController extends AbstractController
     {
         if(! $permission->hasPermission('commodityDelete',$this->bidObject,$this->getUser()))
             throw $this->createAccessDeniedException();
-        $person = $entityManager->getRepository('App:Commodity')->find($id);
+        $person = $entityManager->getRepository(\App\Entity\Commodity::class)->find($id);
         if($person){
             if($this->bidObject->getOwner() == $this->getUser()){
                 $entityManager->remove($person);

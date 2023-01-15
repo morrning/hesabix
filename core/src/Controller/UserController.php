@@ -166,7 +166,7 @@ class UserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $user = $entityManager->getRepository('App:User')->findOneBy(['email'=>$form->get('email')->getData()]);
+            $user = $entityManager->getRepository(\App\Entity\User::class)->findOneBy(['email'=>$form->get('email')->getData()]);
             if($user){
                 $token = $this->RandomString(250);
                 $user->setResetToken($token);
@@ -195,7 +195,7 @@ class UserController extends AbstractController
     #[Route('/reset-password/{token}', name: 'app_user_reset_password')]
     public function app_user_reset_password($token,MailerInterface $mailer,Request $request,EntityManagerInterface $entityManager,UserPasswordHasherInterface $userPasswordHasher): Response
     {
-        $user = $entityManager->getRepository('App:User')->findOneBy(['resetToken'=>$token]);
+        $user = $entityManager->getRepository(\App\Entity\User::class)->findOneBy(['resetToken'=>$token]);
         if(!$user)
             throw $this->createNotFoundException();
         if($user->getResetValidTime() < time())

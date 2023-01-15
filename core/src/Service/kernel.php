@@ -36,7 +36,7 @@ class kernel extends AbstractController
         else
             $session = $this->request->getSession();
 
-        return $this->em->getRepository('App:Year')->find($session->get('activeYear'));
+        return $this->em->getRepository(\App\Entity\Year::class)->find($session->get('activeYear'));
     }
     public function msgNotActiveYear(){
         $response = [];

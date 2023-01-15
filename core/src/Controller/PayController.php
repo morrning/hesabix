@@ -45,7 +45,7 @@ class PayController extends AbstractController
                     $pay->setAmount(250000);
                     $pay->setVerifyCode($result['data']['authority']);
                     $pay->setStatus(0);
-                    $entityManager->getRepository('App:Pay')->add($pay);
+                    $entityManager->getRepository(\App\Entity\Pay::class)->add($pay);
                     return $this->redirect('https://www.zarinpal.com/pg/StartPay/' . $result['data']["authority"]);
                 }
             } else {
@@ -62,7 +62,7 @@ class PayController extends AbstractController
     {
         $Authority = $request->get('Authority');
         $status = $request->get('Status');
-        $req = $entityManager->getRepository('App:Pay')->findOneBy(['verifyCode'=>$Authority]);
+        $req = $entityManager->getRepository(\App\Entity\Pay::class)->findOneBy(['verifyCode'=>$Authority]);
         $data = array("merchant_id" => "a7804652-1fb9-4b43-911c-0a1046e61be1", "authority" => $Authority, "amount" => $req->getAmount());
         $jsonData = json_encode($data);
         $ch = curl_init('https://api.zarinpal.com/pg/v4/payment/verify.json');
@@ -95,7 +95,7 @@ class PayController extends AbstractController
                     $entityManager->flush();
 
                     //run commands on server
-                    $user = $entityManager->getRepository('App:User')->find($this->getUser()->getId());
+                    $user = $entityManager->getRepository(\App\Entity\User::class)->find($this->getUser()->getId());
                     $user->setAdsBan(true);
                     $user->setAdsBanExpire(time() + 31536000 );
                     $entityManager->persist($user);
@@ -109,7 +109,7 @@ class PayController extends AbstractController
     #[Route('/app/user/buy/history', name: 'app_user_buy_history')]
     public function shopHistory(EntityManagerInterface $entityManager): Response
     {
-        $items = $entityManager->getRepository('App:Pay')->findBy(['user'=>$this->getUser()],['id'=>'DESC']);
+        $items = $entityManager->getRepository(\App\Entity\Pay::class)->findBy(['user'=>$this->getUser()],['id'=>'DESC']);
         return $this->render('/buy/history.html.twig', [
             'items' => $items,
 

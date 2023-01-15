@@ -74,13 +74,15 @@ class HesabdariFileRepository extends ServiceEntityRepository
     }
     */
 
-    public function getListAll($bid,$year)
+    public function getListAll($bid,$year,String $type = null)
     {
         return $this->createQueryBuilder('p')
             ->andWhere('p.bid = :val')
             ->andWhere('p.year = :year')
+            ->andWhere('p.type = :type')
             ->setParameter('val', $bid)
             ->setParameter('year', $year)
+            ->setParameter('type', $type)
             ->orderBy('p.id', 'ASC')
             ->getQuery()
             ->getResult()

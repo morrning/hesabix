@@ -40,14 +40,14 @@ class ACPPersonsController extends AbstractController
         if(!$this->bid){
             throw $this->createNotFoundException();
         }
-        $this->bidObject = $entityManager->getRepository('App:Business')->find($this->bid);
+        $this->bidObject = $entityManager->getRepository(\App\Entity\Business::class)->find($this->bid);
         if (! $this->bidObject)
             throw $this->createNotFoundException();
         $this->activeYear = $kernel->checkActiveYear($this->request);
         if(!$this->activeYear){
             throw $this->createNotFoundException();
         }
-        $this->activeYearObject = $entityManager->getRepository('App:Year')->find($this->activeYear);
+        $this->activeYearObject = $entityManager->getRepository(\App\Entity\Year::class)->find($this->activeYear);
     }
 
     #[Route('/app/persons', name: 'acpPersons', options: ["expose"=>true])]
@@ -62,7 +62,7 @@ class ACPPersonsController extends AbstractController
             return $this->json(
                 [
                     'view'=>$this->render('app_main/acp_persons/list.html.twig', [
-                        'persons' => $entityManager->getRepository('App:Person')->getListAll($bid)
+                        'persons' => $entityManager->getRepository(\App\Entity\Person::class)->getListAll($bid)
                     ]),
                     'topView' => $this->render('app_main/acp_persons/topButtons/buttons.html.twig'),
                     'title'=>'اشخاص'
@@ -80,7 +80,7 @@ class ACPPersonsController extends AbstractController
             if(!$bid){
                 return $this->redirectToRoute('app_main');
             }
-            $person = $entityManager->getRepository('App:Person')->find($id);
+            $person = $entityManager->getRepository(\App\Entity\Person::class)->find($id);
             if(!$person)
                 throw $this->createNotFoundException();
             if($person->getBid()->getId() != $this->bid)
@@ -104,7 +104,7 @@ class ACPPersonsController extends AbstractController
         if (!$permission->hasPermission('personAdd', $this->bidObject, $this->getUser()))
             throw $this->createAccessDeniedException();
         $pdfMGR->streamTwig2PDF('app_main/acp_persons/list_pdf.html.twig',[
-            'persons' => $entityManager->getRepository('App:Person')->getListAll($this->bid),
+            'persons' => $entityManager->getRepository(\App\Entity\Person::class)->getListAll($this->bid),
             'bid'=>$this->bidObject,
             'page_title'=>'لیست اشخاص'
         ]);
@@ -122,7 +122,7 @@ class ACPPersonsController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            if($entityManager->getRepository('App:Person')->personExist($this->bidObject->getId(), $form->get('nikeName')->getData())){
+            if($entityManager->getRepository(\App\Entity\Person::class)->personExist($this->bidObject->getId(), $form->get('nikeName')->getData())){
                 $response['result'] = 0;
                 $response['swal'] = [
                     'text'=>'فردی با اسم مستعار وارد شده قبلا ثبت شده است.',
@@ -133,7 +133,7 @@ class ACPPersonsController extends AbstractController
             }
             else{
                 $person->setBid($this->bidObject);
-                $person->setNum($entityManager->getRepository('App:Business')->getNewNumberPerson($this->bid));
+                $person->setNum($entityManager->getRepository(\App\Entity\Business::class)->getNewNumberPerson($this->bid));
                 $entityManager->persist($person);
                 $entityManager->flush();
                 $log->add($this->bidObject,$this->getUser(),'web','اشخاص','افزودن شخص ');
@@ -166,7 +166,7 @@ class ACPPersonsController extends AbstractController
     {
         if(! $permission->hasPermission('personEdit',$this->bidObject,$this->getUser()))
             throw $this->createAccessDeniedException();
-        $person = $entityManager->getRepository('App:Person')->find($id);
+        $person = $entityManager->getRepository(\App\Entity\Person::class)->find($id);
         if(! $person)
             throw $this->createNotFoundException();
 
@@ -207,11 +207,11 @@ class ACPPersonsController extends AbstractController
     {
         if(! $permission->hasPermission('personDelete',$this->bidObject,$this->getUser()))
             throw $this->createAccessDeniedException();
-        $person = $entityManager->getRepository('App:Person')->find($id);
+        $person = $entityManager->getRepository(\App\Entity\Person::class)->find($id);
         if($person  ){
             $canDelete = true;
             //check rs person
-            $files = $entityManager->getRepository('App:PersonRSPerson')->findOneBy(['person'=>$person]);
+            $files = $entityManager->getRepository(HesabdariItem::class)->findOneBy(['person'=>$person]);
             if($files){
                 $canDelete = false;
             }
@@ -236,8 +236,8 @@ class ACPPersonsController extends AbstractController
         );
     }
 
-    #[Route('/app/person/recive/new', name: 'acpPersonReciveNew', options: ["expose"=>true])]
-    public function acpPersonReciveNew(Log $log,permission $permission,Request $request,hesabdari $hesabdari,EntityManagerInterface $entityManager,kernel $kernel): Response
+    #[Route('/app/person/receive/new', name: 'acpPersonreceiveNew', options: ["expose"=>true])]
+    public function acpPersonreceiveNew(Log $log,permission $permission,Request $request,hesabdari $hesabdari,EntityManagerInterface $entityManager,kernel $kernel): Response
     {
         if(! $permission->hasPermission('personRSAdd',$this->bidObject,$this->getUser()))
             throw $this->createAccessDeniedException();
@@ -248,7 +248,7 @@ class ACPPersonsController extends AbstractController
                 return $kernel->msgNotActiveYear();
             }
         }
-        $anyBank = $entityManager->getRepository('App:BanksAccount')->findOneBy(['bussiness'=>$this->bid]);
+        $anyBank = $entityManager->getRepository(\App\Entity\BanksAccount::class)->findOneBy(['bussiness'=>$this->bid]);
         if(!$anyBank){
             $response = [];
             $response['result'] = 1;
@@ -260,7 +260,7 @@ class ACPPersonsController extends AbstractController
             $response['component'] = $this->generateUrl('app_bank_new');
             return $this->json($response);
         }
-        $persons = $entityManager->getRepository('App:Person')->getListAll($this->bidObject);
+        $persons = $entityManager->getRepository(\App\Entity\Person::class)->getListAll($this->bidObject);
         if(count($persons) == 0){
             $response = [];
             $response['result'] = 1;
@@ -274,7 +274,7 @@ class ACPPersonsController extends AbstractController
         }
         $rs = ['test'];
         $form = $this->createForm(PersonRSCompactType::class,$rs,[
-            'action'=>$this->generateUrl('acpPersonReciveNew'),
+            'action'=>$this->generateUrl('acpPersonreceiveNew'),
             'bid'=>$this->bid
         ]);
 
@@ -292,7 +292,7 @@ class ACPPersonsController extends AbstractController
             }
 
             $file = new HesabdariFile;
-            $file->setType('person_recive');
+            $file->setType('person_receive');
             $file->setArzType($this->bidObject->getArzMain());
             $file->setBid($this->bidObject);
             $file->setCanEdit(false);
@@ -304,7 +304,7 @@ class ACPPersonsController extends AbstractController
             $entityManager->flush();
 
             //set person part with code 14001
-            $table = $entityManager->getRepository('App:HesabdariTable')->findOneBy(['code' => 14001]);
+            $table = $entityManager->getRepository(\App\Entity\HesabdariTable::class)->findOneBy(['code' => 14001]);
             $h1 = new HesabdariItem();
             $h1->setBs($form->get('amount')->getData());
             $h1->setFile($file);
@@ -315,7 +315,7 @@ class ACPPersonsController extends AbstractController
             $entityManager->flush();
 
             //set bank part with code 14002
-            $table = $entityManager->getRepository('App:HesabdariTable')->findOneBy(['code' => 14002]);
+            $table = $entityManager->getRepository(\App\Entity\HesabdariTable::class)->findOneBy(['code' => 14002]);
             $h2 = new HesabdariItem();
             $h2->setBd($form->get('amount')->getData());
             $h2->setFile($file);
@@ -335,7 +335,7 @@ class ACPPersonsController extends AbstractController
                 'confirmButtonText'=>'قبول',
                 'icon'=>'success'
             ];
-            $response['component'] = $this->generateUrl('acp_recive_list');
+            $response['component'] = $this->generateUrl('acp_receive_list');
             return $this->json($response);
         }
         return $this->json(
@@ -351,16 +351,16 @@ class ACPPersonsController extends AbstractController
         );
     }
 
-    #[Route('/app/person/recive/list', name: 'acp_recive_list', options: ["expose"=>true])]
-    public function acp_recive_list(permission $permission,Request $request, EntityManagerInterface $entityManager,kernel $kernel): Response
+    #[Route('/app/person/receive/list', name: 'acp_receive_list', options: ["expose"=>true])]
+    public function acp_receive_list(permission $permission,Request $request, EntityManagerInterface $entityManager,kernel $kernel): Response
     {
         if(! $permission->hasPermission('personRSDelete',$this->bidObject,$this->getUser()))
             throw $this->createAccessDeniedException();
         //echo $this->activeYear->getId();
         return $this->json(
             [
-                'view'=>$this->render('app_main/acp_persons/rs/recive_list.html.twig', [
-                    'files' => $entityManager->getRepository('App:HesabdariFile')->getListAll($this->bid,$this->activeYear)
+                'view'=>$this->render('app_main/acp_persons/rs/receive_list.html.twig', [
+                    'files' => $entityManager->getRepository(\App\Entity\HesabdariFile::class)->getListAll($this->bid,$this->activeYear,'person_receive')
                 ]),
                 'topView' => $this->render('app_main/acp_persons/rs/buttons.html.twig'),
                 'title'=>'لیست دریافت از اشخاص'
@@ -374,7 +374,7 @@ class ACPPersonsController extends AbstractController
         if(! $permission->hasPermission('personRSPrint',$this->bidObject,$this->getUser()))
             throw $this->createAccessDeniedException();
         $pdfMGR->streamTwig2PDF('app_main/acp_persons/rs/pdf/list.html.twig',[
-            'datas' => $entityManager->getRepository('App:PersonRSFile')->getListAll($this->bid,$this->activeYear),
+            'datas' => $entityManager->getRepository(\App\Entity\HesabdariFile::class)->getListAll($this->bid,$this->activeYear,'person_receive'),
             'bid'=>$this->bidObject,
             'page_title'=>'لیست دریافت و پرداخت‌ها'
         ]);
@@ -390,16 +390,16 @@ class ACPPersonsController extends AbstractController
         );
     }
 
-    #[Route('/app/person/ressend/delete/{id}', name: 'acpPersonRessendDelete', options: ["expose"=>true])]
-    public function acpPersonRessendDelete($id,Log $log, permission $permission, Request $request, EntityManagerInterface $entityManager,kernel $kernel): Response
+    #[Route('/app/person/receive/delete/{id}', name: 'acpPersonReceiveDelete', options: ["expose"=>true])]
+    public function acpPersonReceiveDelete($id,Log $log, permission $permission, Request $request, EntityManagerInterface $entityManager,kernel $kernel): Response
     {
         if(! $permission->hasPermission('personRSDelete',$this->bidObject,$this->getUser()))
             throw $this->createAccessDeniedException();
-        $file = $entityManager->getRepository('App:PersonRSFile')->find($id);
+        $file = $entityManager->getRepository(\App\Entity\HesabdariFile::class)->findOneBy(['id'=>$id,'type'=>'person_receive']);
         if($file){
             $entityManager->remove($file);
             $entityManager->flush();
-            $log->add($this->bidObject,$this->getUser(),'web','اشخاص','حذف دریافت و پرداخت ');
+            $log->add($this->bidObject,$this->getUser(),'web','اشخاص','حذف دریافت از شخص');
 
         }
         return $this->json(
@@ -417,7 +417,7 @@ class ACPPersonsController extends AbstractController
             if($id){
 
             }
-            $persons = $entityManager->getRepository('App:Person')->getListAll($this->bidObject);
+            $persons = $entityManager->getRepository(\App\Entity\Person::class)->getListAll($this->bidObject);
             if(count($persons) == 0){
                 $response = [];
                 $response['result'] = 1;
@@ -466,7 +466,7 @@ class ACPPersonsController extends AbstractController
             $pdfMGR->streamTwig2PDF('app_main/acp_persons/card_print.html.twig',[
                 'datas' => $hesabdari->getTransactionsByRef('person:' . $this->bid . ':' . $id),
                 'bid'=>$this->bidObject,
-                'page_title'=>'کارت حساب ' . $entityManager->getRepository('App:Person')->find($id)->getNikeName()
+                'page_title'=>'کارت حساب ' . $entityManager->getRepository(\App\Entity\Person::class)->find($id)->getNikeName()
             ]);
         }
         throw $this->createAccessDeniedException();

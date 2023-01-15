@@ -24,7 +24,7 @@ private $kernel;
         $file->setRef($ref);
         $file->setYear($this->kernel->checkActiveYear());
         $file->setArzType($bid->getArzMain());
-        $file->setNum($this->em->getRepository('App:Business')->getNewNumberHesabdari($bid->getId()));
+        $file->setNum($this->em->getRepository(\App\Entity\Business::class)->getNewNumberHesabdari($bid->getId()));
         $this->em->persist($file);
         $this->em->flush();
         foreach ($items as $item){
@@ -36,9 +36,9 @@ private $kernel;
     }
 
     public function removeByRef($part,$bid,$id){
-        $item = $this->em->getRepository('App:HesabdariFile')->findOneBy(['ref'=>$part . ':' . $bid . ':' . $id]);
+        $item = $this->em->getRepository(\App\Entity\HesabdariFile::class)->findOneBy(['ref'=>$part . ':' . $bid . ':' . $id]);
         if($item){
-            $this->em->getRepository('App:HesabdariFile')->remove($item);
+            $this->em->getRepository(\App\Entity\HesabdariFile::class)->remove($item);
             return true;
         }
         return false;
@@ -57,14 +57,14 @@ private $kernel;
 
     public function getTransactionsByRef($ref){
         $params = explode(':',$ref);
-        return $this->em->getRepository('App:HesabdariItem')->findBy([
+        return $this->em->getRepository(\App\Entity\HesabdariItem::class)->findBy([
             'type'=>$params[0],
             'typeData'=>$params[2]
         ]);
     }
 
     public function getHesabdariFileBalance(HesabdariFile $file): int{
-        $items = $this->em->getRepository('App:HesabdariItem')->findBy(['file' => $file]);
+        $items = $this->em->getRepository(\App\Entity\HesabdariItem::class)->findBy(['file' => $file]);
         $amount = 0;
         foreach($items as $item){
             $amount += $item->getBs();

@@ -33,14 +33,14 @@ class CostController extends AbstractController
         if(!$this->bid){
             throw $this->createNotFoundException();
         }
-        $this->bidObject = $entityManager->getRepository('App:Business')->find($this->bid);
+        $this->bidObject = $entityManager->getRepository(\App\Entity\Business::class)->find($this->bid);
         if (! $this->bidObject)
             throw $this->createNotFoundException();
         $this->activeYear = $kernel->checkActiveYear($this->request);
         if(!$this->activeYear){
             throw $this->createNotFoundException();
         }
-        $this->activeYearObject = $entityManager->getRepository('App:Year')->find($this->activeYear);
+        $this->activeYearObject = $entityManager->getRepository(\App\Entity\Year::class)->find($this->activeYear);
     }
 
     /**
@@ -82,7 +82,7 @@ class CostController extends AbstractController
             $fitem->setDes('حساب بانکی: ' . $cost->getBank()->getName() . ' شرح: ' . $cost->getDes());
             $fitem->setBs($cost->getAmount());
             $fitem->setBd(0);
-            $fitem->setCode($entityManager->getRepository('App:HesabdariTable')->findOneBy(['code'=>10001]));
+            $fitem->setCode($entityManager->getRepository(\App\Entity\HesabdariTable::class)->findOneBy(['code'=>10001]));
 
             $sitem = new HesabdariItem();
             $sitem->setType('cost');
@@ -90,7 +90,7 @@ class CostController extends AbstractController
             $sitem->setDes('هزینه: ' .$cost->getHesabdariTable()->getName() . ' شرح: ' . $cost->getDes());
             $sitem->setBd($cost->getAmount());
             $sitem->setBs(0);
-            $sitem->setCode($entityManager->getRepository('App:HesabdariTable')->findOneBy(['code'=>$cost->getHesabdariTable()->getCode()]));
+            $sitem->setCode($entityManager->getRepository(\App\Entity\HesabdariTable::class)->findOneBy(['code'=>$cost->getHesabdariTable()->getCode()]));
 
             $ref = 'cost:' . $this->bid . ':' . $cost->getId();
             $des = 'هزینه: ' . $cost->getDes();
@@ -146,7 +146,7 @@ class CostController extends AbstractController
             $fitem->setDes('حساب بانکی: ' . $cost->getBank()->getName(). ' شرح: ' . $cost->getDes());
             $fitem->setBs($cost->getAmount());
             $fitem->setBd(0);
-            $fitem->setCode($entityManager->getRepository('App:HesabdariTable')->findOneBy(['code'=>1002]));
+            $fitem->setCode($entityManager->getRepository(\App\Entity\HesabdariTable::class)->findOneBy(['code'=>1002]));
 
             $sitem = new HesabdariItem();
             $sitem->setType('cost');
@@ -154,7 +154,7 @@ class CostController extends AbstractController
             $sitem->setDes('هزینه: ' .$cost->getHesabdariTable()->getName(). ' شرح: ' . $cost->getDes());
             $sitem->setBd($cost->getAmount());
             $sitem->setBs(0);
-            $sitem->setCode($entityManager->getRepository('App:HesabdariTable')->findOneBy(['code'=>$cost->getHesabdariTable()->getCode()]));
+            $sitem->setCode($entityManager->getRepository(\App\Entity\HesabdariTable::class)->findOneBy(['code'=>$cost->getHesabdariTable()->getCode()]));
 
             $ref = 'cost:' . $this->bid . ':' . $cost->getId();
             $des = 'هزینه: ' . $cost->getDes();

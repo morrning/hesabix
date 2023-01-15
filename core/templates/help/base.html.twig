@@ -10,13 +10,13 @@
             </div>
             {% endif %}
             <ul class="list-group">
-                {% set cats = EntityMGR.findAll('App:HelpCat') %}
+                {% set cats = EntityMGR.findAll('\\App\\Entity\\HelpCat') %}
                 {% for cat in cats %}
                 <li class="list-group-item d-flex justify-content-between align-items-center">
                    <a href="{{ path('app_help_cat',{'id':cat.id}) }}">
                        {{ cat.name }}
                    </a>
-                    <span class="badge bg-primary rounded-pill">{{ EntityMGR.findBy('App:HelpTopics',{'cat':cat}) | length}}</span>
+                    <span class="badge bg-primary rounded-pill">{{ EntityMGR.findBy('\\App\\Entity\\HelpTopics',{'cat':cat}) | length}}</span>
                 </li>
                 {% endfor %}
             </ul>

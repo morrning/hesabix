@@ -35,14 +35,14 @@ class HbuyController extends AbstractController
         if(!$this->bid){
             throw $this->createNotFoundException();
         }
-        $this->bidObject = $entityManager->getRepository('App:Business')->find($this->bid);
+        $this->bidObject = $entityManager->getRepository(\App\Entity\Business::class)->find($this->bid);
         if (! $this->bidObject)
             throw $this->createNotFoundException();
         $this->activeYear = $kernel->checkActiveYear($this->request);
         if(!$this->activeYear){
             throw $this->createNotFoundException();
         }
-        $this->activeYearObject = $entityManager->getRepository('App:Year')->find($this->activeYear);
+        $this->activeYearObject = $entityManager->getRepository(\App\Entity\Year::class)->find($this->activeYear);
     }
 
     #[Route('/app/hbuy/list', name: 'app_hbuy_list', options: ["expose"=>true])]
@@ -113,7 +113,7 @@ class HbuyController extends AbstractController
     {
         if(! $permission->hasPermission('buyAdd',$this->bidObject,$this->getUser()))
             throw $this->createAccessDeniedException();
-        $firstComod = $entityManager->getRepository('App:Commodity')->findOneBy(['bid'=>$this->bid]);
+        $firstComod = $entityManager->getRepository(\App\Entity\Commodity::class)->findOneBy(['bid'=>$this->bid]);
         $hbuyItem = new HbuyItem();
         $hbuyItem->setDes($firstComod->getDes());
         $form = $this->createForm(HbuyItemType::class,$hbuyItem,[
@@ -158,7 +158,7 @@ class HbuyController extends AbstractController
     {
         if(! $permission->hasPermission('buyAdd',$this->bidObject,$this->getUser()))
             throw $this->createAccessDeniedException();
-        if(!$entityManager->getRepository('App:Commodity')->findOneBy(['bid'=>$this->bidObject])){
+        if(!$entityManager->getRepository(\App\Entity\Commodity::class)->findOneBy(['bid'=>$this->bidObject])){
             $response['result'] = 0;
             $response['swal'] = [
                 'text'=>'هنوز هیچ کالایی ثبت نشده است.لطفا ابتدا از بخش کالا و خدمات یک کالا را ثبت نمایید.',
@@ -187,7 +187,7 @@ class HbuyController extends AbstractController
                 //save items
                 $tempItem = new HbuyItem();
                 $tempItem->setHbuy($buy);
-                $com = $entityManager->getRepository('App:Commodity')->find($item['item']);
+                $com = $entityManager->getRepository(\App\Entity\Commodity::class)->find($item['item']);
                 $tempItem->setCommodity($com);
                 $tempItem->setPrice($item['price']);
                 $tempItem->setNum($item['num']);

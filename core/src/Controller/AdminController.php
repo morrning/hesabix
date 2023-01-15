@@ -46,7 +46,7 @@ class AdminController extends AbstractController
        $files = $entityManager->getRepository('App:PersonRSFile')->findAll();
        foreach ($files as $file){
            $bid = $file->getBid();
-           $year = $entityManager->getRepository('App:Year')->findOneBy(['active'=>true,'bid'=>$bid]);
+           $year = $entityManager->getRepository(\App\Entity\Year::class)->findOneBy(['active'=>true,'bid'=>$bid]);
            if(!$year){
                $year = new Year();
                $year->setActive(true);
@@ -65,7 +65,7 @@ class AdminController extends AbstractController
         $transfers = $entityManager->getRepository('App:BanksTransfer')->findAll();
         foreach ($transfers as $transfer){
             $bid = $transfer->getBid();
-            $year = $entityManager->getRepository('App:Year')->findOneBy(['active'=>true,'bid'=>$bid]);
+            $year = $entityManager->getRepository(\App\Entity\Year::class)->findOneBy(['active'=>true,'bid'=>$bid]);
             if(!$year){
                 $year = new Year();
                 $year->setActive(true);

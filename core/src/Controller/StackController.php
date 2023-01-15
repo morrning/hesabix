@@ -29,7 +29,7 @@ class StackController extends AbstractController
     public function stack(Service\EntityMGR  $entityMGR,$page=1): Response
     {
         $qb = $entityMGR->getORM()->createQueryBuilder();
-        $stacks = $entityMGR->findByPage('App:StackContent',(int) $page,20,
+        $stacks = $entityMGR->findByPage(\App\Entity\StackContent::class,(int) $page,20,
             $qb->expr()->isNull('q.upperID')
         );
         if(count($stacks) == 0)
@@ -75,7 +75,7 @@ class StackController extends AbstractController
      */
     public function stackView(Request $request,Service\EntityMGR  $entityMGR,$url,$msg = 0): Response
     {
-        $content = $entityMGR->findOneBy('App:StackContent',['url'=>$url]);
+        $content = $entityMGR->findOneBy(\App\Entity\StackContent::class,['url'=>$url]);
         if(is_null($content))
             throw $this->createNotFoundException('صفحه یافت نشد');
         if($msg == 1)
@@ -109,7 +109,7 @@ class StackController extends AbstractController
         return $this->render('stack/view.html.twig', [
             'form'=>$form->createView(),
             'stack'=> $content,
-            'replays'=>$entityMGR->findBy('App:StackContent',[
+            'replays'=>$entityMGR->findBy(\App\Entity\StackContent::class,[
                 'upperID'=>$content->getUrl()
             ])
         ]);
@@ -122,7 +122,7 @@ class StackController extends AbstractController
     {
         if(is_null($this->getUser()))
             throw $this->createNotFoundException();
-        $replay = $this->getDoctrine()->getManager()->getRepository('App:StackContent')->find($id);
+        $replay = $this->getDoctrine()->getManager()->getRepository(\App\Entity\StackContent::class)->find($id);
         if(is_null($replay))
             throw $this->createNotFoundException();
         $replay->addLike($this->getUser());
@@ -139,12 +139,12 @@ class StackController extends AbstractController
         $qb = $entityMGR->getORM()->createQueryBuilder('q');
         $stacks = $entityMGR->getORM()->createQueryBuilder('q')
             ->select('q')
-            ->from('App:StackContent','q')
+            ->from(\App\Entity\StackContent::class,'q')
             ->setMaxResults(20)
             ->setFirstResult(20 * ($page -1) )
             ->where($qb->expr()->isNull('q.upperID'))
             ->andWhere('q.cat = :cat')
-            ->setParameter('cat',$entityMGR->findOneBy('App:StackCat',['code'=>$cat]))
+            ->setParameter('cat',$entityMGR->findOneBy(\App\Entity\StackCat::class,['code'=>$cat]))
             ->orderBy('q.id','DESC')
             ->getQuery()
             ->execute();

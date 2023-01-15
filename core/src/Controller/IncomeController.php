@@ -33,14 +33,14 @@ class IncomeController extends AbstractController
         if(!$this->bid){
             throw $this->createNotFoundException();
         }
-        $this->bidObject = $entityManager->getRepository('App:Business')->find($this->bid);
+        $this->bidObject = $entityManager->getRepository(\App\Entity\Business::class)->find($this->bid);
         if (! $this->bidObject)
             throw $this->createNotFoundException();
         $this->activeYear = $kernel->checkActiveYear($this->request);
         if(!$this->activeYear){
             throw $this->createNotFoundException();
         }
-        $this->activeYearObject = $entityManager->getRepository('App:Year')->find($this->activeYear);
+        $this->activeYearObject = $entityManager->getRepository(\App\Entity\Year::class)->find($this->activeYear);
     }
 
     #[Route('/app/income/new', name: 'app_income_new', options: ["expose"=>true])]
@@ -78,7 +78,7 @@ class IncomeController extends AbstractController
             $fitem->setDes('حساب بانکی: ' . $income->getBank()->getName(). ' شرح: ' . $income->getDes());
             $fitem->setBd($income->getAmount());
             $fitem->setBs(0);
-            $fitem->setCode($entityManager->getRepository('App:HesabdariTable')->findOneBy(['code'=>10001]));
+            $fitem->setCode($entityManager->getRepository(\App\Entity\HesabdariTable::class)->findOneBy(['code'=>10001]));
 
             $sitem = new HesabdariItem();
             $sitem->setType('income');
@@ -86,7 +86,7 @@ class IncomeController extends AbstractController
             $sitem->setDes('درآمد: ' .$income->getIncomeTable()->getName(). ' شرح: ' . $income->getDes());
             $sitem->setBs($income->getAmount());
             $sitem->setBd(0);
-            $sitem->setCode($entityManager->getRepository('App:HesabdariTable')->findOneBy(['code'=>$income->getIncomeTable()->getCode()]));
+            $sitem->setCode($entityManager->getRepository(\App\Entity\HesabdariTable::class)->findOneBy(['code'=>$income->getIncomeTable()->getCode()]));
 
             $ref = 'income:' . $this->bid . ':' . $income->getId();
             $des = 'درآمد';
@@ -144,7 +144,7 @@ class IncomeController extends AbstractController
             $fitem->setDes('حساب بانکی: ' . $income->getBank()->getName(). ' شرح: ' . $income->getDes());
             $fitem->setBd($income->getAmount());
             $fitem->setBs(0);
-            $fitem->setCode($entityManager->getRepository('App:HesabdariTable')->findOneBy(['code'=>10001]));
+            $fitem->setCode($entityManager->getRepository(\App\Entity\HesabdariTable::class)->findOneBy(['code'=>10001]));
 
             $sitem = new HesabdariItem();
             $sitem->setType('income');
@@ -152,7 +152,7 @@ class IncomeController extends AbstractController
             $sitem->setDes('درآمد: ' .$income->getIncomeTable()->getName(). ' شرح: ' . $income->getDes());
             $sitem->setBs($income->getAmount());
             $sitem->setBd(0);
-            $sitem->setCode($entityManager->getRepository('App:HesabdariTable')->findOneBy(['code'=>$income->getIncomeTable()->getCode()]));
+            $sitem->setCode($entityManager->getRepository(\App\Entity\HesabdariTable::class)->findOneBy(['code'=>$income->getIncomeTable()->getCode()]));
 
             $ref = 'income:' . $this->bid . ':' . $income->getId();
             $des = 'درآمد: ' . $income->getDes();

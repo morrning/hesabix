@@ -21,7 +21,7 @@
                     <div class="card-header justify-content-center text-light bg-primary">
                         موضوعات
                     </div>
-                    {% set cats = EntityMGR.findAll('App:StackCat') %}
+                    {% set cats = EntityMGR.findAll('\\App\\Entity\\StackCat') %}
                     <ul class="list-group list-group-flush">
                         {% for cat in cats %}
                             <li class="list-group-item bg-light"><a class="text-bold" href="{{ path('stackByCat',{'cat':cat.code}) }}">{{ cat.name }}</a></li>
@@ -35,11 +35,11 @@
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item bg-light">
                             پرسش ها:
-                            {{ EntityMGR.findBy('App:StackContent',{'upperID':none}) | length }}
+                            {{ EntityMGR.findBy('\\App\\Entity\\StackContent',{'upperID':none}) | length }}
                         </li>
                         <li class="list-group-item bg-light">
                             پاسخ ها:
-                            {{ EntityMGR.findAll('App:StackContent') | length - EntityMGR.findBy('App:StackContent',{'upperID':none}) | length }}
+                            {{ EntityMGR.findAll('\\App\\Entity\\StackContent') | length - EntityMGR.findBy('\\App\\Entity\\StackContent',{'upperID':none}) | length }}
                         </li>
                     </ul>
                 </div>
@@ -49,7 +49,7 @@
                     </div>
                     <ul class="list-group list-group-flush">
 
-                        {% set lastContents = EntityMGR.findByPage('App:StackContent',1,5,'q.upperID is null') %}
+                        {% set lastContents = EntityMGR.findByPage('\\App\\Entity\\StackContent',1,5,'q.upperID is null') %}
                         {% for lastContent in lastContents %}
                             <li class="list-group-item bg-light">
                                 <a class="" href="{{ path('stackView',{'url': lastContent.url}) }}">{{ lastContent.title }}</a>

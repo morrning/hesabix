@@ -22,7 +22,7 @@ class HelpController extends AbstractController
     #[Route('/admin/help-edit/{id}', name: 'app_help_edit')]
     public function app_help_edit($id,EntityManagerInterface $entityManager,Request $request): Response
     {
-        $help = $entityManager->getRepository('App:HelpTopics')->find($id);
+        $help = $entityManager->getRepository(\App\Entity\HelpTopics::class)->find($id);
         if(!$help)
             throw $this->createNotFoundException();
         return $this->extracted($help, $request, $entityManager);
@@ -31,11 +31,11 @@ class HelpController extends AbstractController
     #[Route('/help-by-cat/{id}', name: 'app_help_cat')]
     public function app_help_cat($id, EntityManagerInterface $entityManager): Response
     {
-        $cat = $entityManager->find('App:HelpCat',$id);
+        $cat = $entityManager->find(\App\Entity\HelpCat::class,$id);
         if(!$cat)
             throw $this->createNotFoundException();
 
-        $topics = $entityManager->getRepository('App:HelpTopics')->findBy(['cat'=>$cat]);
+        $topics = $entityManager->getRepository(\App\Entity\HelpTopics::class)->findBy(['cat'=>$cat]);
 
         return $this->render('help/list.html.twig', [
             'topics' => $topics,
@@ -45,7 +45,7 @@ class HelpController extends AbstractController
     #[Route('/admin/help-delete/{id}', name: 'app_help_delete')]
     public function app_help_delete($id, EntityManagerInterface $entityManager): Response
     {
-        $topic = $entityManager->find('App:HelpTopics',$id);
+        $topic = $entityManager->find(\App\Entity\HelpTopics::class,$id);
         if($topic){
             $entityManager->remove($topic);
             $entityManager->flush();
@@ -57,7 +57,7 @@ class HelpController extends AbstractController
     #[Route('/help/{id}', name: 'app_help')]
     public function app_help($id, EntityManagerInterface $entityManager): Response
     {
-        $topic = $entityManager->getRepository('App:HelpTopics')->findOneBy(['url'=>$id]);
+        $topic = $entityManager->getRepository(\App\Entity\HelpTopics::class)->findOneBy(['url'=>$id]);
         if(!$topic)
             throw $this->createNotFoundException();
         return $this->render('help/content.html.twig', [

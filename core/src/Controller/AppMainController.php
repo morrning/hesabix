@@ -33,14 +33,14 @@ class AppMainController extends AbstractController
         if(!$this->bid){
             throw $this->createNotFoundException();
         }
-        $this->bidObject = $entityManager->getRepository('App:Business')->find($this->bid);
+        $this->bidObject = $entityManager->getRepository(\App\Entity\Business::class)->find($this->bid);
         if (! $this->bidObject)
             throw $this->createNotFoundException();
         $this->activeYear = $kernel->checkActiveYear($this->request);
         if(!$this->activeYear){
             throw $this->createNotFoundException();
         }
-        $this->activeYearObject = $entityManager->getRepository('App:Year')->find($this->activeYear);
+        $this->activeYearObject = $entityManager->getRepository(\App\Entity\Year::class)->find($this->activeYear);
     }
 
 
@@ -52,7 +52,7 @@ class AppMainController extends AbstractController
             throw $this->createAccessDeniedException();
         $response = [];
         $id = $this->bid;
-        $busi = $entityManager->getRepository('App:Business')->find($id);
+        $busi = $entityManager->getRepository(\App\Entity\Business::class)->find($id);
         if(! $busi)
             throw $this->createNotFoundException();
         $form = $this->createForm(BusinessNewType::class,$busi,[
@@ -86,13 +86,13 @@ class AppMainController extends AbstractController
     #[Route('/app/business/change/year/{id}/{year}', name: 'app_change_year', options: ["expose"=>true])]
     public function app_change_year($id,$year,Request $request, EntityManagerInterface $entityManager): Response
     {
-        $bid = $entityManager->find('App:Business',$id);
+        $bid = $entityManager->find(\App\Entity\Business::class,$id);
         if(is_null($bid))
             throw $this->createNotFoundException();
 
         $session = $request->getSession();
         $session->set('bid',$id);
-        $yearobj = $entityManager->getRepository('App:Year')->find($year);
+        $yearobj = $entityManager->getRepository(\App\Entity\Year::class)->find($year);
         if($yearobj){
             if($yearobj->getBid() == $bid){
                 $session->set('activeYear',$yearobj->getId());
@@ -131,9 +131,9 @@ class AppMainController extends AbstractController
         return $this->json(
             [
                 'view'=>$this->render('app_main/dashboard.html.twig', [
-                    'persons' => $entityManager->getRepository('App:Person')->findBy(['bid'=>$bid]),
-                    'banks' => $entityManager->getRepository('App:BanksAccount')->findBy(['bussiness'=>$bid]),
-                    'commodity' => $entityManager->getRepository('App:Commodity')->findBy(['bid'=>$bid]),
+                    'persons' => $entityManager->getRepository(\App\Entity\Person::class)->findBy(['bid'=>$bid]),
+                    'banks' => $entityManager->getRepository(\App\Entity\BanksAccount::class)->findBy(['bussiness'=>$bid]),
+                    'commodity' => $entityManager->getRepository(\App\Entity\Commodity::class)->findBy(['bid'=>$bid]),
                     'costSum'=>$costSum,
                     'costs'=> $entityManager->getRepository('App:Cost')->findBy(['bid'=>$this->bid,'year'=>$this->activeYear],['id'=>'DESC'],5),
                     'incomeSum'=>$incomeSum,
@@ -150,7 +150,7 @@ class AppMainController extends AbstractController
     {
         if(! $permission->hasPermission('admin',$this->bidObject,$this->getUser()))
             throw $this->createAccessDeniedException();
-        $perms = $entityManager->getRepository('App:Permission')->getPermissionsbyBusiness($this->bidObject);
+        $perms = $entityManager->getRepository(\App\Entity\Permission::class)->getPermissionsbyBusiness($this->bidObject);
         return $this->json([
             'view'=> $this->render('business/permissions/list.html.twig', [
                 'perms' => $perms,
@@ -166,7 +166,7 @@ class AppMainController extends AbstractController
         if(! $permission->hasPermission('admin',$this->bidObject,$this->getUser()))
             throw $this->createAccessDeniedException();
        $email = $request->get('email');
-       $user = $entityManager->getRepository('App:User')->findOneBy(['email'=>$email]);
+       $user = $entityManager->getRepository(\App\Entity\User::class)->findOneBy(['email'=>$email]);
        if(!$user){
            return $this->json([
                 'swal'=>[
@@ -177,13 +177,13 @@ class AppMainController extends AbstractController
            ]);
        }
        //check permission exist before
-        $perm = $entityManager->getRepository('App:Permission')->findOneBy(['bid'=>$this->bid,'user'=>$user]);
+        $perm = $entityManager->getRepository(\App\Entity\Permission::class)->findOneBy(['bid'=>$this->bid,'user'=>$user]);
        if((!$perm) && ($this->bidObject->getOwner() != $user)){
            $perm = new Permission();
            $perm->setBid($this->bidObject);
            $perm->setUser($user);
            $perm->setView(true);
-           $entityManager->getRepository('App:Permission')->add($perm);
+           $entityManager->getRepository(\App\Entity\Permission::class)->add($perm);
            $log->add($this->bidObject,$this->getUser(),'web','پیکربندی','افزودن دسترسی کاربر با ایمیل: ' . $perm->getUser()->getEmail());
 
            return $this->json([
@@ -212,9 +212,9 @@ class AppMainController extends AbstractController
         if(! $permission->hasPermission('admin',$this->bidObject,$this->getUser()))
             throw $this->createAccessDeniedException();
 
-        $perm = $entityManager->getRepository('App:Permission')->find($id);
+        $perm = $entityManager->getRepository(\App\Entity\Permission::class)->find($id);
         if($perm)
-            $entityManager->getRepository('App:Permission')->remove($perm);
+            $entityManager->getRepository(\App\Entity\Permission::class)->remove($perm);
         $log->add($this->bidObject,$this->getUser(),'web','پیکربندی','حذف دسترسی کاربر با ایمیل: ' . $perm->getUser()->getEmail());
 
         return $this->json([
@@ -228,7 +228,7 @@ class AppMainController extends AbstractController
         if(! $permission->hasPermission('admin',$this->bidObject,$this->getUser()))
             throw $this->createAccessDeniedException();
 
-        $perm = $entityManager->getRepository('App:Permission')->find($id);
+        $perm = $entityManager->getRepository(\App\Entity\Permission::class)->find($id);
         if($perm->getBid() != $this->bidObject)
             throw $this->createAccessDeniedException();
         $form = $this->createForm(PermissionType::class,$perm,[
@@ -270,7 +270,7 @@ class AppMainController extends AbstractController
 
         return $this->json([
             'view'=> $this->render('business/logs.html.twig', [
-                'logs' => $entityManager->getRepository('App:Log')->findBy(['bid'=>$this->bid],['id'=>'DESC']),
+                'logs' => $entityManager->getRepository(\App\Entity\Log::class)->findBy(['bid'=>$this->bid],['id'=>'DESC']),
             ]),
             'title'=>'کاربران و سطوح دسترسی'
         ]);
@@ -284,7 +284,7 @@ class AppMainController extends AbstractController
 
         return $this->json([
             'view'=> $this->render('business/reports.html.twig', [
-                'logs' => $entityManager->getRepository('App:Log')->findBy(['bid'=>$this->bid],['id'=>'DESC']),
+                'logs' => $entityManager->getRepository(\App\Entity\Log::class)->findBy(['bid'=>$this->bid],['id'=>'DESC']),
             ]),
             'title'=>'گزارشات'
         ]);
@@ -297,7 +297,7 @@ class AppMainController extends AbstractController
 
         return $this->json([
             'view'=> $this->render('business/reports.html.twig', [
-                'logs' => $entityManager->getRepository('App:Log')->findBy(['bid'=>$this->bid],['id'=>'DESC']),
+                'logs' => $entityManager->getRepository(\App\Entity\Log::class)->findBy(['bid'=>$this->bid],['id'=>'DESC']),
             ]),
             'title'=>'رابط برنامه‌نویسی'
         ]);

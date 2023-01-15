@@ -21,7 +21,7 @@ class permission
         //check for that user is owner of bussiness
         if($bid->getOwner() == $user)
             return true;
-        $persission = $this->em->getRepository('App:Permission')->getPersissions($bid,$user);
+        $persission = $this->em->getRepository(\App\Entity\Permission::class)->getPersissions($bid,$user);
         if($persission){
             if($persission->{'get' . ucfirst($permissionName)}())
                 return true;
@@ -32,10 +32,10 @@ class permission
     //this function check user has permission for access some part
     public function hasPermissionInCurrentBusiness($permissionName,string $id, User $user){
         //check for that user is owner of business
-        $bid = $this->em->getRepository('App:Business')->find($id);
+        $bid = $this->em->getRepository(\App\Entity\Business::class)->find($id);
         if($bid->getOwner() == $user)
             return true;
-        $persission = $this->em->getRepository('App:Permission')->getPersissions($bid,$user);
+        $persission = $this->em->getRepository(\App\Entity\Permission::class)->getPersissions($bid,$user);
         if($persission){
             if($persission->{'get' . ucfirst($permissionName)}())
                 return true;

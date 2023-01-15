@@ -23,7 +23,7 @@ class Log
         $log->setDevice($device);
         $log->setPart($part);
         $log->setDes($des);
-        $this->em->getRepository('App:Log')->add($log);
+        $this->em->getRepository(\App\Entity\Log::class)->add($log);
         return true;
     }
 }
